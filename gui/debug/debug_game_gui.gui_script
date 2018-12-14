@@ -1,0 +1,19 @@
+local COMMON = require "libs.common"
+local ObservableMixin = require "libs.observable_mixin"
+function init(self)
+	self.lbl_cpu = gui.get_node("lbl_cpu")
+	self.lbl_memory = gui.get_node("lbl_memory")
+	self.lbl_subscriptions = gui.get_node("lbl_subscriptions")
+	gui.set_render_order(15)
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	gui.set_text(self.lbl_cpu, "Cpu:" .. string.format("%.2f", profiler.get_cpu_usage()))
+	gui.set_text(self.lbl_memory, "Mem:" .. string.format("%.2f Mb", profiler.get_memory_usage()/1024/1024))
+	gui.set_text(self.lbl_subscriptions, "Subscriptions:" .. ObservableMixin.static.get_total_subscriptions())
+end

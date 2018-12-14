@@ -1,0 +1,27 @@
+local COMMON = require "libs.common"
+local WORLD = require "world.world"
+local FOV_COLOR = vmath.vector3(255,255,255)
+local PLAYER_COLOR = vmath.vector3(255,0,0)
+
+go.property("show", false)
+
+local function update_gui(self)
+	local msg_id = hash(self.show and "enable" or "disable")
+	msg.post("#debug_game_gui", msg_id)
+end
+function init(self)
+	update_gui(self)
+	COMMON.input_acquire()
+end
+
+function final(self)
+	COMMON.input_release()
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("toggle_debug_gui") and action.pressed then
+		self.show = not self.show
+		update_gui(self)
+		return true
+	end	
+end

@@ -1,0 +1,53 @@
+local COMMON = require "libs.common"
+COMMON.LOG.set_appname("game off")
+COMMON.LOG.toggle_print()
+COMMON.LOG.override_print()
+
+local JESTER = require "Jester.jester"
+local STENCIL = require "Jester.stencil.stencil_render"
+
+
+if not defos then
+    defos = {}
+    local mt = {}
+    function mt.__index(self, v)
+        self[v] = function() end
+        return self[v]
+    end
+
+    setmetatable(defos, mt)
+end
+
+
+
+local scenes = {
+    require "scenes.logo.logo_scene",
+    require "scenes.game.game_scene",
+}
+function init(self)
+    COMMON.input_acquire()
+    defos.set_view_size(nil, nil, 960, 540)
+    --region FIX module not found
+    local reg_scenes = {}
+    for i, v in ipairs(scenes) do
+        reg_scenes[i] = v()
+    end
+    --endregion
+    JESTER.register(reg_scenes)
+    JESTER.show("LogoScene")
+end
+
+function update(self, dt)
+    STENCIL.update(dt)
+end
+
+function final(self)
+    COMMON.input_release()
+end
+
+function on_input(self, action_id, action, sender)
+    if action_id == COMMON.HASHES.INPUT_TOGGLE_PROFILER and action.pressed then
+        msg.post("@system:", COMMON.HASHES.INPUT_TOGGLE_PROFILER)
+        return true
+    end
+end

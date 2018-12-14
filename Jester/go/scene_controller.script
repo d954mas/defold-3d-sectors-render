@@ -1,0 +1,54 @@
+local HASHES = require "Jester.libs.hashes"
+local MsgReceiver = require "Jester.libs.msg_receiver"
+local Jester = require "Jester.jester"
+local BaseScene = require "Jester.scene"
+
+---@class Self1
+---@field scene JesterScene
+
+---@param self Self1
+local function jester_init(self, message_id, message, sender)
+    local sm = Jester.SCENE_MANAGERS[message.sm_name]
+    assert(sm, "no sm with name:" .. tostring(message.sm_name))
+    self.scene = sm:get_scene_by_name(message.scene_name)
+    self.scene:init(self)
+end
+
+---@param self Self1
+local function show(self, message_id, message, sender)
+    self.scene:on_show(self.scene._input, self.scene._state)
+end
+
+---@param self Self1
+function init(self)
+    self.msg_receiver = MsgReceiver.new()
+    self.msg_receiver:add(HASHES.MSG_JESTER_INIT, jester_init)
+    self.msg_receiver:add(HASHES.MSG_SHOW, show)
+    self.scene = BaseScene() -- empty scene before load needed
+end
+
+---@param self Self1
+function on_message(self, message_id, message, sender)
+    self.msg_receiver:on_message(self, message_id, message, sender)
+    self.scene:on_message(self, message_id, message, sender)
+end
+
+---@param self Self1
+function final(self)
+    self.scene:final(self)
+end
+
+---@param self Self1
+function update(self, dt)
+    self.scene:update(self, dt)
+end
+
+---@param self Self1
+function on_input(self, action_id, action)
+    self.scene:on_input(self, action_id, action)
+end
+
+---@param self Self1
+function on_reload(self)
+    self.scene:on_reload(self)
+end

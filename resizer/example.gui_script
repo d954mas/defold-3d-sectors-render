@@ -1,0 +1,33 @@
+local resolutions = {
+	{1170,540, tag = "19.5x9"},
+	{960,540, tag = "16x9"},
+	{720,540, tag = "4x3"},
+
+}
+
+local resolution_scale = 1
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	self.resize_node = gui.get_node("resize_node")
+	local os = sys.get_sys_info().system_name
+	if os ~= "Windows" and os ~= "Darwin" then
+		msg.post(".", "disable")
+	end
+	gui.set_render_order(15)
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("right_click") and action.released and gui.pick_node(self.resize_node, action.x, action.y)then
+		mnu.begin()
+		for i,size in ipairs(resolutions) do
+			mnu.label(1, true, size[1] .. "x" .. size[2] .. " " .. size.tag or "")
+		end	
+		mnu.finish()
+		local _, _, _, h = defos.get_view_size()
+		local result = mnu.show(action.screen_x, h - action.screen_y)
+		local size = resolutions[result]
+		defos.set_view_size(nil, nil, size[1]*resolution_scale, size[2]*resolution_scale)
+		return true
+	end
+end
