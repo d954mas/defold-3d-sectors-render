@@ -1,3 +1,5 @@
+#Y coord folowed by list of X coord
+#в первой строке 3 вершины с координатами (0,0),(6,0),(28,0)
 vertex	0	0 6 28
 vertex	2	1 17.5
 vertex	5	4 6 18 21
@@ -11,6 +13,10 @@ vertex	13	4 6 18 21
 vertex	16	1 17.5
 vertex	18	0 6 28
 
+#Sector floor height, ceilling height, then vertex numbers in clockwise order
+#After list of vertexes come sector numbers on the "opposite" side of that wall
+# -1 is none
+# после вершин перечесляем сектор который находяться за стеной
 sector	0 20	 3 14 29 49             -1 1 11 22 
 sector	0 20	 17 15 14 3 9           -1 12 11 0 21 
 sector	0 20	 41 42 43 44 50 49 40   -1 20 -1 3 -1 -1 22 

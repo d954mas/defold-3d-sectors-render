@@ -28,12 +28,26 @@ static int UnloadLevelLua(lua_State* L){
 	return 0;
 }
 
+static int SetBufferLua(lua_State* L){
+ 	int width = (int) lua_tonumber(L, 1);
+ 	int height = (int) lua_tonumber(L, 2);
+ 	dmScript::LuaHBuffer* buffer = dmScript::CheckBuffer(L, 3);
+ 	setBuffer(width, height, buffer);
+ 	return 0;
+}
+
+static int DrawScreenLua(lua_State* L){
+	DrawScreen();
+	return 0;
+}
 
 
 // Functions exposed to Lua
 static const luaL_reg Module_methods[] ={
 	{"load_level", LoadLevelLua},
 	{"unload_level", UnloadLevelLua},
+	{"set_buffer", SetBufferLua},
+	{"draw_screen", DrawScreenLua},
 	{0, 0},
 };
 

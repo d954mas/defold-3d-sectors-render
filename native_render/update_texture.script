@@ -1,0 +1,9 @@
+local helper = require "native_render.helper"
+function init(self)
+	self.resource_path = go.get("#model", "texture0")
+end
+
+function update(self, dt)
+	helper.update_texture(self.resource_path)
+end
+

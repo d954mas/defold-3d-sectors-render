@@ -31,6 +31,7 @@ function M:unload()
 end
 
 function M:load()
+	RenderHelper.init()
 	RenderHelper.load("map_clear")
 end
 
