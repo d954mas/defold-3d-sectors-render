@@ -4,7 +4,6 @@
     <list default="true" id="4541a19e-81ad-4482-8b04-19673d9ae92f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/native/src/3d_render.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/3d_render.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/src/binding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/binding.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/world/player.lua" beforeDir="false" afterPath="$PROJECT_DIR$/world/player.lua" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -120,28 +119,28 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="collection" value="1" />
-          <entry key="cpp" value="95" />
+          <entry key="cpp" value="97" />
           <entry key="gui_script" value="1" />
           <entry key="h" value="32" />
-          <entry key="lua" value="74" />
+          <entry key="lua" value="76" />
           <entry key="manifest" value="1" />
           <entry key="render_script" value="2" />
-          <entry key="script" value="13" />
+          <entry key="script" value="14" />
           <entry key="txt" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="C/C++" value="127" />
+          <entry key="C/C++" value="129" />
           <entry key="PLAIN_TEXT" value="8" />
-          <entry key="lua" value="90" />
+          <entry key="lua" value="93" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cpp" value="7213" />
+          <entry key="cpp" value="8878" />
           <entry key="h" value="72" />
-          <entry key="lua" value="1588" />
+          <entry key="lua" value="1597" />
           <entry key="render_script" value="77" />
           <entry key="script" value="203" />
           <entry key="txt" value="490" />
@@ -149,9 +148,9 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="C/C++" value="7285" />
+          <entry key="C/C++" value="8950" />
           <entry key="PLAIN_TEXT" value="490" />
-          <entry key="lua" value="1868" />
+          <entry key="lua" value="1877" />
         </counts>
       </usages-collector>
     </session>
@@ -162,10 +161,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/native/src/binding.cpp">
+        <entry file="file://$PROJECT_DIR$/world/player.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="50" column="37" selection-start-line="50" selection-start-column="37" selection-end-line="50" selection-end-column="37" />
+            <state relative-caret-position="272">
+              <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -181,7 +180,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>respawn_delta</find>
       <find>random</find>
       <find>subclass</find>
       <find>act</find>
@@ -211,6 +209,7 @@
       <find>SetAngleLua</find>
       <find>prin</find>
       <find>pri</find>
+      <find>move</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -270,10 +269,10 @@
         <option value="$PROJECT_DIR$/libs/common.lua" />
         <option value="$PROJECT_DIR$/lock/extension/src/LockMouse.cpp" />
         <option value="$PROJECT_DIR$/native/include/3d_render.h" />
-        <option value="$PROJECT_DIR$/scenes/game/go/player_input.lua" />
-        <option value="$PROJECT_DIR$/world/player.lua" />
-        <option value="$PROJECT_DIR$/native/src/3d_render.cpp" />
         <option value="$PROJECT_DIR$/native/src/binding.cpp" />
+        <option value="$PROJECT_DIR$/scenes/game/go/player_input.lua" />
+        <option value="$PROJECT_DIR$/native/src/3d_render.cpp" />
+        <option value="$PROJECT_DIR$/world/player.lua" />
       </list>
     </option>
   </component>
@@ -285,7 +284,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="72" />
-    <option name="y" value="12" />
+    <option name="y" value="259" />
     <option name="width" value="1153" />
     <option name="height" value="1052" />
   </component>
@@ -645,7 +644,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544881298933" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1544900093308" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../SaveShelter(Wolfenstein3d)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -701,18 +700,18 @@
       <workItem from="1544219558731" duration="3709000" />
       <workItem from="1544732186654" duration="1896000" />
       <workItem from="1544814545271" duration="1117000" />
-      <workItem from="1544815889010" duration="30062000" />
+      <workItem from="1544815889010" duration="38512000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="137638000" />
+    <option name="totallyTimeSpent" value="146088000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="72" y="12" width="1153" height="1052" extended-state="0" />
+    <frame x="72" y="259" width="1153" height="1052" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49845678" visible="true" weight="0.25341842" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49845678" visible="true" weight="0.25341842" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -730,7 +729,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4995442" visible="true" weight="0.14810924" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="10" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5004558" side_tool="true" visible="true" weight="0.14810924" />
+      <window_info active="true" anchor="bottom" id="Event Log" order="11" sideWeight="0.5004558" side_tool="true" visible="true" weight="0.14810924" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -1019,10 +1018,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/assets/levels/map_clear.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/binding.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="58" column="13" lean-forward="true" selection-start-line="58" selection-start-column="13" selection-end-line="58" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scenes/game/go/player_input.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+        <state relative-caret-position="736">
+          <caret line="46" lean-forward="true" selection-start-line="46" selection-end-line="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="692">
+          <caret line="300" column="47" lean-forward="true" selection-start-line="300" selection-start-column="47" selection-end-line="300" selection-end-column="47" />
         </state>
       </provider>
     </entry>
@@ -1035,29 +1055,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/world/player.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="8" column="6" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/levels/map_clear.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="204" column="2" selection-start-line="203" selection-start-column="3" selection-end-line="204" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/src/binding.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="50" column="37" selection-start-line="50" selection-start-column="37" selection-end-line="50" selection-end-column="37" />
+        <state relative-caret-position="272">
+          <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
         </state>
       </provider>
     </entry>

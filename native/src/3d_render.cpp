@@ -80,9 +80,9 @@ static inline void vline(int x, int y1,int y2, uint32_t top,uint32_t middle,uint
         red = (bottom & 0xFF000000) >> 24;
         green = (bottom & 0x00FF0000) >> 16;
         blue = (bottom & 0x0000FF00) >> 8;
-        pixelBuffer.stream[((pixelBuffer.height - y2)*pixelBuffer.width+x)*3] = red;
-        pixelBuffer.stream[((pixelBuffer.height - y2)*pixelBuffer.width+x)*3+1] = green;
-        pixelBuffer.stream[((pixelBuffer.height - y2)*pixelBuffer.width+x)*3+2] = blue;
+        pixelBuffer.stream[((pixelBuffer.height - y2-1)*pixelBuffer.width+x)*3] = red;
+        pixelBuffer.stream[((pixelBuffer.height - y2-1)*pixelBuffer.width+x)*3+1] = green;
+        pixelBuffer.stream[((pixelBuffer.height - y2-1)*pixelBuffer.width+x)*3+2] = blue;
     }
 }
 
@@ -114,18 +114,63 @@ static struct player{
     float angle, anglesin, anglecos, yaw;//looking towards(sin() and cos() thereof) yaw is rotation of player?
     unsigned sector; //current sector
 } player;
+int ground = 0, falling = 1, moving = 1;
 
 void MovePlayer(float x, float y){
-    float px = player.where.x, py = player.where.y;
-    float dx,dy = x - player.where.x; y - player.where.y;
-    /* Check if this movement crosses one of this sector's edges
-     * that have a neighboring sector on the other side.
-     * Because the edge vertices of each sector are defined in
-     * clockwise order, PointSide will always return -1 for a point
-     * that is outside the sector and 0 or 1 for a point that is inside.
-     */
+    float eyeheight =  EyeHeight;
     const struct sector* const sect = &sectors[player.sector];
     const struct xy* const vert = sect->vertex;
+    float px = player.where.x, py = player.where.y;
+    float dx = x - player.where.x, dy =y - player.where.y;
+
+    //vertical
+     /* Vertical collision detection */
+    ground = !falling;
+    if(falling){
+        player.velocity.z -= 0.05f; /* Add gravity */
+        float nextz = player.where.z + player.velocity.z;
+        if(player.velocity.z < 0 && nextz  < sectors[player.sector].floor + eyeheight) // When going down
+        {
+            /* Fix to ground */
+            player.where.z    = sectors[player.sector].floor + eyeheight;
+            player.velocity.z = 0;
+            falling = 0;
+            ground  = 1;
+        }
+        else if(player.velocity.z > 0 && nextz > sectors[player.sector].ceil) // When going up
+        {
+            /* Prevent jumping above ceiling */
+            player.velocity.z = 0;
+            falling = 1;
+        }
+        if(falling)
+        {
+            player.where.z += player.velocity.z;
+            moving = 1;
+        }
+    }
+
+    //horizontal
+
+
+    for(unsigned s = 0; s < sect->npoints; ++s){
+        if(IntersectBox(px,py, px+dx,py+dy, vert[s+0].x, vert[s+0].y, vert[s+1].x, vert[s+1].y)
+            && PointSide(px+dx, py+dy, vert[s+0].x, vert[s+0].y, vert[s+1].x, vert[s+1].y) < 0){
+            /* Check where the hole is. */
+            float hole_low  = sect->neighbors[s] < 0 ?  9e9 : max(sect->floor, sectors[sect->neighbors[s]].floor);
+            float hole_high = sect->neighbors[s] < 0 ? -9e9 : min(sect->ceil,  sectors[sect->neighbors[s]].ceil );
+            /* Check whether we're bumping into a wall. */
+            if(hole_high < player.where.z+HeadMargin
+            || hole_low  > player.where.z-eyeheight+KneeHeight){
+                /* Bumps into a wall! Slide along the wall. */
+                /* This formula is from Wikipedia article "vector projection". */
+                float xd = vert[s+1].x - vert[s+0].x, yd = vert[s+1].y - vert[s+0].y;
+                dx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
+                dy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
+            }
+        }
+    }
+    falling = 1;
     for(unsigned s = 0; s < sect->npoints; ++s)
         if(sect->neighbors[s] >= 0
         && IntersectBox(px,py, px+dx,py+dy, vert[s+0].x, vert[s+0].y, vert[s+1].x, vert[s+1].y)
@@ -135,8 +180,8 @@ void MovePlayer(float x, float y){
             break;
         }
 
-    player.where.x = x;
-    player.where.y = y;
+    player.where.x = px + dx;
+    player.where.y = py + dy;
 }
 
 void SetAngle(float angle){
@@ -216,83 +261,121 @@ void LoadLevel(char *data, uint32_t datasize){
 
 
 void DrawScreen(){
-    clearBuffer1(&pixelBuffer);
+    MovePlayer(player.where.x, player.where.y);
+    //clearBuffer1(&pixelBuffer);
     const int W = pixelBuffer.width;
     const int H =  pixelBuffer.height;
-    struct {int sectorno,sx1,sx2;} now = {player.sector,0, W-1};
 
+    enum {MaxQueue  =32};
+    struct item {int sectorno,sx1,sx2;} queue[MaxQueue ], *head = queue, *tail=queue;
     std::vector<int> ytop(W); // keep track if remaining windom(min,max) in each column
-    std::vector<int> ybottom(W);
-    for(unsigned x=0;x<W;x++) ybottom[x] = H-1;
+    std::vector<int> ybottom(W, H-1);
+    std::vector<int> renderedsectors(NumSectors);
+    //start rendering from player sector
+    *head = (struct item) {player.sector,0, W-1};
+    if (++head == queue + MaxQueue ) head = queue;
+    do{
+        //pick a sector then slice from the queue to draw
+        const struct item now = *tail;
+        if(++tail == queue + MaxQueue) tail = queue;
 
-    //const for pointer and const for data
-    const struct sector* const sect = &sectors[now.sectorno];
-    //render each wall of player sector that is facing towards player
-    for(unsigned s =0; s< sect->npoints;s++){
-        //acquire the x,y coordinates of the two endpoints(vertices) of thius edge of the sector
-        //transform the vertices into the player view
-        float vx1 = sect->vertex[s].x - player.where.x, vy1 = sect->vertex[s].y- player.where.y;
-        float vx2 = sect->vertex[s+1].x - player.where.x, vy2 = sect->vertex[s+1].y- player.where.y;
-        //rotate them around player
-        float pcos = player.anglecos, psin = player.anglesin;
-        float tx1 = vx1 * psin - vy1 * pcos, tz1 = vx1 * pcos +vy1 * psin;
-        float tx2 = vx2 * psin - vy2 * pcos, tz2 = vx2 * pcos +vy2 * psin;
-        //is the wall in front of player
-        if(tz1<=0 && tz2 <=0) continue;
-        if(tz1 <= 0 || tz2<=0){
-            float nearz = 1.0e-4, farz = 5, nearside = 1.0e-5, farside = 20;
-            //find an intersection between the wall and approximate edges if player's view
-            struct xy i1 = Intersect(tx1,tz1,tx2,tz2, - nearside, nearz, -farside, farz);
-            struct xy i2 = Intersect(tx1,tz1,tx2,tz2, nearside, nearz, farside, farz);
-            if(tz1 < nearz){
-                if(i1.y > 0){tx1 = i1.x;tz1 = i1.y;}
-                else{tx1 = i2.x;tz1 = i2.y;}
+        if(renderedsectors[now.sectorno] & 0x21) continue; // Odd = still rendering, 0x20 = give up try 32 times
+        ++renderedsectors[now.sectorno];
+        //const for pointer and const for data
+        const struct sector* const sect = &sectors[now.sectorno];
+        //render each wall of player sector that is facing towards player
+        for(unsigned s =0; s< sect->npoints;s++){
+            //acquire the x,y coordinates of the two endpoints(vertices) of thius edge of the sector
+            //transform the vertices into the player view
+            float vx1 = sect->vertex[s].x - player.where.x, vy1 = sect->vertex[s].y- player.where.y;
+            float vx2 = sect->vertex[s+1].x - player.where.x, vy2 = sect->vertex[s+1].y- player.where.y;
+            //rotate them around player
+            float pcos = player.anglecos, psin = player.anglesin;
+            float tx1 = vx1 * psin - vy1 * pcos, tz1 = vx1 * pcos +vy1 * psin;
+            float tx2 = vx2 * psin - vy2 * pcos, tz2 = vx2 * pcos +vy2 * psin;
+            //is the wall in front of player
+            if(tz1<=0 && tz2 <=0) continue;
+               //if it partialy behind the player, clip it against player's view frustrum
+            if(tz1 <= 0 || tz2<=0){
+                float nearz = 1.0e-4, farz = 5, nearside = 1.0e-5, farside = 20;
+                //find an intersection between the wall and approximate edges if player's view
+                struct xy i1 = Intersect(tx1,tz1,tx2,tz2, - nearside, nearz, -farside, farz);
+                struct xy i2 = Intersect(tx1,tz1,tx2,tz2, nearside, nearz, farside, farz);
+                if(tz1 < nearz){
+                    if(i1.y > 0){tx1 = i1.x;tz1 = i1.y;}
+                    else{tx1 = i2.x;tz1 = i2.y;}
+                }
+                if(tz2 < nearz){
+                    if(i1.y > 0){tx2 = i1.x;tz2 = i1.y;}
+                    else{tx2 = i2.x;tz2 = i2.y;}
+                }
             }
-            if(tz2 < nearz){
-                if(i1.y > 0){tx2 = i1.x;tz2 = i1.y;}
-                else{tx2 = i2.x;tz2 = i2.y;}
+
+            //Perspective transformation
+            float xscale1 = hfov / tz1, yscale1 = vfov/tz1; int x1 = W/2 - (int)(tx1 * xscale1);
+            float xscale2 = hfov / tz2, yscale2 = vfov/tz2; int x2 = W/2 - (int)(tx2 * xscale2);
+            //only render if visible
+            //if right vertices is left to screen. Or lefy is right. That mean that edge not visible
+            //x1 >= x2 wtf
+            if(x1 >= x2 || x2 < now.sx1 || x1 > now.sx2) continue;
+            //acquire the floor and ceilings height, relative to player view;
+            float yceil = sect->ceil - player.where.z;
+            float yfloor = sect->floor - player.where.z;
+
+            //check the edge type, neighor=-1 means wall, other boundary between two sectors.
+            int neighbor = sect->neighbors[s];
+            float nyceil = 0, nyfloor = 0;
+            if (neighbor>=0){
+                nyceil = sectors[neighbor].ceil - player.where.z;
+                nyfloor = sectors[neighbor].floor - player.where.z;
+            }
+             #define Yaw(y,z) (y + z*player.yaw)
+            //project floor/ceiling height into screen coordinates(Y)
+              int y1a  = H/2 - (int)(Yaw(yceil, tz1) * yscale1),  y1b = H/2 - (int)(Yaw(yfloor, tz1) * yscale1);
+              int y2a  = H/2 - (int)(Yaw(yceil, tz2) * yscale2),  y2b = H/2 - (int)(Yaw(yfloor, tz2) * yscale2);
+              /* The same for the neighboring sector */
+              int ny1a = H/2 - (int)(Yaw(nyceil, tz1) * yscale1), ny1b = H/2 - (int)(Yaw(nyfloor, tz1) * yscale1);
+              int ny2a = H/2 - (int)(Yaw(nyceil, tz2) * yscale2), ny2b = H/2 - (int)(Yaw(nyfloor, tz2) * yscale2);
+            /*Render the wall */
+            int beginx = max(x1, now.sx1), endx = min(x2, now.sx2);
+            for(int x = beginx; x<=endx; ++x){
+                /* Calculate the Z coordinate for this point. (Only used for lighting.) */
+                int z = ((x - x1) * (tz2-tz1) / (x2-x1) + tz1) * 8;
+                /* Acquire the Y coordinates for our ceiling & floor for this X coordinate. Clamp them. */
+                int ya = (x - x1) * (y2a-y1a) / (x2-x1) + y1a, cya = clamp(ya, ytop[x],ybottom[x]); // top
+                int yb = (x - x1) * (y2b-y1b) / (x2-x1) + y1b, cyb = clamp(yb, ytop[x],ybottom[x]); // bottom
+                //render ceiling;everything above this sector's ceiling height
+                vline(x,ytop[x],cya-1,0x11111100, 0x22222200, 0x11111100);
+                //render floor;everything below this sector's floor height
+                 vline(x,cyb+1,ybottom[x],0x0000FF00, 0x0000AA00, 0x0000FF00);
+
+                 if(neighbor >=0){
+                    //same for their floor and ceiling
+                     int nya = (x-x1) * (ny2a-ny1a)/ (x2-x1) +ny1a, cnya = clamp(nya, ytop[x], ybottom[x]);//top
+                     int nyb = (x-x1) * (ny2b-ny1b)/ (x2-x1) +ny1b, cnyb = clamp(nyb, ytop[x], ybottom[x]);//bottom
+                     //if our ceiling in higher than their ceiling, render upper wall
+                    int r1 = 0x01010100 * (255-z), r2 = 0x04000700 * (31-z/8);
+                    vline(x,cya,cnya-1,0,x==x1 || x==x2 ? 0: r1,0); //between our and their ceiling
+                      ytop[x] = clamp(max(cya,cnya),ytop[x], H-1);
+
+                      //if our floor is lower than their floor, render bottom wall
+                       vline(x,cnyb+1,cyb,0,x==x1 || x==x2 ? 0: r2,0); //between their and our floor
+                       ybottom[x] = clamp(min(cyb,cnyb),0,ybottom[x]);
+
+                 }else{
+                    //draw wall
+                    unsigned r = 0x01010100 * (255-z);
+                    vline(x,cya,cyb,0,x==x1 || x==x2 ? 0 : r, 0);
+                 }
+            }
+            //shedule the neighbors rendering with it window
+            if (neighbor >=0 && endx >= beginx && (head + MaxQueue + 1 - tail)%MaxQueue){
+                *head = (struct item){neighbor,beginx, endx};
+                if(++head == queue + MaxQueue) head = queue;
             }
         }
-
-        //if it partialy behind the player, clip it against player's view frustrum
-
-        //Perspective transformation
-        float xscale1 = hfov / tz1, yscale1 = vfov/tz1; int x1 = W/2 - (int)(tx1 * xscale1);
-        float xscale2 = hfov / tz2, yscale2 = vfov/tz2; int x2 = W/2 - (int)(tx2 * xscale2);
-        //only render if visible
-        //if right vertices is left to screen. Or lefy is right. That mean that edge not visible
-        //x1 >= x2 wtf
-        if(x1 >= x2 || x2 < now.sx1 || x1 > now.sx2) continue;
-        //acquire the floor and ceilings height, relative to player view;
-        float yceil = sect->ceil - player.where.z;
-        float yfloor = sect->floor - player.where.z;
-
-        //check the edge type, neighor=-1 means wall, other boundary between two sectors.
-        int neighbor = sect->neighbors[s];
-        //project floor/ceiling height into screen coordinates(Y)
-        int y1a = H/2 - (int)(yceil * yscale1), y1b = H/2 - (int)(yfloor * yscale1);
-        int y2a = H/2 - (int)(yceil * yscale2), y2b = H/2 - (int)(yfloor * yscale2);
-
-        /*Render the wall */
-        int beginx = max(x1, now.sx1), endx = min(x2, now.sx2);
-        for(int x = beginx; x<=endx; x++){
-            //acquire the Y coord for floor/ceiling for this x coordinate. Clam them
-            int ya = (x-x1) * (y2a-y1a)/ (x2-x1) +y1a, cya = clamp(ya, ytop[x], ybottom[x]);//top
-            int yb = (x-x1) * (y2b-y1b)/ (x2-x1) +y1b, cyb = clamp(yb, ytop[x], ybottom[x]);//top
-            //render ceiling;everything above this sector's ceiling height
-            vline(x,ytop[x],cya-1,0x11111100, 0x22222200, 0x11111100);
-            //render floor;everything below this sector's floor height
-             vline(x,cyb+1,ybottom[x],0x0000FF00, 0x0000AA00, 0x0000FF00);
-
-             if(neighbor >0){
-                //placeholder
-                  vline(x,cya,cyb,0x00AA0000,0x00AA0000,0x00AA0000);
-             }else{
-                //draw wall
-                vline(x,cya,cyb,0,x==x1 || x==x2 ? 0x00000000 : 0xAAAAAA00, 0x00000000);
-             }
-        }
-    }
+    ++renderedsectors[now.sectorno];
+    }while(head!= tail);
 }
 
 

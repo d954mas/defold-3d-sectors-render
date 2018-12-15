@@ -15,7 +15,7 @@ function M:initialize()
 	self:set_observable_events(self.EVENTS)
 	self.position = vmath.vector3()
 	self.velocity = vmath.vector3();
-	self.speed =3
+	self.speed =6
 	self.angle = 0;
 	self.yaw = 0;
 end
@@ -34,7 +34,7 @@ end
 	
 
 function M:update(dt)
-	native.set_player_yaw(self.yaw);
+	--native.set_player_yaw(self.yaw);
 	native.set_player_angle(self.angle);
 	self:update_position(dt)
 end
