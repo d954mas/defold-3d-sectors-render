@@ -8,3 +8,7 @@ void setBuffer(int, int, dmScript::LuaHBuffer*);
 void clearBuffer();
 
 void DrawScreen();
+void MovePlayer(float,float);
+void GetPlayerPos(float *, float *, float *);
+void SetAngle(float angle);
+void SetYaw(float yaw);

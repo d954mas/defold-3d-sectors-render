@@ -30,37 +30,37 @@ end
 
 function Script:init(go)
 	for i=1, #self.scripts_init do
-		self.scripts[i]:init(go)
+		self.scripts_init[i]:init(go)
 	end
 end
 
-function Script:scripts_final(go)
-	for i=1, #self.scripts do
-		self.scripts[i]:final(go)
+function Script:final(go)
+	for i=1, #self.scripts_final do
+		self.scripts_final[i]:final(go)
 	end
 end
 
-function Script:scripts_update(go, dt)
-	for i=1, #self.scripts do
-		self.scripts[i]:update(go,dt)
+function Script:update(go, dt)
+	for i=1, #self.scripts_update do
+		self.scripts_update[i]:update(go,dt)
 	end
 end
 
-function Script:scripts_on_message(go, message_id, message, sender)
-	for i=1, #self.scripts do
-		self.scripts[i]:on_message(go,message_id,message,sender)
+function Script:on_message(go, message_id, message, sender)
+	for i=1, #self.scripts_on_message do
+		self.scripts_on_message[i]:on_message(go,message_id,message,sender)
 	end
 end
 
-function Script:scripts_on_input(go, action_id, action)
-	for i=1, #self.scripts do
-		self.scripts[i]:on_input(go,action_id,action)
+function Script:on_input(go, action_id, action)
+	for i=1, #self.scripts_on_input do
+		self.scripts_on_input[i]:on_input(go,action_id,action)
 	end
 end
 
-function Script:scripts_on_reload(go)
-	for i=1, #self.scripts do
-		self.scripts[i]:on_reload(go)
+function Script:on_reload(go)
+	for i=1, #self.scripts_on_reload do
+		self.scripts_on_reload[i]:on_reload(go)
 	end
 end
 

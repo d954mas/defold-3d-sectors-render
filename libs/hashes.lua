@@ -12,6 +12,7 @@ M.INPUT_SAVE_LEVEL = hash("save_level")
 M.INPUT_LEFT = hash("left")
 M.INPUT_RIGHT = hash("right")
 M.INPUT_DOWN = hash("down")
+M.INPUT_UP = hash("up")
 M.INPUT_ROT_LEFT = hash("rot_left")
 M.INPUT_ROT_RIGHT = hash("rot_right")
 

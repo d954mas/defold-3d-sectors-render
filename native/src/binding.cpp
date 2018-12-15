@@ -37,10 +37,39 @@ static int SetBufferLua(lua_State* L){
 }
 
 static int DrawScreenLua(lua_State* L){
-	DrawScreen();
-	return 0;
+ 	DrawScreen();
+ 	return 0;
+}
+static int MovePlayerLua(lua_State* L){
+ 	float x = lua_tonumber(L, 1);
+ 	float y = lua_tonumber(L, 2);
+ 	MovePlayer(x,y);
+ 	return 0;
 }
 
+static int SetAngleLua(lua_State* L){
+ 	float angle = lua_tonumber(L, 1);
+ 	printf("set angle:%f", angle);
+    SetAngle(angle);
+    return 0;
+}
+
+static int SetYawLua(lua_State* L){
+ 	float yaw = lua_tonumber(L, 1);
+ 	SetYaw(yaw);
+ 	return 0;
+}
+
+static int GetPlayerPosLua(lua_State* L){
+ 	float x=0;
+ 	float y = 0;
+ 	float z= 0;
+ 	GetPlayerPos(&x,&y,&z);
+ 	lua_pushnumber (L, x);
+ 	lua_pushnumber (L, y);
+ 	lua_pushnumber (L, z);
+ 	return 3;
+}
 
 // Functions exposed to Lua
 static const luaL_reg Module_methods[] ={
@@ -48,6 +77,10 @@ static const luaL_reg Module_methods[] ={
 	{"unload_level", UnloadLevelLua},
 	{"set_buffer", SetBufferLua},
 	{"draw_screen", DrawScreenLua},
+	{"move_player", MovePlayerLua},
+	{"set_player_angle", SetAngleLua},
+    {"set_player_yaw", SetYawLua},
+	{"get_player_pos", GetPlayerPosLua},
 	{0, 0},
 };
 
@@ -69,7 +102,7 @@ static dmExtension::Result InitializeMyExtension(dmExtension::Params* params){
 	LuaInit(params->m_L);
 	printf("Registered %s Extension\n", MODULE_NAME);
 	return dmExtension::RESULT_OK;
-}
+} 
 
 static dmExtension::Result AppFinalizeMyExtension(dmExtension::AppParams* params){
 	return dmExtension::RESULT_OK;

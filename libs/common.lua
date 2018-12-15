@@ -3,6 +3,7 @@ local M = {}
 M.HASHES = require "libs.hashes"
 M.MSG = require "libs.msg_receiver"
 M.MIDDLECLASS = require "libs.middleclass"
+M.LUME = require "libs.lume"
 
 M.GLOBAL = {} 
 

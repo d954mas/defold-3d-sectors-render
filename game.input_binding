@@ -34,6 +34,14 @@ key_trigger {
   input: KEY_9
   action: "toggle_debug_gui"
 }
+key_trigger {
+  input: KEY_ESC
+  action: "unlock_mouse"
+}
+key_trigger {
+  input: KEY_ENTER
+  action: "lock_mouse"
+}
 mouse_trigger {
   input: MOUSE_BUTTON_1
   action: "touch"

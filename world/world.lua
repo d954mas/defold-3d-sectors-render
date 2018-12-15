@@ -2,6 +2,7 @@ local COMMON = require "libs.common"
 local Observable = require "libs.observable_mixin"
 local MultipleSubscription = require "libs.multiple_subscription"
 local RenderHelper = require "native_render.helper"
+local Player = require "world.player"
 
 ---@class World:Observable
 local M = COMMON.class("World")
@@ -13,12 +14,13 @@ function M:initialize()
 	self.EVENTS = EVENTS
 	self.subscription = MultipleSubscription()
 	self:set_observable_events(self.EVENTS)
+	self.player = Player()
 end
 
 
 
 function M:update(dt, no_save)
-
+	self.player:update(dt)
 end
 
 

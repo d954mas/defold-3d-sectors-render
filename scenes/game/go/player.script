@@ -1,0 +1,31 @@
+local Scripts = require "libs.scripts.scripts_container"
+local InputScript = require "scenes.game.go.player_input"
+local COMMON = require "libs.common"
+function init(self)
+	COMMON.input_acquire()
+	self.scripts = Scripts()
+	self.scripts:add_script(InputScript())
+
+	self.scripts:init(self)
+end
+
+function final(self)
+	COMMON.input_release()
+	self.scripts:final(self)
+end
+
+function update(self, dt)
+	self.scripts:update(self,dt)
+end
+
+function on_message(self, message_id, message, sender)
+	self.scripts:on_message(self,message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	self.scripts:on_input(self, action_id, action)
+end
+
+function on_reload(self)
+	self.scripts:on_reload(self)
+end

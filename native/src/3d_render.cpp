@@ -86,6 +86,15 @@ static inline void vline(int x, int y1,int y2, uint32_t top,uint32_t middle,uint
     }
 }
 
+static void clearBuffer1(struct Buffer* buffer){
+	int size = buffer->width * buffer->height;
+	for(int i=0; i< size*3; i+=3){
+		buffer->stream[i] = 0;
+		buffer->stream[i+1] = 0;
+		buffer->stream[i+2] = 0;
+	}
+}
+
 
 /* Sectors: Floor and ceiling height; list of edge vertices and neighbors */
 //Sector is a room, where i can set floor and ceiling height
@@ -128,8 +137,22 @@ void MovePlayer(float x, float y){
 
     player.where.x = x;
     player.where.y = y;
+}
+
+void SetAngle(float angle){
+    player.angle = angle;
     player.anglesin = sinf(player.angle);
     player.anglecos = cosf(player.angle);
+}
+
+void SetYaw(float yaw){
+    player.yaw = yaw;
+}
+
+void GetPlayerPos(float *x, float *y, float *z){
+    *x = player.where.x;
+    *y = player.where.y;
+    *z = player.where.z;
 }
 
 void UnloadLevel()
@@ -185,6 +208,7 @@ void LoadLevel(char *data, uint32_t datasize){
     free(vert);
     printf("\nload done\n");
     MovePlayer(player.where.x, player.where.y);
+    SetAngle(0);
 }
 
 
@@ -192,6 +216,7 @@ void LoadLevel(char *data, uint32_t datasize){
 
 
 void DrawScreen(){
+    clearBuffer1(&pixelBuffer);
     const int W = pixelBuffer.width;
     const int H =  pixelBuffer.height;
     struct {int sectorno,sx1,sx2;} now = {player.sector,0, W-1};
@@ -209,6 +234,7 @@ void DrawScreen(){
         float vx1 = sect->vertex[s].x - player.where.x, vy1 = sect->vertex[s].y- player.where.y;
         float vx2 = sect->vertex[s+1].x - player.where.x, vy2 = sect->vertex[s+1].y- player.where.y;
         //rotate them around player
+        printf("angle:%f", player.angle);
         float pcos = player.anglecos, psin = player.anglesin;
         float tx1 = vx1 * psin - vy1 * pcos, tz1 = vx1 * pcos +vy1 * psin;
         float tx2 = vx2 * psin - vy2 * pcos, tz2 = vx2 * pcos +vy2 * psin;
@@ -295,12 +321,7 @@ static void initBuffer(struct Buffer* buffer, int width, int height, dmScript::L
 	//dmBuffer::Result r = dmBuffer::GetStream(hBuffer, dmHashString64("rgb"),(void**)&buffer->stream , &size_ignored, &components, &stride);
 }
 
-static void clearBuffer1(struct Buffer* buffer){
-	int size = buffer->width * buffer->height * 3;
-	for(int i=0; i< size; i++){
-		buffer->stream[i] = 0;
-	}
-}
+
 
 void setBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer){
 	initBuffer(&pixelBuffer, width, height, luaBuffer);

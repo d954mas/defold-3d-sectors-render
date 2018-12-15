@@ -10,6 +10,8 @@ local Subscription = require "libs.context_subscription"
 function Scene:init_input()
     COMMON.input_acquire()
     self.input_receiver = COMMON.INPUT()
+    self.input_receiver:add(hash("lock_mouse"),function() lock_mouse.lock_mouse() end, true)
+    self.input_receiver:add(hash("unlock_mouse"),function() lock_mouse.unlock_mouse() end, true)
 end
 --endregion
 
@@ -30,6 +32,7 @@ end
 function Scene:init(go_self)
     self:init_input()
     self.subscription = Subscription()
+    lock_mouse.lock_mouse()
 end
 
 function Scene:final(go_self)
@@ -37,6 +40,7 @@ function Scene:final(go_self)
     COMMON.input_release()
     WORLD:save()
     WORLD:unload()
+    lock_mouse.unlock_mouse();
 end
 
 function Scene:update(go_self, dt)
