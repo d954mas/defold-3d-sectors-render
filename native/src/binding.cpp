@@ -49,7 +49,6 @@ static int MovePlayerLua(lua_State* L){
 
 static int SetAngleLua(lua_State* L){
  	float angle = lua_tonumber(L, 1);
- 	printf("set angle:%f", angle);
     SetAngle(angle);
     return 0;
 }

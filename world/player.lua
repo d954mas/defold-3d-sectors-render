@@ -29,13 +29,11 @@ function M:update_position(dt)
 	end
 
 	native.move_player(self.position.x, self.position.y)
-	print(self.position.x)
 end
 
-
+	
 
 function M:update(dt)
-	print(self.angle)
 	native.set_player_yaw(self.yaw);
 	native.set_player_angle(self.angle);
 	self:update_position(dt)

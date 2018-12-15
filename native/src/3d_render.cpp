@@ -234,7 +234,6 @@ void DrawScreen(){
         float vx1 = sect->vertex[s].x - player.where.x, vy1 = sect->vertex[s].y- player.where.y;
         float vx2 = sect->vertex[s+1].x - player.where.x, vy2 = sect->vertex[s+1].y- player.where.y;
         //rotate them around player
-        printf("angle:%f", player.angle);
         float pcos = player.anglecos, psin = player.anglesin;
         float tx1 = vx1 * psin - vy1 * pcos, tz1 = vx1 * pcos +vy1 * psin;
         float tx2 = vx2 * psin - vy2 * pcos, tz2 = vx2 * pcos +vy2 * psin;
