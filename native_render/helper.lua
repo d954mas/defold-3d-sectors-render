@@ -1,4 +1,5 @@
 local COMMON = require "libs.common"
+local N = require("world.map")
 local M = {}
 
 M.WIDTH = 608
@@ -23,6 +24,7 @@ end
 
 function M.load(file)
 	COMMON.i("load level:" .. file)
+--	pprint(require("world.map").load(file))
 	local data = resource.load("/assets/levels/" .. file .. ".txt")
 	native.load_level(data)
 end

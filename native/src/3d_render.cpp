@@ -6,8 +6,7 @@
 #include <dmsdk/sdk.h>
 #include <math.h>
 #include <vector>
-
-
+#include "3d_render.h"
 
 /* Define window size */
 /* Define various vision related constants */
@@ -17,13 +16,6 @@
 #define KneeHeight 2    // How tall obstacles the player can simply walk over without jumping
 #define hfov (0.73f*H)  // Affects the horizontal field of vision
 #define vfov (.2f*H)    // Affects the vertical field of vision
-
-struct xy {float x,y;};
-struct Buffer {
-	int width;
-	int height;
-	uint8_t* stream;
-} pixelBuffer;
 
 // Utility functions. Because C doesn't have templates,
 // we use the slightly less safe preprocessor macros to
@@ -42,6 +34,32 @@ struct Buffer {
 #define Intersect(x1,y1, x2,y2, x3,y3, x4,y4) ((struct xy) { \
     vxs(vxs(x1,y1, x2,y2), (x1)-(x2), vxs(x3,y3, x4,y4), (x3)-(x4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)), \
     vxs(vxs(x1,y1, x2,y2), (y1)-(y2), vxs(x3,y3, x4,y4), (y3)-(y4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)) })
+
+struct Buffer {
+	int width;
+	int height;
+	uint8_t* stream;
+} pixelBuffer;
+
+/* Sectors: Floor and ceiling height; list of edge vertices and neighbors */
+//Sector is a room, where i can set floor and ceiling height
+//Sector can be 2 types. Wall and portal. We can see throw portal
+static  std::vector<struct sector> sectors;
+static  std::vector<struct xy> vertices;
+
+/*Player: location */
+static struct player player;
+int ground = 0, falling = 1, moving = 1;
+
+
+//map functions
+void MapClear(){
+     sectors.clear();
+     ground = 0, falling = 1, moving = 1;
+}
+
+
+
 
 //draw functions
 /* vline: Draw a vertical line on screen, with a different color pixel in top & bottom */
@@ -96,30 +114,11 @@ static void clearBuffer1(struct Buffer* buffer){
 }
 
 
-/* Sectors: Floor and ceiling height; list of edge vertices and neighbors */
-//Sector is a room, where i can set floor and ceiling height
-//Sector can be 2 types. Wall and portal. We can see throw portal
-static struct sector
-{
-    float floor, ceil;
-    struct xy *vertex; //vertex have x,y coords
-    signed char *neighbors; //Each edge may have a corresponding neighboring sector
-    unsigned int npoints; //vertexes number
-} *sectors = NULL;
-static unsigned NumSectors = 0;
-
-/*Player: location */
-static struct player{
-    struct xyz {float x,y,z;} where, velocity;
-    float angle, anglesin, anglecos, yaw;//looking towards(sin() and cos() thereof) yaw is rotation of player?
-    unsigned sector; //current sector
-} player;
-int ground = 0, falling = 1, moving = 1;
 
 void MovePlayer(float x, float y){
     float eyeheight =  EyeHeight;
-    const struct sector* const sect = &sectors[player.sector];
-    const struct xy* const vert = sect->vertex;
+    const struct sector sect = sectors[player.sector];
+    const std::vector<int>  vert = sect.vertex;
     float px = player.where.x, py = player.where.y;
     float dx = x - player.where.x, dy =y - player.where.y;
 
@@ -153,32 +152,37 @@ void MovePlayer(float x, float y){
     //horizontal
 
 
-    for(unsigned s = 0; s < sect->npoints; ++s){
-        if(IntersectBox(px,py, px+dx,py+dy, vert[s+0].x, vert[s+0].y, vert[s+1].x, vert[s+1].y)
-            && PointSide(px+dx, py+dy, vert[s+0].x, vert[s+0].y, vert[s+1].x, vert[s+1].y) < 0){
+    for(unsigned s = 0; s < vert.size()-1; ++s){
+        xy v =  vertices[vert[s+0]];
+        xy v2 =  vertices[vert[s+1]];
+        if(IntersectBox(px,py, px+dx,py+dy, v.x, v.y, v2.x, v2.y)
+            && PointSide(px+dx, py+dy, v.x, v.y, v2.x, v2.y) < 0){
             /* Check where the hole is. */
-            float hole_low  = sect->neighbors[s] < 0 ?  9e9 : max(sect->floor, sectors[sect->neighbors[s]].floor);
-            float hole_high = sect->neighbors[s] < 0 ? -9e9 : min(sect->ceil,  sectors[sect->neighbors[s]].ceil );
+            float hole_low  = sect.neighbors[s] < 0 ?  9e9 : max(sect.floor, sectors[sect.neighbors[s]].floor);
+            float hole_high = sect.neighbors[s] < 0 ? -9e9 : min(sect.ceil,  sectors[sect.neighbors[s]].ceil );
             /* Check whether we're bumping into a wall. */
             if(hole_high < player.where.z+HeadMargin
             || hole_low  > player.where.z-eyeheight+KneeHeight){
                 /* Bumps into a wall! Slide along the wall. */
                 /* This formula is from Wikipedia article "vector projection". */
-                float xd = vert[s+1].x - vert[s+0].x, yd = vert[s+1].y - vert[s+0].y;
+                float xd = v2.x - v.x, yd = v2.y - v.y;
                 dx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
                 dy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
             }
         }
     }
     falling = 1;
-    for(unsigned s = 0; s < sect->npoints; ++s)
-        if(sect->neighbors[s] >= 0
-        && IntersectBox(px,py, px+dx,py+dy, vert[s+0].x, vert[s+0].y, vert[s+1].x, vert[s+1].y)
-        && PointSide(px+dx, py+dy, vert[s+0].x, vert[s+0].y, vert[s+1].x, vert[s+1].y) < 0)
+    for(unsigned s = 0; s < vert.size()-1; ++s){
+        xy v1 =  vertices[vert[s+0]];
+        xy v2 =  vertices[vert[s+1]];
+        if(sect.neighbors[s] >= 0
+        && IntersectBox(px,py, px+dx,py+dy, v1.x, v1.y, v2.x, v2.y)
+        && PointSide(px+dx, py+dy, v1.x,v1.y, v2.x, v2.y) < 0)
         {
-            player.sector = sect->neighbors[s];
+            player.sector = sect.neighbors[s];
             break;
         }
+    }
 
     player.where.x = px + dx;
     player.where.y = py + dy;
@@ -202,11 +206,7 @@ void GetPlayerPos(float *x, float *y, float *z){
 
 void UnloadLevel()
 {
-    for(unsigned a=0; a<NumSectors; ++a) free(sectors[a].vertex);
-    for(unsigned a=0; a<NumSectors; ++a) free(sectors[a].neighbors);
-    free(sectors);
-    sectors    = NULL;
-    NumSectors = 0;
+
 }
 
 void LoadLevel(char *data, uint32_t datasize){
@@ -214,43 +214,52 @@ void LoadLevel(char *data, uint32_t datasize){
     printf("load level");
     char *pch;
     char word[256], *ptr;
-    struct xy *vert = NULL, v;
-    int n, m, NumVertices = 0;
+    struct xy v;
+    int n, m;
     pch = strtok (data,"\n");
      while (pch != NULL){
         ptr = pch;
         sscanf(ptr, "%32s%n", word, &n);
         switch(sscanf(ptr, "%32s%n", word, &n) == 1 ? word[0] : '\0'){
             case 'v': {// vertex
-                for(sscanf(ptr += n, "%f%n", &v.y, &n); sscanf(ptr += n, "%f%n", &v.x, &n) == 1; )
-                    { vert = (xy *)realloc(vert, ++NumVertices * sizeof(*vert)); vert[NumVertices-1] = v; }
-                    break;}
+                for(sscanf(ptr += n, "%f%n", &v.y, &n); sscanf(ptr += n, "%f%n", &v.x, &n) == 1; ){
+                     vertices.push_back({v.x,v.y});
+                }
+            break;
+            }
             case 's': {// sector
-                sectors = (sector *)realloc(sectors, ++NumSectors * sizeof(*sectors));
-                 struct sector* sect = &sectors[NumSectors-1];
-                 int* num = NULL;
-                sscanf(ptr += n, "%f%f%n", &sect->floor,&sect->ceil, &n);
+                struct sector sect;
+                std::vector<int> num;
+                sscanf(ptr += n, "%f%f%n", &sect.floor,&sect.ceil, &n);
                 for(m=0; sscanf(ptr += n, "%32s%n", word, &n) == 1 && word[0] != '#'; ){
-                    num = (int *)realloc(num, ++m * sizeof(*num)); num[m-1] = atoi(word); }
-                sect->npoints   = m /= 2;
-                sect->neighbors = (signed char *)malloc( (m  ) * sizeof(*sect->neighbors) );
-                sect->vertex    = (xy *) malloc( (m+1) * sizeof(*sect->vertex)    );
-                for(n=0; n<m; ++n) sect->neighbors[n] = num[m + n];
-                for(n=0; n<m; ++n) sect->vertex[n+1]  = vert[num[n]]; // TODO: Range checking
-                sect->vertex[0] = sect->vertex[m]; //first and last vertex in array same
-                free(num);
+                     num.push_back(atoi(word)); }
+                for(n=0; n<num.size()/2; ++n){sect.neighbors.push_back(num[num.size()/2 + n]);}
+               // sect.vertex.push_back(num[num.size()/2]);//first and last vertex in array same
+                sect.vertex.push_back(num[num.size()/2-1]);
+                for(n=0; n<num.size()/2; ++n) sect.vertex.push_back(num[n]); // TODO: Range checking
+               // sect.vertex.push_back(num[0]);
+                sectors.push_back(sect);
                 break;}
             case 'p':{ // player
                 float angle;
                 sscanf(ptr += n, "%f %f %f %d", &v.x, &v.y, &angle,&n);
-                player = (struct player) { {v.x, v.y, 0}, {0,0,0}, angle,0,0,0, n }; // TODO: Range checking
+                player = { {v.x, v.y, 0}, {0,0,0}, angle,0,0,0, n }; // TODO: Range checking
                 player.where.z = sectors[player.sector].floor + EyeHeight;}
         }
         pch = strtok (NULL, "\n");
       }
 
-
-    free(vert);
+      /* for (sector s:sectors){
+            printf("**************\n");
+            printf("neighbords:%llu\n",s.neighbors.size());
+            printf("vertex:%llu\n",s.vertex.size());
+            for(int i=0; i<s.neighbors.size();i++){
+                printf("v:%d n:%d\n", s.vertex[i], s.neighbors[i]);
+            }
+            printf("v:%d\n", s.vertex[s.neighbors.size()]);
+       }*/
+    printf("vertexes:%llu\n",vertices.size());
+    printf("sectors:%llu\n",sectors.size());
     printf("\nload done\n");
     MovePlayer(player.where.x, player.where.y);
     SetAngle(0);
@@ -270,7 +279,7 @@ void DrawScreen(){
     struct item {int sectorno,sx1,sx2;} queue[MaxQueue ], *head = queue, *tail=queue;
     std::vector<int> ytop(W); // keep track if remaining windom(min,max) in each column
     std::vector<int> ybottom(W, H-1);
-    std::vector<int> renderedsectors(NumSectors);
+    std::vector<int> renderedsectors(sectors.size());
     //start rendering from player sector
     *head = (struct item) {player.sector,0, W-1};
     if (++head == queue + MaxQueue ) head = queue;
@@ -282,13 +291,15 @@ void DrawScreen(){
         if(renderedsectors[now.sectorno] & 0x21) continue; // Odd = still rendering, 0x20 = give up try 32 times
         ++renderedsectors[now.sectorno];
         //const for pointer and const for data
-        const struct sector* const sect = &sectors[now.sectorno];
+        const struct sector sect = sectors[now.sectorno];
         //render each wall of player sector that is facing towards player
-        for(unsigned s =0; s< sect->npoints;s++){
+
+        for(unsigned s =0; s< sect.vertex.size()-1;s++){
             //acquire the x,y coordinates of the two endpoints(vertices) of thius edge of the sector
             //transform the vertices into the player view
-            float vx1 = sect->vertex[s].x - player.where.x, vy1 = sect->vertex[s].y- player.where.y;
-            float vx2 = sect->vertex[s+1].x - player.where.x, vy2 = sect->vertex[s+1].y- player.where.y;
+            struct xy v1 = vertices[sect.vertex[s]], v2 = vertices[sect.vertex[s+1]];
+            float vx1 = v1.x - player.where.x, vy1 = v1.y- player.where.y;
+            float vx2 = v2.x - player.where.x, vy2 = v2.y- player.where.y;
             //rotate them around player
             float pcos = player.anglecos, psin = player.anglesin;
             float tx1 = vx1 * psin - vy1 * pcos, tz1 = vx1 * pcos +vy1 * psin;
@@ -310,7 +321,6 @@ void DrawScreen(){
                     else{tx2 = i2.x;tz2 = i2.y;}
                 }
             }
-
             //Perspective transformation
             float xscale1 = hfov / tz1, yscale1 = vfov/tz1; int x1 = W/2 - (int)(tx1 * xscale1);
             float xscale2 = hfov / tz2, yscale2 = vfov/tz2; int x2 = W/2 - (int)(tx2 * xscale2);
@@ -319,11 +329,13 @@ void DrawScreen(){
             //x1 >= x2 wtf
             if(x1 >= x2 || x2 < now.sx1 || x1 > now.sx2) continue;
             //acquire the floor and ceilings height, relative to player view;
-            float yceil = sect->ceil - player.where.z;
-            float yfloor = sect->floor - player.where.z;
+            float yceil = sect.ceil - player.where.z;
+            float yfloor = sect.floor - player.where.z;
+
 
             //check the edge type, neighor=-1 means wall, other boundary between two sectors.
-            int neighbor = sect->neighbors[s];
+            int neighbor = sect.neighbors[s];
+
             float nyceil = 0, nyfloor = 0;
             if (neighbor>=0){
                 nyceil = sectors[neighbor].ceil - player.where.z;
