@@ -3,11 +3,10 @@
 #define EXTENSION_NAME Native
 #define LIB_NAME "Native"
 #define MODULE_NAME "native"
-// include the Defold SDK
-#include <dmsdk/sdk.h>
+
 #include <math.h>
 #include "3d_render.h"
-
+#include <dmsdk/sdk.h>
 
 static char* decodeBuffer(dmBuffer::HBuffer *hBuffer, uint32_t *datasize){
 	char* data = 0;
@@ -16,9 +15,9 @@ static char* decodeBuffer(dmBuffer::HBuffer *hBuffer, uint32_t *datasize){
 }
 
 static int LoadLevelLua(lua_State* L){
-     dmScript::LuaHBuffer* buffer = dmScript::CheckBuffer(L, 1);
-     uint32_t datasize = 0;
-     char *data = decodeBuffer(&buffer->m_Buffer,&datasize);
+    dmScript::LuaHBuffer* buffer = dmScript::CheckBuffer(L, 1);
+    uint32_t datasize = 0;
+    char *data = decodeBuffer(&buffer->m_Buffer,&datasize);
  	LoadLevel(data, datasize);
  	return 0;
 }

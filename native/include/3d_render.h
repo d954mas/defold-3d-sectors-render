@@ -10,7 +10,7 @@ struct sector
     std::vector<int> vertex; //vertex have x,y coords
     std::vector<int> neighbors; //Each edge may have a corresponding neighboring sector
 };
-static struct player{
+struct player{
     struct xyz where, velocity;
     float angle, anglesin, anglecos, yaw;//looking towards(sin() and cos() thereof) yaw is rotation of player?
     int sector; //current sector
@@ -35,6 +35,7 @@ void MapVertexAdd(float, float);
 void MapVertexChange(int,float,float);
 
 void MapSectorCreate(float, float);
+//add to last sector in list
 void MapSectorVertexAdd(int,int);
 
 void MapSectorChangeFloor(int,float);

@@ -8,6 +8,9 @@
 #include <vector>
 #include "3d_render.h"
 
+#define DLIB_LOG_DOMAIN "MapRender"
+#include <dmsdk/dlib/log.h>
+
 /* Define window size */
 /* Define various vision related constants */
 #define EyeHeight  6    // Camera height from floor when standing
@@ -52,12 +55,47 @@ static struct player player;
 int ground = 0, falling = 1, moving = 1;
 
 
-//map functions
+//region MAP
 void MapClear(){
      sectors.clear();
+     vertices.clear();
      ground = 0, falling = 1, moving = 1;
+    player = (struct player) { {0,0,0}, {0,0,0}, 0,0,0,0, 0 };
 }
 
+void MapVertexAdd(float x, float y){
+    vertices.push_back((struct xy){x,y});
+}
+
+void MapVertexChange(int idx,float x, float y){
+    if (idx <vertices.size()){
+        struct xy v = vertices[idx];
+        v.x = x; v.y = y;
+    }else{
+        dmLogError("no vertex with idx:%d", idx);
+    }
+}
+
+
+void MapSectorCreate(float floor, float ceil){
+    struct sector s;
+    s.floor = floor; s.ceil = ceil;
+    sectors.push_back(s);
+}
+//add to last sector in list
+void MapSectorVertexAdd(int vertex,int neighbor){
+    if (sectors.size() != 0){
+        struct sector s = sectors[sectors.size()-1];
+        if (vertex <vertices.size()){ s.vertex.push_back(vertex);}
+        else{ dmLogError("no vertex with idx:%d", vertex);return;}
+        //todo check neighbors sector;
+        s.neighbors.push_back(neighbor);}    
+    else{
+        dmLogError("can't add vertex.No sectors");
+    }
+};
+
+//endregion MAP
 
 
 
@@ -202,7 +240,7 @@ void GetPlayerPos(float *x, float *y, float *z){
     *x = player.where.x;
     *y = player.where.y;
     *z = player.where.z;
-}
+}  
 
 void UnloadLevel()
 {
@@ -211,7 +249,6 @@ void UnloadLevel()
 
 void LoadLevel(char *data, uint32_t datasize){
     UnloadLevel();
-    printf("load level");
     char *pch;
     char word[256], *ptr;
     struct xy v;
@@ -223,7 +260,7 @@ void LoadLevel(char *data, uint32_t datasize){
         switch(sscanf(ptr, "%32s%n", word, &n) == 1 ? word[0] : '\0'){
             case 'v': {// vertex
                 for(sscanf(ptr += n, "%f%n", &v.y, &n); sscanf(ptr += n, "%f%n", &v.x, &n) == 1; ){
-                     vertices.push_back({v.x,v.y});
+                    vertices.push_back((struct xy){v.x,v.y});
                 }
             break;
             }
@@ -243,7 +280,7 @@ void LoadLevel(char *data, uint32_t datasize){
             case 'p':{ // player
                 float angle;
                 sscanf(ptr += n, "%f %f %f %d", &v.x, &v.y, &angle,&n);
-                player = { {v.x, v.y, 0}, {0,0,0}, angle,0,0,0, n }; // TODO: Range checking
+                player = (struct player){ {v.x, v.y, 0}, {0,0,0}, angle,0,0,0, n }; // TODO: Range checking
                 player.where.z = sectors[player.sector].floor + EyeHeight;}
         }
         pch = strtok (NULL, "\n");
@@ -258,9 +295,9 @@ void LoadLevel(char *data, uint32_t datasize){
             }
             printf("v:%d\n", s.vertex[s.neighbors.size()]);
        }*/
-    printf("vertexes:%llu\n",vertices.size());
-    printf("sectors:%llu\n",sectors.size());
-    printf("\nload done\n");
+   // printf("vertexes:%llu\n",vertices.size());
+   // printf("sectors:%llu\n",sectors.size());
+  //  printf("\nload done\n");
     MovePlayer(player.where.x, player.where.y);
     SetAngle(0);
 }
