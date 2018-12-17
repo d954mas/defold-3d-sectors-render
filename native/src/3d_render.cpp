@@ -85,17 +85,44 @@ void MapSectorCreate(float floor, float ceil){
 //add to last sector in list
 void MapSectorVertexAdd(int vertex,int neighbor){
     if (sectors.size() != 0){
-        struct sector s = sectors[sectors.size()-1];
-        if (vertex <vertices.size()){ s.vertex.push_back(vertex);}
+        sector &s = sectors[sectors.size()-1];
+        if (vertex >= 0 && vertex <vertices.size()){ s.vertex.push_back(vertex);}
         else{ dmLogError("no vertex with idx:%d", vertex);return;}
         //todo check neighbors sector;
-        s.neighbors.push_back(neighbor);}    
-    else{
+        s.neighbors.push_back(neighbor);
+    }else{
         dmLogError("can't add vertex.No sectors");
     }
 };
 
+void MapCheck(){
+    for(int i=0;i<sectors.size();i++){
+        sector &s = sectors[i];
+        if(s.neighbors.size()<3){
+            dmLogError("bad sector:%d", i);
+            return;
+        }
+        for(int j=0;j<s.neighbors.size();j++){
+            int n = s.neighbors[j];
+            if (n!= -1 && n >= sectors.size()){
+                dmLogError("no neighbor with idx:%d", n);
+            }
+        }
+    }
+}
+
 //endregion MAP
+
+//region PLAYER
+
+void PlayerInit(int sector, float x, float y){
+    player.where = {x,y,0};
+    player.where.z = sectors[sector].floor + EyeHeight;
+    player.sector = sector;
+    MovePlayer(x,y);
+}
+
+//endregion
 
 
 
@@ -155,7 +182,7 @@ static void clearBuffer1(struct Buffer* buffer){
 
 void MovePlayer(float x, float y){
     float eyeheight =  EyeHeight;
-    const struct sector sect = sectors[player.sector];
+    const sector &sect = sectors[player.sector];
     const std::vector<int>  vert = sect.vertex;
     float px = player.where.x, py = player.where.y;
     float dx = x - player.where.x, dy =y - player.where.y;
@@ -242,70 +269,6 @@ void GetPlayerPos(float *x, float *y, float *z){
     *z = player.where.z;
 }  
 
-void UnloadLevel()
-{
-
-}
-
-void LoadLevel(char *data, uint32_t datasize){
-    UnloadLevel();
-    char *pch;
-    char word[256], *ptr;
-    struct xy v;
-    int n, m;
-    pch = strtok (data,"\n");
-     while (pch != NULL){
-        ptr = pch;
-        sscanf(ptr, "%32s%n", word, &n);
-        switch(sscanf(ptr, "%32s%n", word, &n) == 1 ? word[0] : '\0'){
-            case 'v': {// vertex
-                for(sscanf(ptr += n, "%f%n", &v.y, &n); sscanf(ptr += n, "%f%n", &v.x, &n) == 1; ){
-                    vertices.push_back((struct xy){v.x,v.y});
-                }
-            break;
-            }
-            case 's': {// sector
-                struct sector sect;
-                std::vector<int> num;
-                sscanf(ptr += n, "%f%f%n", &sect.floor,&sect.ceil, &n);
-                for(m=0; sscanf(ptr += n, "%32s%n", word, &n) == 1 && word[0] != '#'; ){
-                     num.push_back(atoi(word)); }
-                for(n=0; n<num.size()/2; ++n){sect.neighbors.push_back(num[num.size()/2 + n]);}
-               // sect.vertex.push_back(num[num.size()/2]);//first and last vertex in array same
-                sect.vertex.push_back(num[num.size()/2-1]);
-                for(n=0; n<num.size()/2; ++n) sect.vertex.push_back(num[n]); // TODO: Range checking
-               // sect.vertex.push_back(num[0]);
-                sectors.push_back(sect);
-                break;}
-            case 'p':{ // player
-                float angle;
-                sscanf(ptr += n, "%f %f %f %d", &v.x, &v.y, &angle,&n);
-                player = (struct player){ {v.x, v.y, 0}, {0,0,0}, angle,0,0,0, n }; // TODO: Range checking
-                player.where.z = sectors[player.sector].floor + EyeHeight;}
-        }
-        pch = strtok (NULL, "\n");
-      }
-
-      /* for (sector s:sectors){
-            printf("**************\n");
-            printf("neighbords:%llu\n",s.neighbors.size());
-            printf("vertex:%llu\n",s.vertex.size());
-            for(int i=0; i<s.neighbors.size();i++){
-                printf("v:%d n:%d\n", s.vertex[i], s.neighbors[i]);
-            }
-            printf("v:%d\n", s.vertex[s.neighbors.size()]);
-       }*/
-   // printf("vertexes:%llu\n",vertices.size());
-   // printf("sectors:%llu\n",sectors.size());
-  //  printf("\nload done\n");
-    MovePlayer(player.where.x, player.where.y);
-    SetAngle(0);
-}
-
-
-
-
-
 void DrawScreen(){
     MovePlayer(player.where.x, player.where.y);
     //clearBuffer1(&pixelBuffer);
@@ -328,13 +291,13 @@ void DrawScreen(){
         if(renderedsectors[now.sectorno] & 0x21) continue; // Odd = still rendering, 0x20 = give up try 32 times
         ++renderedsectors[now.sectorno];
         //const for pointer and const for data
-        const struct sector sect = sectors[now.sectorno];
+        const sector &sect = sectors[now.sectorno];
         //render each wall of player sector that is facing towards player
 
         for(unsigned s =0; s< sect.vertex.size()-1;s++){
             //acquire the x,y coordinates of the two endpoints(vertices) of thius edge of the sector
             //transform the vertices into the player view
-            struct xy v1 = vertices[sect.vertex[s]], v2 = vertices[sect.vertex[s+1]];
+            xy v1 = vertices[sect.vertex[s]], v2 = vertices[sect.vertex[s+1]];
             float vx1 = v1.x - player.where.x, vy1 = v1.y- player.where.y;
             float vx2 = v2.x - player.where.x, vy2 = v2.y- player.where.y;
             //rotate them around player
@@ -375,7 +338,7 @@ void DrawScreen(){
 
             float nyceil = 0, nyfloor = 0;
             if (neighbor>=0){
-                nyceil = sectors[neighbor].ceil - player.where.z;
+                nyceil =  sectors[neighbor].ceil - player.where.z;
                 nyfloor = sectors[neighbor].floor - player.where.z;
             }
              #define Yaw(y,z) (y + z*player.yaw)

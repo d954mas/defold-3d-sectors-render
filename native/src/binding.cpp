@@ -8,28 +8,59 @@
 #include "3d_render.h"
 #include <dmsdk/sdk.h>
 
+//region Map
+static int MapClearLua(lua_State* L){
+    MapClear();
+    return 0;
+}
+static int MapVertexAddLua(lua_State* L){
+    float x = luaL_checknumber(L, 1), y = lua_tonumber(L, 2);
+    MapVertexAdd(x,y);
+    return 0;
+}
+static int MapVertexChangeLua(lua_State* L){
+    int idx = (int)luaL_checknumber(L, 1);
+    float x = luaL_checknumber(L, 2), y = luaL_checknumber(L, 3);
+    MapVertexChange(idx,x,y);
+    return 0;
+}
+static int MapSectorCreateLua(lua_State* L){
+	float floor = luaL_checknumber(L, 1), ceil = luaL_checknumber(L, 2);
+    MapSectorCreate(floor,ceil);
+    return 0;
+}
+//add to last sector in list
+static int MapSectorVertexAddLua(lua_State* L){
+    int vertex = (int)luaL_checknumber(L, 1), neigbor = (int)luaL_checknumber(L, 2);
+    MapSectorVertexAdd(vertex,neigbor);
+    return 0;
+}
+//check that map valid
+static int MapCheckLua(lua_State* L){
+    MapCheck();
+    return 0;
+}
+
+//endregion
+
+//region Player
+int PlayerInitLua(lua_State* L){
+    int sector = (int)luaL_checknumber(L, 1);
+    float x = luaL_checknumber(L, 2), y = luaL_checknumber(L, 3);
+    PlayerInit(sector,x,y);
+    return 0;
+}
+//endregion
+
 static char* decodeBuffer(dmBuffer::HBuffer *hBuffer, uint32_t *datasize){
 	char* data = 0;
 	dmBuffer::GetBytes(*hBuffer, (void**)&data, datasize);
 	return data;
 }
 
-static int LoadLevelLua(lua_State* L){
-    dmScript::LuaHBuffer* buffer = dmScript::CheckBuffer(L, 1);
-    uint32_t datasize = 0;
-    char *data = decodeBuffer(&buffer->m_Buffer,&datasize);
- 	LoadLevel(data, datasize);
- 	return 0;
-}
-
-static int UnloadLevelLua(lua_State* L){
-	UnloadLevel();
-	return 0;
-}
-
 static int SetBufferLua(lua_State* L){
- 	int width = (int) lua_tonumber(L, 1);
- 	int height = (int) lua_tonumber(L, 2);
+ 	int width = (int) luaL_checknumber(L, 1);
+	int height = (int) luaL_checknumber(L, 2);
  	dmScript::LuaHBuffer* buffer = dmScript::CheckBuffer(L, 3);
  	setBuffer(width, height, buffer);
  	return 0;
@@ -40,20 +71,20 @@ static int DrawScreenLua(lua_State* L){
  	return 0;
 }
 static int MovePlayerLua(lua_State* L){
- 	float x = lua_tonumber(L, 1);
- 	float y = lua_tonumber(L, 2);
+	float x = luaL_checknumber(L, 1);
+ 	float y = luaL_checknumber(L, 2);
  	MovePlayer(x,y);
  	return 0;
 }
 
 static int SetAngleLua(lua_State* L){
- 	float angle = lua_tonumber(L, 1);
+ 	float angle = luaL_checknumber(L, 1);
     SetAngle(angle);
     return 0;
 }
 
 static int SetYawLua(lua_State* L){
- 	float yaw = lua_tonumber(L, 1);
+ 	float yaw = luaL_checknumber(L, 1);
  	SetYaw(yaw);
  	return 0;
 }
@@ -71,14 +102,23 @@ static int GetPlayerPosLua(lua_State* L){
 
 // Functions exposed to Lua
 static const luaL_reg Module_methods[] ={
-	{"load_level", LoadLevelLua},
-	{"unload_level", UnloadLevelLua},
 	{"set_buffer", SetBufferLua},
 	{"draw_screen", DrawScreenLua},
 	{"move_player", MovePlayerLua},
 	{"set_player_angle", SetAngleLua},
     {"set_player_yaw", SetYawLua},
 	{"get_player_pos", GetPlayerPosLua},
+
+	//map functions
+	{"map_clear", MapClearLua},
+	{"map_vertex_add", MapVertexAddLua},
+	{"map_vertex_change", MapVertexChangeLua},
+	{"map_sector_create", MapSectorCreateLua},
+	{"map_sector_vertex_add", MapSectorVertexAddLua},
+	{"map_check", MapCheckLua},
+
+	//player
+	{"player_init", PlayerInitLua},
 	{0, 0},
 };
 

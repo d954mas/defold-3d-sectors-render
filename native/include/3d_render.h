@@ -16,13 +16,12 @@ struct player{
     int sector; //current sector
 };
 
-void LoadLevel( char *, uint32_t);
-void UnloadLevel();
 void setBuffer(int, int, dmScript::LuaHBuffer*);
 
 void clearBuffer();
 
 void DrawScreen();
+void PlayerInit(int,float,float);
 void MovePlayer(float,float);
 void GetPlayerPos(float *, float *, float *);
 void SetAngle(float angle);
@@ -37,6 +36,12 @@ void MapVertexChange(int,float,float);
 void MapSectorCreate(float, float);
 //add to last sector in list
 void MapSectorVertexAdd(int,int);
+//check that map valid
+void MapCheck();
 
 void MapSectorChangeFloor(int,float);
 void MapSectorChangeCeil(int,float);
+
+//region Player
+
+void PlayerInit(int,float,float);
