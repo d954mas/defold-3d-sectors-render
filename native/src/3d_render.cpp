@@ -8,9 +8,16 @@
 #include <vector>
 #include "3d_render.h"
 #include "buffer.h"
+#include "entityx/entityx.h"
 
 #define DLIB_LOG_DOMAIN "MapRender"
 #include <dmsdk/dlib/log.h>
+
+#include <entityx/entityx.h>
+
+entityx::EntityX ex;
+
+entityx::Entity entity = ex.entities.create();
 
 /* Define window size */
 /* Define various vision related constants */
@@ -73,7 +80,6 @@ void MapVertexChange(int idx,float x, float y){
     }
 }
 
-
 void MapSectorCreate(float floor, float ceil){
     struct sector s;
     s.floor = floor; s.ceil = ceil;
@@ -113,7 +119,7 @@ void MapCheck(){
 //region PLAYER
 
 void PlayerInit(int sector, float x, float y){
-    player.where = {x,y,0};
+    player.where = (xyz){x,y,0};
     player.where.z = sectors[sector].floor + EyeHeight;
     player.sector = sector;
     MovePlayer(x,y);
@@ -125,16 +131,10 @@ void PlayerInit(int sector, float x, float y){
 
 //draw functions
 /* vline: Draw a vertical line on screen, with a different color pixel in top & bottom */
-static inline void vline(int x, int y1,int y2, uint32_t top,uint32_t middle,uint32_t bottom)
-{
-    y1 = clamp(y1, 0, pixelBuffer.height-1);
-    y2 = clamp(y2, 0, pixelBuffer.height-1);
-
-    if(y2 == y1){
-        DrawPixel(pixelBuffer,x,y1,top);
-    }
-    else if(y2 > y1)
-    {
+static inline void vline(int x, int y1,int y2, uint32_t top,uint32_t middle,uint32_t bottom){
+    y1 = clamp(y1, 0, pixelBuffer.height-1);y2 = clamp(y2, 0, pixelBuffer.height-1);
+    if(y2 == y1){DrawPixel(pixelBuffer,x,y1,top);}
+    else if(y2 > y1) {
         DrawPixel(pixelBuffer,x,y1,top);
         for(int y=y1+1; y<y2; ++y){
             DrawPixel(pixelBuffer,x,y,middle);
@@ -142,7 +142,6 @@ static inline void vline(int x, int y1,int y2, uint32_t top,uint32_t middle,uint
         DrawPixel(pixelBuffer,x,y2,bottom);
     }
 }
-
 
 void RenderClearBuffer(){
     clearBuffer(pixelBuffer);

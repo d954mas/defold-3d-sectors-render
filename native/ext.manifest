@@ -17,3 +17,9 @@ platforms:
     x86_64-win32:
         context:
             use-clang: true
+    js-web:
+        context:
+            flags:      ["-std=c++11"]
+    wasm-web:
+        context:
+            flags:      ["-std=c++11"]
