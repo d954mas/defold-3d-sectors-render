@@ -16,9 +16,8 @@ struct player{
     int sector; //current sector
 };
 
-void setBuffer(int, int, dmScript::LuaHBuffer*);
-
-void clearBuffer();
+void RenderClearBuffer();
+void RenderSetBuffer(int, int, dmScript::LuaHBuffer*);
 
 void DrawScreen();
 void PlayerInit(int,float,float);

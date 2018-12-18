@@ -7,6 +7,7 @@
 #include <math.h>
 #include <vector>
 #include "3d_render.h"
+#include "buffer.h"
 
 #define DLIB_LOG_DOMAIN "MapRender"
 #include <dmsdk/dlib/log.h>
@@ -38,11 +39,7 @@
     vxs(vxs(x1,y1, x2,y2), (x1)-(x2), vxs(x3,y3, x4,y4), (x3)-(x4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)), \
     vxs(vxs(x1,y1, x2,y2), (y1)-(y2), vxs(x3,y3, x4,y4), (y3)-(y4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)) })
 
-struct Buffer {
-	int width;
-	int height;
-	uint8_t* stream;
-} pixelBuffer;
+
 
 /* Sectors: Floor and ceiling height; list of edge vertices and neighbors */
 //Sector is a room, where i can set floor and ceiling height
@@ -134,50 +131,26 @@ static inline void vline(int x, int y1,int y2, uint32_t top,uint32_t middle,uint
     y2 = clamp(y2, 0, pixelBuffer.height-1);
 
     if(y2 == y1){
-        uint8_t red = (top & 0xFF000000) >> 24;
-        uint8_t green = (top & 0x00FF0000) >> 16;
-        uint8_t blue = (top & 0x0000FF00) >> 8;
-        pixelBuffer.stream[((pixelBuffer.height - y1-1)*pixelBuffer.width+x)*3] = red;
-        pixelBuffer.stream[((pixelBuffer.height - y1-1)*pixelBuffer.width+x)*3+1] = green;
-        pixelBuffer.stream[((pixelBuffer.height - y1-1)*pixelBuffer.width+x)*3+2] = blue;
+        DrawPixel(pixelBuffer,x,y1,top);
     }
-
     else if(y2 > y1)
     {
-        uint8_t red = (top & 0xFF000000) >> 24;
-        uint8_t green = (top & 0x00FF0000) >> 16;
-        uint8_t blue = (top & 0x0000FF00) >> 8;
-        pixelBuffer.stream[((pixelBuffer.height - y1-1)*pixelBuffer.width+x)*3] = red;
-        pixelBuffer.stream[((pixelBuffer.height - y1-1)*pixelBuffer.width+x)*3+1] = green;
-        pixelBuffer.stream[((pixelBuffer.height - y1-1)*pixelBuffer.width+x)*3+2] = blue;
-
-        red = (middle & 0xFF000000) >> 24;
-        green = (middle & 0x00FF0000) >> 16;
-        blue = (middle & 0x0000FF00) >> 8;
+        DrawPixel(pixelBuffer,x,y1,top);
         for(int y=y1+1; y<y2; ++y){
-            pixelBuffer.stream[((pixelBuffer.height - y-1)*pixelBuffer.width+x)*3] = red;
-            pixelBuffer.stream[((pixelBuffer.height - y-1)*pixelBuffer.width+x)*3+1] = green;
-            pixelBuffer.stream[((pixelBuffer.height - y-1)*pixelBuffer.width+x)*3+2] = blue;
+            DrawPixel(pixelBuffer,x,y,middle);
         }
-
-        red = (bottom & 0xFF000000) >> 24;
-        green = (bottom & 0x00FF0000) >> 16;
-        blue = (bottom & 0x0000FF00) >> 8;
-        pixelBuffer.stream[((pixelBuffer.height - y2-1)*pixelBuffer.width+x)*3] = red;
-        pixelBuffer.stream[((pixelBuffer.height - y2-1)*pixelBuffer.width+x)*3+1] = green;
-        pixelBuffer.stream[((pixelBuffer.height - y2-1)*pixelBuffer.width+x)*3+2] = blue;
+        DrawPixel(pixelBuffer,x,y2,bottom);
     }
 }
 
-static void clearBuffer1(struct Buffer* buffer){
-	int size = buffer->width * buffer->height;
-	for(int i=0; i< size*3; i+=3){
-		buffer->stream[i] = 0;
-		buffer->stream[i+1] = 0;
-		buffer->stream[i+2] = 0;
-	}
+
+void RenderClearBuffer(){
+    clearBuffer(pixelBuffer);
 }
 
+void RenderSetBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer){
+	pixelBuffer = createBuffer(width, height, luaBuffer);
+}
 
 
 void MovePlayer(float x, float y){
@@ -391,37 +364,3 @@ void DrawScreen(){
 }
 
 
-
-
-
-//buffer funs
-
-static void initBuffer(struct Buffer* buffer, int width, int height, dmScript::LuaHBuffer* luaBuffer){
-	buffer->width = width;
-	buffer->height = height;
-	dmBuffer::HBuffer hBuffer = luaBuffer->m_Buffer;
-	uint32_t size_ignored = 0;
-	uint32_t components = 0;
-	uint32_t stride = 0;
-	dmBuffer::Result r = dmBuffer::GetBytes(hBuffer, (void**)&buffer->stream, &size_ignored);
-	/*uint8_t *** pixels = (uint8_t ***)malloc(width * sizeof(uint8_t*));
-	for(int x = 0; x<width; x++){
-		pixels[x] = (uint8_t **)malloc(height * sizeof(uint8_t*));
-		for(int y = 0; y<height; y++){
-			pixels[x][y] = &buffer->stream[(y * width + x) * 3];
-		}
-	}
-	buffer->pixels = pixels;*/
-	//dmBuffer::Result r = dmBuffer::GetStream(hBuffer, dmHashString64("rgb"),(void**)&buffer->stream , &size_ignored, &components, &stride);
-}
-
-
-
-void setBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer){
-	initBuffer(&pixelBuffer, width, height, luaBuffer);
-}
-
-
-void clearBuffer(){
-	clearBuffer1(&pixelBuffer);
-}

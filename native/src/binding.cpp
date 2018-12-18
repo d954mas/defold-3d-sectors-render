@@ -58,11 +58,11 @@ static char* decodeBuffer(dmBuffer::HBuffer *hBuffer, uint32_t *datasize){
 	return data;
 }
 
-static int SetBufferLua(lua_State* L){
+static int RenderSetBufferLua(lua_State* L){
  	int width = (int) luaL_checknumber(L, 1);
 	int height = (int) luaL_checknumber(L, 2);
  	dmScript::LuaHBuffer* buffer = dmScript::CheckBuffer(L, 3);
- 	setBuffer(width, height, buffer);
+ 	RenderSetBuffer(width, height, buffer);
  	return 0;
 }
 
@@ -102,8 +102,11 @@ static int GetPlayerPosLua(lua_State* L){
 
 // Functions exposed to Lua
 static const luaL_reg Module_methods[] ={
-	{"set_buffer", SetBufferLua},
+    //render
+	{"render_set_buffer", RenderSetBufferLua},
 	{"draw_screen", DrawScreenLua},
+
+	//
 	{"move_player", MovePlayerLua},
 	{"set_player_angle", SetAngleLua},
     {"set_player_yaw", SetYawLua},
