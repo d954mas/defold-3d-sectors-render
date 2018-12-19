@@ -1,6 +1,7 @@
 #pragma once
 #include <dmsdk/sdk.h>
 #include <vector>
+#include "ecs.h"
 
 struct xy {float x,y;};
 struct xyz {float x,y,z;};
@@ -15,6 +16,9 @@ struct player{
     float angle, anglesin, anglecos, yaw;//looking towards(sin() and cos() thereof) yaw is rotation of player?
     int sector; //current sector
 };
+
+
+void WorldUpdate(float);
 
 void RenderClearBuffer();
 void RenderSetBuffer(int, int, dmScript::LuaHBuffer*);

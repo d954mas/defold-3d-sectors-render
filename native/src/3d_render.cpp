@@ -50,11 +50,15 @@
 //Sector can be 2 types. Wall and portal. We can see throw portal
 static  std::vector<struct sector> sectors;
 static  std::vector<struct xy> vertices;
-
+EcsWorld world;
 /*Player: location */
-static struct player player;
+static player player;
 int ground = 0, falling = 1, moving = 1;
 
+
+EcsWorld& getWorld(){
+    return world;
+}
 
 //region MAP
 void MapClear(){
@@ -357,6 +361,13 @@ void DrawScreen(){
         }
     ++renderedsectors[now.sectorno];
     }while(head!= tail);
+}
+
+
+//region WORLD
+
+void WorldUpdate(float dt){
+    world.update(dt);
 }
 
 

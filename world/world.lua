@@ -21,6 +21,7 @@ end
 
 function M:update(dt, no_save)
 	self.player:update(dt)
+	native.world_update(dt)
 end
 
 

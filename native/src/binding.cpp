@@ -44,12 +44,22 @@ static int MapCheckLua(lua_State* L){
 //endregion
 
 //region Player
-int PlayerInitLua(lua_State* L){
+static int PlayerInitLua(lua_State* L){
     int sector = (int)luaL_checknumber(L, 1);
     float x = luaL_checknumber(L, 2), y = luaL_checknumber(L, 3);
     PlayerInit(sector,x,y);
     return 0;
 }
+//endregion
+
+
+//region World
+static int WorldUpdateLua(lua_State* L){
+    float dt = luaL_checknumber(L, 1);
+    WorldUpdate(dt);
+    return 0;
+}
+
 //endregion
 
 static char* decodeBuffer(dmBuffer::HBuffer *hBuffer, uint32_t *datasize){
@@ -122,6 +132,9 @@ static const luaL_reg Module_methods[] ={
 
 	//player
 	{"player_init", PlayerInitLua},
+
+	//world
+	{"world_update",WorldUpdateLua},
 	{0, 0},
 };
 
