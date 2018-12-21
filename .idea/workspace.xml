@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4541a19e-81ad-4482-8b04-19673d9ae92f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/native/include/3d_render.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/3d_render.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/native/include/ecs.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/ecs.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/native/src/3d_render.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/3d_render.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/src/binding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/binding.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/world/world.lua" beforeDir="false" afterPath="$PROJECT_DIR$/world/world.lua" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,6 +25,28 @@
     </option>
     <expand />
     <select />
+  </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/native/include/entityx/Entity.h">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="770">
+                    <caret line="184" column="7" lean-forward="true" selection-start-line="184" selection-start-column="7" selection-end-line="184" selection-end-column="7" />
+                    <folding>
+                      <element signature="n#!!doc" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="1853133306">
@@ -116,17 +135,18 @@
           <entry key="project.closed" value="2" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.5" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="collection" value="1" />
-          <entry key="cpp" value="233" />
+          <entry key="cpp" value="249" />
           <entry key="gui_script" value="1" />
-          <entry key="h" value="176" />
+          <entry key="h" value="223" />
           <entry key="json" value="25" />
-          <entry key="lua" value="118" />
+          <entry key="lua" value="119" />
           <entry key="manifest" value="1" />
           <entry key="render_script" value="2" />
           <entry key="script" value="15" />
@@ -135,17 +155,17 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="C/C++" value="409" />
+          <entry key="C/C++" value="472" />
           <entry key="JSON" value="25" />
           <entry key="PLAIN_TEXT" value="29" />
-          <entry key="lua" value="136" />
+          <entry key="lua" value="137" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cpp" value="13460" />
+          <entry key="cpp" value="13593" />
           <entry key="dummy" value="5" />
-          <entry key="h" value="1465" />
+          <entry key="h" value="1935" />
           <entry key="json" value="1115" />
           <entry key="lua" value="2833" />
           <entry key="render_script" value="77" />
@@ -155,7 +175,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="C/C++" value="14925" />
+          <entry key="C/C++" value="15528" />
           <entry key="JSON" value="1115" />
           <entry key="PLAIN_TEXT" value="496" />
           <entry key="lua" value="3113" />
@@ -169,10 +189,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/native/include/ecs.h">
+        <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="576">
-              <caret line="83" column="71" lean-forward="true" selection-start-line="83" selection-start-column="71" selection-end-line="84" selection-end-column="7" />
+            <state relative-caret-position="400">
+              <caret line="57" column="14" lean-forward="true" selection-start-line="57" selection-start-column="14" selection-end-line="57" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -188,8 +208,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>printf</find>
-      <find>Load</find>
       <find>n</find>
       <find>MoveP</find>
       <find>ERR</find>
@@ -218,6 +236,8 @@
       <find>EcsWo</find>
       <find>EcsWorld</find>
       <find>EntityX</find>
+      <find>World</find>
+      <find>world</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -277,11 +297,11 @@
         <option value="$PROJECT_DIR$/native/include/buffr.h" />
         <option value="$PROJECT_DIR$/native/include/buffer.h" />
         <option value="$PROJECT_DIR$/native/include/entityx/Entity.h" />
-        <option value="$PROJECT_DIR$/native/include/3d_render.h" />
         <option value="$PROJECT_DIR$/native/src/binding.cpp" />
         <option value="$PROJECT_DIR$/world/world.lua" />
-        <option value="$PROJECT_DIR$/native/src/3d_render.cpp" />
+        <option value="$PROJECT_DIR$/native/include/3d_render.h" />
         <option value="$PROJECT_DIR$/native/include/ecs.h" />
+        <option value="$PROJECT_DIR$/native/src/3d_render.cpp" />
       </list>
     </option>
   </component>
@@ -292,10 +312,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-21" />
-    <option name="y" value="25" />
+    <option name="x" value="31" />
+    <option name="y" value="6" />
     <option name="width" value="1475" />
-    <option name="height" value="1038" />
+    <option name="height" value="1037" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -575,8 +595,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -599,12 +617,6 @@
               <item name="ExCretitsJam2018" type="b2602c69:ProjectViewProjectNode" />
               <item name="ExCretitsJam2018" type="462c0819:PsiDirectoryNode" />
               <item name="native" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ExCretitsJam2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ExCretitsJam2018" type="462c0819:PsiDirectoryNode" />
-              <item name="native" type="462c0819:PsiDirectoryNode" />
-              <item name="include" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ExCretitsJam2018" type="b2602c69:ProjectViewProjectNode" />
@@ -639,10 +651,12 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1545085254513" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1545373257008" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../SaveShelter(Wolfenstein3d)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -700,17 +714,18 @@
       <workItem from="1544814545271" duration="1117000" />
       <workItem from="1544815889010" duration="68603000" />
       <workItem from="1545119549616" duration="9842000" />
+      <workItem from="1545366886759" duration="5550000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="186021000" />
+    <option name="totallyTimeSpent" value="191571000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-21" y="25" width="1475" height="1038" extended-state="0" />
+    <frame x="31" y="6" width="1475" height="1037" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49845678" visible="true" weight="0.1987315" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49845678" visible="true" weight="0.2015504" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -725,10 +740,10 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="LuaCheck" order="7" />
-      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4989429" visible="true" weight="0.1641791" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4982382" visible="true" weight="0.16435432" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="10" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5010571" side_tool="true" visible="true" weight="0.1641791" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5017618" side_tool="true" visible="true" weight="0.16435432" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -776,12 +791,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="Cpp">
           <url>file://$PROJECT_DIR$/native/src/3d_render.cpp</url>
-          <line>312</line>
+          <line>311</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="Cpp">
           <url>file://$PROJECT_DIR$/native/src/3d_render.cpp</url>
-          <line>150</line>
+          <line>149</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
@@ -1015,18 +1030,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/native/include/entityx/entityx.h">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/binding.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-241">
+          <caret line="110" column="1" lean-forward="true" selection-start-line="110" selection-start-column="1" selection-end-line="110" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/native/include/entityx/Entity.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="363">
-          <caret line="178" column="2" selection-start-line="178" selection-start-column="2" selection-end-line="178" selection-end-column="2" />
+        <state relative-caret-position="770">
+          <caret line="184" column="7" lean-forward="true" selection-start-line="184" selection-start-column="7" selection-end-line="184" selection-end-column="7" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/include/entityx/entityx.h">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/native/include/buffer.h">
       <provider selected="true" editor-type-id="text-editor">
@@ -1044,29 +1066,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/native/include/3d_render.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="20" column="24" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/src/binding.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-241">
-          <caret line="110" column="1" lean-forward="true" selection-start-line="110" selection-start-column="1" selection-end-line="110" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1231">
-          <caret line="362" column="24" lean-forward="true" selection-start-line="362" selection-start-column="24" selection-end-line="362" selection-end-column="24" />
+        <state relative-caret-position="32">
+          <caret line="2" column="17" lean-forward="true" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/native/include/ecs.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="83" column="71" lean-forward="true" selection-start-line="83" selection-start-column="71" selection-end-line="84" selection-end-column="7" />
+        <state relative-caret-position="654">
+          <caret line="139" column="20" selection-start-line="139" selection-start-column="20" selection-end-line="139" selection-end-column="20" />
+          <folding>
+            <element signature="n#{&#10;  void update(entityx::EntityManager &amp;es, entityx::EventManager &amp;events, entityx::TimeDelta dt) override {&#10;    es.each&lt;PositionC, VelocityC, MovementSpeedC&gt;([dt](entityx::Entity entity, PositionC &amp;position, VelocityC &amp;vel, MovementSpeedC &amp;speed) {&#10;        float dx =  vel.x * speed.v * dt\h&#10;        float dy =  vel.y * speed.v * dt\h&#10;        float dz =  vel.z * speed.v * dt\h&#10;        if (entity.has_component&lt;HandleCollisionC&gt;()){&#10;            entityx::ComponentHandle&lt;HandleCollisionC&gt; collision\h&#10;            collision-&gt;dx = dx\h&#10;            collision-&gt;dy = dy\h&#10;            collision-&gt;dz = dz\h&#10;        }else{&#10;            position.x += dx\h&#10;            position.y += dy\h&#10;            position.z += dz\h&#10;        }&#10;&#10;    })\h&#10;  }\h&#10;}#0;n#struct MovementSystem : public entityx::System&lt;MovementSystem&gt; {&#10;  void update(entityx::EntityManager &amp;es, entityx::EventManager &amp;events, entityx::TimeDelta dt) override {&#10;    es.each&lt;PositionC, VelocityC, MovementSpeedC&gt;([dt](entityx::Entity entity, PositionC &amp;position, VelocityC &amp;vel, MovementSpeedC &amp;speed) {&#10;        float dx =  vel.x * speed.v * dt\h&#10;        float dy =  vel.y * speed.v * dt\h&#10;        float dz =  vel.z * speed.v * dt\h&#10;        if (entity.has_component&lt;HandleCollisionC&gt;()){&#10;            entityx::ComponentHandle&lt;HandleCollisionC&gt; collision\h&#10;            collision-&gt;dx = dx\h&#10;            collision-&gt;dy = dy\h&#10;            collision-&gt;dz = dz\h&#10;        }else{&#10;            position.x += dx\h&#10;            position.y += dy\h&#10;            position.z += dz\h&#10;        }&#10;&#10;    })\h&#10;  }\h&#10;}#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="57" column="14" lean-forward="true" selection-start-line="57" selection-start-column="14" selection-end-line="57" selection-end-column="14" />
         </state>
       </provider>
     </entry>

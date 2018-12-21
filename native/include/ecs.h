@@ -1,5 +1,6 @@
 #pragma once
 #include <entityx/entityx.h>
+
 struct PositionC {
   PositionC(float x = 0.0f, float y = 0.0f, float z = 0.0f) : x(x), y(y), z(z) {}
   float x, y, z;
@@ -12,10 +13,13 @@ struct VelocityC {
 
 struct MovementSpeedC{
     MovementSpeedC(float v = 0.0f) : v(v) {}
-    float v, y, z;
+    float v;
 };
 
-struct HandleGravityC {};
+struct HandleCollisionC {
+      HandleCollisionC(float dx = 0.0f, float dy = 0.0f, float dz = 0.0f) : dx(dx), dy(dy), dz(dz) {}
+      float dx, dy, dz;
+};
 
 
 //HeadMargin
@@ -59,36 +63,81 @@ struct SectorC{
 struct MovementSystem : public entityx::System<MovementSystem> {
   void update(entityx::EntityManager &es, entityx::EventManager &events, entityx::TimeDelta dt) override {
     es.each<PositionC, VelocityC, MovementSpeedC>([dt](entityx::Entity entity, PositionC &position, VelocityC &vel, MovementSpeedC &speed) {
-      position.x += vel.x * speed.v * dt;
-      position.y += vel.y * speed.v * dt;
-      position.z += vel.z * speed.v * dt;
+        float dx =  vel.x * speed.v * dt;
+        float dy =  vel.y * speed.v * dt;
+        float dz =  vel.z * speed.v * dt;
+        if (entity.has_component<HandleCollisionC>()){
+            entityx::ComponentHandle<HandleCollisionC> collision;
+            collision->dx = dx;
+            collision->dy = dy;
+            collision->dz = dz;
+        }else{
+            position.x += dx;
+            position.y += dy;
+            position.z += dz;
+        }
+
     });
   };
 };
 
 //endregion
 
+
+
+struct xy {float x,y;};
+struct xyz {float x,y,z;};
+/* Sectors: Floor and ceiling height; list of edge vertices and neighbors */
+//Sector is a room, where i can set floor and ceiling height
+//Sector can be 2 types. Wall and portal. We can see throw portal
+struct sector
+{
+    float floor, ceil;
+    std::vector<int> vertex; //vertex have x,y coords
+    std::vector<int> neighbors; //Each edge may have a corresponding neighboring sector
+};
+struct player{
+    struct xyz where, velocity;
+    float angle, anglesin, anglecos, yaw;//looking towards(sin() and cos() thereof) yaw is rotation of player?
+    int sector; //current sector
+};
+
+struct World;
+
 class EcsWorld : public entityx::EntityX {
+
 public:
-  explicit EcsWorld() {
-    systems.add<MovementSystem>();
-   // systems.add<MovementSystem>();
-   // systems.add<CollisionSystem>();
-    systems.configure();
+    World *world;
+    explicit EcsWorld() {
+        systems.add<MovementSystem>();
+        systems.configure();
+    }
 
-   // level.load(filename);
+    void setWorld(World* var){
+        world = var;
+    }
 
-   // for (auto e : level.entity_data()) {
-    //  entityx::Entity entity = entities.create();
-  //    entity.assign<Position>(rand() % 100, rand() % 100);
-  //    entity.assign<Direction>((rand() % 10) - 5, (rand() % 10) - 5);
-   // }
-  }
+    void update(entityx::TimeDelta dt) {
+        systems.update<MovementSystem>(dt);
+    }
 
-  void update(entityx::TimeDelta dt) {
-  //  systems.update<DebugSystem>(dt);
-    systems.update<MovementSystem>(dt);
-   // systems.update<CollisionSystem>(dt);
-  }
+    void reset(){
+        entities.reset();
+    }
+
+};
+
+struct World{
+    EcsWorld ecs;
+    std::vector<struct sector> sectors;
+    std::vector<struct xy> vertices;
+    player player;
+
+    void reset(){
+        sectors.clear();
+        vertices.clear();
+        player = (struct player) { {0,0,0}, {0,0,0}, 0,0,0,0, 0 };
+        ecs.reset();
+    }
 };
   

@@ -3,19 +3,7 @@
 #include <vector>
 #include "ecs.h"
 
-struct xy {float x,y;};
-struct xyz {float x,y,z;};
-struct sector
-{
-    float floor, ceil;
-    std::vector<int> vertex; //vertex have x,y coords
-    std::vector<int> neighbors; //Each edge may have a corresponding neighboring sector
-};
-struct player{
-    struct xyz where, velocity;
-    float angle, anglesin, anglecos, yaw;//looking towards(sin() and cos() thereof) yaw is rotation of player?
-    int sector; //current sector
-};
+
 
 
 void WorldUpdate(float);
@@ -48,3 +36,5 @@ void MapSectorChangeCeil(int,float);
 //region Player
 
 void PlayerInit(int,float,float);
+
+
