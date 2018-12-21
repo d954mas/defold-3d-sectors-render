@@ -4,10 +4,6 @@
 #include "ecs.h"
 
 
-
-
-void WorldUpdate(float);
-
 void RenderClearBuffer();
 void RenderSetBuffer(int, int, dmScript::LuaHBuffer*);
 

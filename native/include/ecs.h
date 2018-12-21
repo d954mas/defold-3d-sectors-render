@@ -140,4 +140,11 @@ struct World{
         ecs.reset();
     }
 };
+
+extern World world;
+
+
+static void WorldUpdate(float dt){
+    world.ecs.update(dt);
+}
   

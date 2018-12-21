@@ -6,6 +6,7 @@
 
 #include <math.h>
 #include "3d_render.h"
+#include "ecs_bind.h"
 #include <dmsdk/sdk.h>
 
 //region Map
@@ -144,6 +145,8 @@ static void LuaInit(lua_State* L){
 	luaL_register(L, MODULE_NAME, Module_methods);
 	lua_pop(L, 1);
 	assert(top == lua_gettop(L));
+
+	Entity_register(L);
 
 }
 

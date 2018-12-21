@@ -48,10 +48,6 @@ World world;
 int ground = 0, falling = 1, moving = 1;
 
 
-World& getWorld(){
-    return world;
-}
-
 //region MAP
 void MapClear(){
     ground = 0, falling = 1, moving = 1;
@@ -355,10 +351,5 @@ void DrawScreen(){
 }
 
 
-//region WORLD
-
-void WorldUpdate(float dt){
-    world.ecs.update(dt);
-}
 
 
