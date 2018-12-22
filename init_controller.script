@@ -35,6 +35,7 @@ function init(self)
     --endregion
     JESTER.register(reg_scenes)
     JESTER.show("LogoScene")
+
 end
 
 function update(self, dt)

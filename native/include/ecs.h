@@ -67,7 +67,7 @@ struct MovementSystem : public entityx::System<MovementSystem> {
         float dy =  vel.y * speed.v * dt;
         float dz =  vel.z * speed.v * dt;
         if (entity.has_component<HandleCollisionC>()){
-            entityx::ComponentHandle<HandleCollisionC> collision;
+            entityx::ComponentHandle<HandleCollisionC> collision = entity.component<HandleCollisionC>();
             collision->dx = dx;
             collision->dy = dy;
             collision->dz = dz;
@@ -118,7 +118,7 @@ public:
     }
 
     void update(entityx::TimeDelta dt) {
-        systems.update<MovementSystem>(dt);
+     //   systems.update<MovementSystem>(dt);
     }
 
     void reset(){

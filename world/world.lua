@@ -1,8 +1,9 @@
 local COMMON = require "libs.common"
 local Observable = require "libs.observable_mixin"
 local MultipleSubscription = require "libs.multiple_subscription"
-local RenderHelper = require "native_render.helper"
+local MAP = require "world.map"
 local Player = require "world.player"
+local PlayerNew = require "world.player_new"
 
 ---@class World:Observable
 local M = COMMON.class("World")
@@ -22,7 +23,11 @@ end
 function M:update(dt, no_save)
 	self.player:update(dt)
 	native.world_update(dt)
-	Entity.new_unit()
+	self:draw()
+end
+
+function M:draw()
+	native.draw_screen(self.player_new.e)
 end
 
 
@@ -30,13 +35,24 @@ function M:save()
 
 end
 
-function M:unload()
-	RenderHelper.unload()
+function M:dispose()
+	self.map:dispose()
+	self.map = nil
+	self.player_new:dispose()
+	self.player_new = nil
 end
 
-function M:load()
-	RenderHelper.init()
-	RenderHelper.load("map_clear")
+function M:load(file)
+	file = file or "map_clear"
+	COMMON.i("load level:" .. file)
+	self.map = MAP.load(file)
+	--region init player
+	self.player_new = PlayerNew()
+	self.player_new:set_sector(self.map.player.sector)
+	self.player_new:set_position(self.map.player.position.x,self.map.player.position.y,0)
+	self.player_new:align_z()
+	self.player_new:set_angle(0)
+	--endregion
 end
 
 return M()

@@ -1,37 +1,210 @@
 #include "ecs.h"
 #define ENTITY "Entity"
+#define ENTITY_VAR "EntityVar"
 
-static entityx::Entity* checkEntity (lua_State *L, int index){
+static entityx::Entity checkEntity (lua_State *L, int index){
 	luaL_checktype(L, index, LUA_TUSERDATA);
-	entityx::Entity** e = (entityx::Entity**)  lua_touserdata(L, index);
-	return *e;
+	entityx::Entity e = *((entityx::Entity*)  lua_touserdata(L, index));
+	return e;
 }
 
-static void pushEntity (lua_State *L, entityx::Entity* e){
-	entityx::Entity **l_e = (entityx::Entity **)lua_newuserdata(L, sizeof(entityx::Entity*));
+static void pushEntity (lua_State *L, entityx::Entity e){
+	entityx::Entity *l_e = (entityx::Entity *)lua_newuserdata(L, sizeof(entityx::Entity));
 	*l_e = e;
-	luaL_getmetatable(L, ENTITY);
+	luaL_getmetatable(L, ENTITY_VAR);
 	lua_setmetatable(L, -2);
 }
 
-static int Entity_new_unit (lua_State *L){
-	entityx::Entity e = world.ecs.entities.create();
-	pushEntity(L, &e);
+//region ENTITIES
+static int Entities_new_unit (lua_State *L){
+    entityx::Entity e = world.ecs.entities.create();
+    e.assign<PositionC>(0,0,0);
+    e.assign<VelocityC>(0,0,0);
+    e.assign<MovementSpeedC>();
+    e.assign<HandleCollisionC>();
+    e.assign<SectorC>(0);
+    e.assign<AngleC>(0);
+    e.assign<HeadMarginC>(0);
+    e.assign<EyeHeightC>(0);
+    e.assign<KneeHeightC>(0);
+ 	pushEntity(L, e);
+ 	return 1;
+}
+static int Entities_get_size (lua_State *L){
+	lua_pushnumber(L, world.ecs.entities.size());
 	return 1;
 }
 
+static const luaL_reg Entities_methods[] = {
+	{"new_unit",           Entities_new_unit},
+	{"get_size",           Entities_get_size},
+	{0,0}
+};
 
-static int Entity_gc (lua_State *L){
-	entityx::Entity *e = checkEntity(L, 1);
-	//add check here that e is already removed from world
-	//if not log warning
+static const luaL_reg Entities_meta[] = {{0, 0}};
+
+
+//region ENTITY
+static int Entity_get_position(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<PositionC> pos = e.component<PositionC>();
+    lua_pushnumber(L, pos->x);
+    lua_pushnumber(L, pos->y);
+    lua_pushnumber(L, pos->z);
+    return 3;
+}
+static int Entity_set_position(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<PositionC> pos = e.component<PositionC>();
+    float x = luaL_checknumber(L, 2);
+    float y = luaL_checknumber(L, 3);
+    float z = luaL_checknumber(L, 4);
+    pos->x = x;
+    pos->y = y;
+    pos->z = z;
+    return 0;
+}
+
+static int Entity_get_velocity(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<VelocityC> vel = e.component<VelocityC>();
+    lua_pushnumber(L, vel->x);
+    lua_pushnumber(L, vel->y);
+    lua_pushnumber(L, vel->z);
+    return 3;
+}
+static int Entity_set_velocity(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<VelocityC> pos = e.component<VelocityC>();
+    float x = luaL_checknumber(L, 2);
+    float y = luaL_checknumber(L, 3);
+    float z = luaL_checknumber(L, 4);
+    pos->x = x;
+    pos->y = y;
+    pos->z = z;
+    return 0;
+}
+
+static int Entity_get_movement_speed(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<MovementSpeedC> v = e.component<MovementSpeedC>();
+    lua_pushnumber(L, v->v);
+    return 1;
+}
+static int Entity_set_movement_speed(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<MovementSpeedC> v = e.component<MovementSpeedC>();
+    float v1 = luaL_checknumber(L, 2);
+    v->v = v1;
+    return 0;
+}
+
+static int Entity_get_sector(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<SectorC> s = e.component<SectorC>();
+    lua_pushnumber(L, s->v);
+    return 1;
+}
+static int Entity_set_sector(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<MovementSpeedC> v = e.component<MovementSpeedC>();
+    float v1 = luaL_checknumber(L, 2);
+    v->v = v1;
+    return 0;
+}
+
+static int Entity_get_angle(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<AngleC> v = e.component<AngleC>();
+    lua_pushnumber(L, v->angle);
+    return 1;
+}
+static int Entity_set_angle(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<AngleC> v = e.component<AngleC>();
+    float v1 = luaL_checknumber(L, 2);
+    v->setAngle(v1);
+    return 0;
+}
+
+static int Entity_get_head_margin(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<HeadMarginC> v = e.component<HeadMarginC>();
+    lua_pushnumber(L, v->v);
+    return 1;
+}
+static int Entity_set_head_margin(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<HeadMarginC> v = e.component<HeadMarginC>();
+    float v1 = luaL_checknumber(L, 2);
+    v->v = v1;
+    return 0;
+}
+
+static int Entity_get_eye_height(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<EyeHeightC> v = e.component<EyeHeightC>();
+    lua_pushnumber(L, v->v);
+    return 1;
+}
+static int Entity_set_eye_height(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<EyeHeightC> v = e.component<EyeHeightC>();
+    float v1 = luaL_checknumber(L, 2);
+    v->v = v1;
+    return 0;
+}
+
+static int Entity_get_knee_height(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<KneeHeightC> v = e.component<KneeHeightC>();
+    lua_pushnumber(L, v->v);
+    return 1;
+}
+static int Entity_set_knee_height(lua_State *L){
+    entityx::Entity e = checkEntity(L, 1);
+    entityx::ComponentHandle<KneeHeightC> v = e.component<KneeHeightC>();
+    float v1 = luaL_checknumber(L, 2);
+    v->v = v1;
+    return 0;
+}
+
+static int Entity_destroy (lua_State *L){
+	entityx::Entity e = checkEntity(L, 1);
+	if (e.valid()){
+        e.destroy();
+    }
 	return 0;
 }
 
 
+static int Entity_gc (lua_State *L){
+	entityx::Entity e = checkEntity(L, 1);
+	if (e.valid()){
+        dmLogError("entity gc but was not destroyed\n");
+        e.destroy();
+	}
+	return 0;
+}
 
 static const luaL_reg Entity_methods[] = {
-    {"new_unit",           Entity_new_unit},
+    {"get_position", Entity_get_position},
+    {"set_position", Entity_set_position},
+    {"get_velocity", Entity_get_velocity},
+    {"get_velocity", Entity_set_velocity},
+    {"set_movement_speed", Entity_set_movement_speed},
+    {"get_movement_speed", Entity_get_movement_speed},
+    {"get_sector", Entity_get_sector},
+    {"set_sector", Entity_set_sector},
+    {"get_angle", Entity_get_angle},
+    {"set_angle", Entity_set_angle},
+    {"get_head_margin", Entity_get_head_margin},
+    {"set_head_margin", Entity_set_head_margin},
+    {"get_eye_height", Entity_get_eye_height},
+    {"set_eye_height", Entity_set_eye_height},
+    {"get_knee_height", Entity_get_knee_height},
+    {"set_knee_height", Entity_set_knee_height},
+    {"destroy", Entity_destroy},
 	{0,0}
 };
 
@@ -42,9 +215,9 @@ static const luaL_reg Entity_meta[] = {
 
 static int Entity_register (lua_State *L)
 {
-	luaL_register(L, ENTITY, Entity_methods); // create methods table,
+	luaL_register(L, ENTITY, Entities_methods); // create methods table,
 	luaL_newmetatable(L, ENTITY);
-	luaL_register(L, NULL, Entity_meta);
+	luaL_register(L, NULL, Entities_meta);
 	lua_pushliteral(L, "__index");
 	lua_pushvalue(L, -3);
 	lua_rawset(L, -3);
@@ -53,6 +226,18 @@ static int Entity_register (lua_State *L)
 	lua_rawset(L, -3);
 	lua_pop(L, 1);
 	lua_pop(L, 1);
+
+	luaL_register(L, ENTITY_VAR, Entity_methods); // create methods table,
+    luaL_newmetatable(L, ENTITY_VAR);
+    luaL_register(L, NULL, Entity_meta);
+    lua_pushliteral(L, "__index");
+    lua_pushvalue(L, -3);
+    lua_rawset(L, -3);
+    lua_pushliteral(L, "__metatable");
+    lua_pushvalue(L, -3);
+    lua_rawset(L, -3);
+    lua_pop(L, 1);
+    lua_pop(L, 1);
 	return 0;
 }
 

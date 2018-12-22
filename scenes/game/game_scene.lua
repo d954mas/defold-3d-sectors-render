@@ -5,6 +5,7 @@ local SM = require "Jester.scene_stack"
 local JESTER = require "Jester.jester"
 local WORLD = require "world.world"
 local Subscription = require "libs.context_subscription"
+local RenderHelper = require "native_render.helper"
 
 
 function Scene:init_input()
@@ -30,6 +31,7 @@ function Scene:on_hide()
 end
 
 function Scene:init(go_self)
+    RenderHelper.init()
     self:init_input()
     self.subscription = Subscription()
     lock_mouse.lock_mouse()
@@ -39,7 +41,7 @@ function Scene:final(go_self)
     self.subscription:unsubscribe()
     COMMON.input_release()
     WORLD:save()
-    WORLD:unload()
+    WORLD:dispose()
     lock_mouse.unlock_mouse();
 end
 
