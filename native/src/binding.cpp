@@ -78,7 +78,8 @@ static int RenderSetBufferLua(lua_State* L){
 }
 
 static int DrawScreenLua(lua_State* L){
- 	DrawScreen();
+	entityx::Entity e = checkEntity(L,1);
+ 	DrawScreen(e);
  	return 0;
 }
 static int MovePlayerLua(lua_State* L){

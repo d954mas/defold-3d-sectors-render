@@ -7,32 +7,32 @@ function Script:init(go)
 	self.go_self = go
 	self.input_receiver:add(COMMON.HASHES.INPUT_UP, function(self, action_id,action)
 		if action.pressed then
-			World.player.velocity.x = 1
+			World.player_new:set_velocity(1,nil,nil)
 		elseif action.released then
-			World.player.velocity.x = 0
+			World.player_new:set_velocity(0,nil,nil)
 		end
 	end)
 	self.input_receiver:add(COMMON.HASHES.INPUT_DOWN, function(self, action_id,action)
 		if action.pressed then
-			World.player.velocity.x = -1
+			World.player_new:set_velocity(-1,nil,nil)
 		elseif action.released then
-			World.player.velocity.x = 0
+			World.player_new:set_velocity(0,nil,nil)
 		end
 	end)
 
 	self.input_receiver:add(COMMON.HASHES.INPUT_LEFT, function(self, action_id,action)
 		if action.pressed then
-			World.player.velocity.y = -1
+			World.player_new:set_velocity(nil,-1,nil)
 		elseif action.released then
-			World.player.velocity.y = 0
+			World.player_new:set_velocity(nil,0,nil)
 		end
 	end)
 
 	self.input_receiver:add(COMMON.HASHES.INPUT_RIGHT, function(self, action_id,action)
 		if action.pressed then
-			World.player.velocity.y = 1
+			World.player_new:set_velocity(nil,1,nil)
 		elseif action.released then
-			World.player.velocity.y = 0
+			World.player_new:set_velocity(nil,0,nil)
 		end
 	end)
 

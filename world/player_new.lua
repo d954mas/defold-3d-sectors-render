@@ -11,8 +11,6 @@ function M:initialize()
 	self.EVENTS = EVENTS
 	self:set_observable_events(self.EVENTS)
 	self.e = Entity.new_unit()
-	local x,y,z = self.e:get_position()
-	print("pos:" .. x)
 end
 
 function M:dispose()
@@ -23,6 +21,16 @@ end
 function M:get_angle()
 
 end
+
+function M:get_position()
+	local x,y,z = self.e:get_position()
+	return x,y,z
+end
+
+function M:get_velocity()
+	local x,y,z = self.e:get_velocity()
+	return x,y,z
+end
 --endregion
 
 
@@ -32,6 +40,10 @@ end
 
 function M:set_sector(n)
 	self.e:set_sector(n)
+end
+
+function M:set_movement_speed(speed)
+	self.e:set_movement_speed(speed)
 end
 
 

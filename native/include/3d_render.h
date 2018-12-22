@@ -7,7 +7,7 @@
 void RenderClearBuffer();
 void RenderSetBuffer(int, int, dmScript::LuaHBuffer*);
 
-void DrawScreen();
+void DrawScreen(entityx::Entity);
 void PlayerInit(int,float,float);
 void MovePlayer(float,float);
 void GetPlayerPos(float *, float *, float *);

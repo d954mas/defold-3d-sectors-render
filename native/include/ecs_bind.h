@@ -1,12 +1,9 @@
 #include "ecs.h"
+#include <dmsdk/sdk.h>
 #define ENTITY "Entity"
 #define ENTITY_VAR "EntityVar"
 
-static entityx::Entity checkEntity (lua_State *L, int index){
-	luaL_checktype(L, index, LUA_TUSERDATA);
-	entityx::Entity e = *((entityx::Entity*)  lua_touserdata(L, index));
-	return e;
-}
+entityx::Entity checkEntity (lua_State *L, int index);
 
 static void pushEntity (lua_State *L, entityx::Entity e){
 	entityx::Entity *l_e = (entityx::Entity *)lua_newuserdata(L, sizeof(entityx::Entity));
@@ -24,9 +21,10 @@ static int Entities_new_unit (lua_State *L){
     e.assign<HandleCollisionC>();
     e.assign<SectorC>(0);
     e.assign<AngleC>(0);
-    e.assign<HeadMarginC>(0);
-    e.assign<EyeHeightC>(0);
-    e.assign<KneeHeightC>(0);
+    e.assign<YawC>(0);
+    e.assign<HeadMarginC>(1);
+    e.assign<EyeHeightC>(6);
+    e.assign<KneeHeightC>(2);
  	pushEntity(L, e);
  	return 1;
 }
@@ -76,12 +74,15 @@ static int Entity_get_velocity(lua_State *L){
 static int Entity_set_velocity(lua_State *L){
     entityx::Entity e = checkEntity(L, 1);
     entityx::ComponentHandle<VelocityC> pos = e.component<VelocityC>();
-    float x = luaL_checknumber(L, 2);
-    float y = luaL_checknumber(L, 3);
-    float z = luaL_checknumber(L, 4);
-    pos->x = x;
-    pos->y = y;
-    pos->z = z;
+    if(lua_isnoneornil(L,2)==0){
+        pos->x = luaL_checknumber(L, 2);
+    }
+     if(lua_isnoneornil(L,3)==0){
+        pos->y = luaL_checknumber(L, 3);
+     }
+     if(lua_isnoneornil(L,4)==0){
+        pos->z = luaL_checknumber(L, 4);
+     }
     return 0;
 }
 
@@ -191,7 +192,7 @@ static const luaL_reg Entity_methods[] = {
     {"get_position", Entity_get_position},
     {"set_position", Entity_set_position},
     {"get_velocity", Entity_get_velocity},
-    {"get_velocity", Entity_set_velocity},
+    {"set_velocity", Entity_set_velocity},
     {"set_movement_speed", Entity_set_movement_speed},
     {"get_movement_speed", Entity_get_movement_speed},
     {"get_sector", Entity_get_sector},

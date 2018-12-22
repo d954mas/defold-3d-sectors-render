@@ -17,33 +17,10 @@
 
 
 
-/* Define window size */
-/* Define various vision related constants */
-#define EyeHeight  6    // Camera height from floor when standing
-#define HeadMargin 1    // How much room there is above camera before the head hits the ceiling
-#define KneeHeight 2    // How tall obstacles the player can simply walk over without jumping
-#define hfov (0.73f*H)  // Affects the horizontal field of vision
-#define vfov (.2f*H)    // Affects the vertical field of vision
 
-// Utility functions. Because C doesn't have templates,
-// we use the slightly less safe preprocessor macros to
-// implement these functions that work with multiple types.
-#define min(a,b)             (((a) < (b)) ? (a) : (b)) // min: Choose smaller of two scalars.
-#define max(a,b)             (((a) > (b)) ? (a) : (b)) // max: Choose greater of two scalars.
-#define clamp(a, mi,ma)      min(max(a,mi),ma)         // clamp: Clamp value into set range.
-#define vxs(x0,y0, x1,y1)    ((x0)*(y1) - (x1)*(y0))   // vxs: Vector cross product
-// Overlap:  Determine whether the two number ranges overlap.
-#define Overlap(a0,a1,b0,b1) (min(a0,a1) <= max(b0,b1) && min(b0,b1) <= max(a0,a1))
-// IntersectBox: Determine whether two 2D-boxes intersect.
-#define IntersectBox(x0,y0, x1,y1, x2,y2, x3,y3) (Overlap(x0,x1,x2,x3) && Overlap(y0,y1,y2,y3))
-// PointSide: Determine which side of a line the point is on. Return value: <0, =0 or >0.
-#define PointSide(px,py, x0,y0, x1,y1) vxs((x1)-(x0), (y1)-(y0), (px)-(x0), (py)-(y0))
-// Intersect: Calculate the point of intersection between two lines.
-#define Intersect(x1,y1, x2,y2, x3,y3, x4,y4) ((struct xy) { \
-    vxs(vxs(x1,y1, x2,y2), (x1)-(x2), vxs(x3,y3, x4,y4), (x3)-(x4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)), \
-    vxs(vxs(x1,y1, x2,y2), (y1)-(y2), vxs(x3,y3, x4,y4), (y3)-(y4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)) })
 
 World world;
+EcsWorld ecs;
 //
 int ground = 0, falling = 1, moving = 1;
 
@@ -68,14 +45,14 @@ void MapVertexChange(int idx,float x, float y){
 }
 
 void MapSectorCreate(float floor, float ceil){
-    struct sector s;
+    struct Sector s;
     s.floor = floor; s.ceil = ceil;
     world.sectors.push_back(s);
 }
 //add to last sector in list
 void MapSectorVertexAdd(int vertex,int neighbor){
     if (world.sectors.size() != 0){
-        sector &s = world.sectors[world.sectors.size()-1];
+        Sector &s = world.sectors[world.sectors.size()-1];
         if (vertex >= 0 && vertex <world.vertices.size()){ s.vertex.push_back(vertex);}
         else{ dmLogError("no vertex with idx:%d", vertex);return;}
         //todo check neighbors sector;
@@ -88,7 +65,7 @@ void MapSectorVertexAdd(int vertex,int neighbor){
 void MapCheck(){
     world.ecs.setWorld(&world);
     for(int i=0;i<world.sectors.size();i++){
-        sector &s = world.sectors[i];
+        Sector &s = world.sectors[i];
         if(s.neighbors.size()<3){
             dmLogError("bad sector:%d", i);
             return;
@@ -142,7 +119,7 @@ void RenderSetBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer){
 
 void MovePlayer(float x, float y){
     float eyeheight =  EyeHeight;
-    const sector &sect = world.sectors[world.player.sector];
+    const Sector &sect = world.sectors[world.player.sector];
     const std::vector<int>  vert = sect.vertex;
     float px = world.player.where.x, py = world.player.where.y;
     float dx = x - world.player.where.x, dy =y - world.player.where.y;
@@ -229,8 +206,12 @@ void GetPlayerPos(float *x, float *y, float *z){
     *z =world. player.where.z;
 }  
 
-void DrawScreen(){
-    MovePlayer(world.player.where.x, world.player.where.y);
+void DrawScreen(entityx::Entity e){
+    entityx::ComponentHandle<PositionC> posC = e.component<PositionC>();
+    entityx::ComponentHandle<AngleC> angleC = e.component<AngleC>();
+    entityx::ComponentHandle<YawC> yawC = e.component<YawC>();
+    entityx::ComponentHandle<SectorC> sectorC = e.component<SectorC>();
+   // MovePlayer(world.player.where.x, world.player.where.y);
     //clearBuffer1(&pixelBuffer);
     const int W = pixelBuffer.width;
     const int H =  pixelBuffer.height;
@@ -241,7 +222,7 @@ void DrawScreen(){
     std::vector<int> ybottom(W, H-1);
     std::vector<int> renderedsectors(world.sectors.size());
     //start rendering from player sector
-    *head = (struct item) {world.player.sector,0, W-1};
+    *head = (struct item) {sectorC->v,0, W-1};
     if (++head == queue + MaxQueue ) head = queue;
     do{
         //pick a sector then slice from the queue to draw
@@ -251,17 +232,17 @@ void DrawScreen(){
         if(renderedsectors[now.sectorno] & 0x21) continue; // Odd = still rendering, 0x20 = give up try 32 times
         ++renderedsectors[now.sectorno];
         //const for pointer and const for data
-        const sector &sect = world.sectors[now.sectorno];
+        const Sector &sect = world.sectors[now.sectorno];
         //render each wall of player sector that is facing towards player
 
         for(unsigned s =0; s< sect.vertex.size()-1;s++){
             //acquire the x,y coordinates of the two endpoints(vertices) of thius edge of the sector
             //transform the vertices into the player view
             xy v1 = world.vertices[sect.vertex[s]], v2 = world.vertices[sect.vertex[s+1]];
-            float vx1 = v1.x - world.player.where.x, vy1 = v1.y- world.player.where.y;
-            float vx2 = v2.x - world.player.where.x, vy2 = v2.y- world.player.where.y;
+            float vx1 = v1.x - posC->x, vy1 = v1.y- posC->y;
+            float vx2 = v2.x - posC->x, vy2 = v2.y- posC->y;
             //rotate them around player
-            float pcos = world.player.anglecos, psin = world.player.anglesin;
+            float pcos = angleC->anglecos, psin = angleC->anglesin;
             float tx1 = vx1 * psin - vy1 * pcos, tz1 = vx1 * pcos +vy1 * psin;
             float tx2 = vx2 * psin - vy2 * pcos, tz2 = vx2 * pcos +vy2 * psin;
             //is the wall in front of player
@@ -289,8 +270,8 @@ void DrawScreen(){
             //x1 >= x2 wtf
             if(x1 >= x2 || x2 < now.sx1 || x1 > now.sx2) continue;
             //acquire the floor and ceilings height, relative to player view;
-            float yceil = sect.ceil - world.player.where.z;
-            float yfloor = sect.floor - world.player.where.z;
+            float yceil = sect.ceil - posC->z;
+            float yfloor = sect.floor - posC->z;
 
 
             //check the edge type, neighor=-1 means wall, other boundary between two sectors.
@@ -298,10 +279,10 @@ void DrawScreen(){
 
             float nyceil = 0, nyfloor = 0;
             if (neighbor>=0){
-                nyceil =  world.sectors[neighbor].ceil - world.player.where.z;
-                nyfloor = world.sectors[neighbor].floor - world.player.where.z;
+                nyceil =  world.sectors[neighbor].ceil - posC->z;
+                nyfloor = world.sectors[neighbor].floor - posC->z;
             }
-            #define Yaw(y,z) (y + z*world.player.yaw)
+            #define Yaw(y,z) (y + z)//z*yawC->yaw)
             //project floor/ceiling height into screen coordinates(Y)
               int y1a  = H/2 - (int)(Yaw(yceil, tz1) * yscale1),  y1b = H/2 - (int)(Yaw(yfloor, tz1) * yscale1);
               int y2a  = H/2 - (int)(Yaw(yceil, tz2) * yscale2),  y2b = H/2 - (int)(Yaw(yfloor, tz2) * yscale2);
