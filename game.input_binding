@@ -42,6 +42,10 @@ key_trigger {
   input: KEY_ENTER
   action: "lock_mouse"
 }
+key_trigger {
+  input: KEY_SPACE
+  action: "jump"
+}
 mouse_trigger {
   input: MOUSE_BUTTON_1
   action: "touch"

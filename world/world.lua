@@ -46,7 +46,7 @@ function M:load(file)
 	--region init player
 	self.player= Player()
 	self.player:set_sector(self.map.player.sector)
-	self.player:set_position(self.map.player.position.x,self.map.player.position.y,8)
+	self.player:set_position(self.map.player.position.x,self.map.player.position.y,0)
 	self.player:set_movement_speed(10)
 	self.player:align_z()
 	self.player:set_angle(0)

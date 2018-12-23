@@ -158,11 +158,19 @@ static int Entity_set_eye_height(lua_State *L){
 }
 
 static int Entity_get_knee_height(lua_State *L){
+     entityx::Entity e = checkEntity(L, 1);
+     entityx::ComponentHandle<KneeHeightC> v = e.component<KneeHeightC>();
+     lua_pushnumber(L, v->v);
+     return 1;
+}
+
+static int Entity_is_falling(lua_State *L){
     entityx::Entity e = checkEntity(L, 1);
-    entityx::ComponentHandle<KneeHeightC> v = e.component<KneeHeightC>();
-    lua_pushnumber(L, v->v);
+    entityx::ComponentHandle<HandleGravityC> v = e.component<HandleGravityC>();
+    lua_pushboolean(L, v->falling);
     return 1;
 }
+
 static int Entity_set_knee_height(lua_State *L){
     entityx::Entity e = checkEntity(L, 1);
     entityx::ComponentHandle<KneeHeightC> v = e.component<KneeHeightC>();
@@ -206,6 +214,7 @@ static const luaL_reg Entity_methods[] = {
     {"set_eye_height", Entity_set_eye_height},
     {"get_knee_height", Entity_get_knee_height},
     {"set_knee_height", Entity_set_knee_height},
+    {"is_falling", Entity_is_falling},
     {"destroy", Entity_destroy},
 	{0,0}
 };

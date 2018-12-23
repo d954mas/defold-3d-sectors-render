@@ -255,8 +255,8 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
                         float hole_low  = sect.neighbors[s] < 0 ?  9e9 : max(sect.floor, world.sectors[sect.neighbors[s]].floor);
                         float hole_high = sect.neighbors[s] < 0 ? -9e9 : min(sect.ceil,  world.sectors[sect.neighbors[s]].ceil );
                         // Check whether we're bumping into a wall.
-                        if(hole_high < position.z+head.v
-                            || hole_low  >position.z-eye.v+knee.v){
+                        if(hole_high < position.z+eye.v+head.v
+                            || hole_low  >position.z+knee.v){
                             // Bumps into a wall! Slide along the wall.
                             // This formula is from Wikipedia article "vector projection".
                             float xd = v2.x - v.x, yd = v2.y - v.y;
@@ -286,11 +286,11 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
            if(grav->falling){
                 vel.z -= 0.05f*60 * dt;
                 float nextz = position.z + vel.z;
-                if(vel.z < 0 && nextz  < world.sectors[sector.v].floor + eye.v){
-                    position.z = world.sectors[sector.v].floor + eye.v;
+                if(vel.z < 0 && nextz  < world.sectors[sector.v].floor){
+                    position.z = world.sectors[sector.v].floor;
                     vel.z = 0;
                     grav->falling = false;
-                }else if(vel.z > 0 && nextz > world.sectors[sector.v].ceil){
+                }else if(vel.z > 0 && nextz > world.sectors[sector.v].ceil-eye.v){
                     vel.z = 0;
                     grav->falling = true;
                 }if(grav->falling){

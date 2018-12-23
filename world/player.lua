@@ -35,6 +35,10 @@ end
 function M:get_sector()
 	return self.e:get_sector()
 end
+
+function M:is_falling()
+	return self.e:is_falling()
+end
 --endregion
 
 

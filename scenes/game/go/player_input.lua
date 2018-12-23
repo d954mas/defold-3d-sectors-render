@@ -36,6 +36,12 @@ function Script:init(go)
 		end
 	end)
 
+	self.input_receiver:add(COMMON.HASHES.INPUT_JUMP, function(self, action_id,action)
+		if action.pressed and not World.player:is_falling() then
+			World.player:set_velocity(nil,nil,1)
+		end
+	end)
+
 	self.input_receiver:add_mouse(function(self, action_id,action)
 		local move=lock_mouse.update_cursor()
 		if(move)then
@@ -43,6 +49,7 @@ function Script:init(go)
 		end
 		World.player:increase_angle(action.screen_dx * 0.03 *MOUSE_SCALE)
 	end)
+
 
 end
 

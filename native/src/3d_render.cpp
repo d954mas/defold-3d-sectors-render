@@ -171,7 +171,9 @@ void MovePlayer(float x, float y){
 void DrawScreen(entityx::Entity e){
     entityx::ComponentHandle<PositionC> posC = e.component<PositionC>();
     entityx::ComponentHandle<AngleC> angleC = e.component<AngleC>();
+    entityx::ComponentHandle<AngleC> HeadC = e.component<AngleC>();
     entityx::ComponentHandle<YawC> yawC = e.component<YawC>();
+    entityx::ComponentHandle<EyeHeightC> eyeC = e.component<EyeHeightC>();
     entityx::ComponentHandle<SectorC> sectorC = e.component<SectorC>();
    // MovePlayer(world.player.where.x, world.player.where.y);
     //clearBuffer1(&pixelBuffer);
@@ -232,8 +234,8 @@ void DrawScreen(entityx::Entity e){
             //x1 >= x2 wtf
             if(x1 >= x2 || x2 < now.sx1 || x1 > now.sx2) continue;
             //acquire the floor and ceilings height, relative to player view;
-            float yceil = sect.ceil - posC->z;
-            float yfloor = sect.floor - posC->z;
+            float yceil = sect.ceil - posC->z-eyeC->v;
+            float yfloor = sect.floor - posC->z-eyeC->v;
 
 
             //check the edge type, neighor=-1 means wall, other boundary between two sectors.
@@ -241,8 +243,8 @@ void DrawScreen(entityx::Entity e){
 
             float nyceil = 0, nyfloor = 0;
             if (neighbor>=0){
-                nyceil =  world.sectors[neighbor].ceil - posC->z;
-                nyfloor = world.sectors[neighbor].floor - posC->z;
+                nyceil =  world.sectors[neighbor].ceil - posC->z-eyeC->v;
+                nyfloor = world.sectors[neighbor].floor - posC->z-eyeC->v;
             }
             #define Yaw(y,z) (y + z)//z*yawC->yaw)
             //project floor/ceiling height into screen coordinates(Y)
