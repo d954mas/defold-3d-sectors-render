@@ -59,6 +59,10 @@ function M:set_angle(angle)
 	self.e:set_angle(angle)
 end
 
+function M:increase_angle(angle)
+	self.e:set_angle(self.e:get_angle() + angle)
+end
+
 ---set z position to floor position + HeadMargin
 function M:align_z()
 

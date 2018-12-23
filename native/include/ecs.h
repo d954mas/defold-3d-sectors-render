@@ -3,9 +3,6 @@
 
 /* Define window size */
 /* Define various vision related constants */
-#define EyeHeight  6    // Camera height from floor when standing
-#define HeadMargin 1    // How much room there is above camera before the head hits the ceiling
-#define KneeHeight 2    // How tall obstacles the player can simply walk over without jumping
 #define hfov (0.73f*H)  // Affects the horizontal field of vision
 #define vfov (.2f*H)    // Affects the vertical field of vision
 
@@ -28,7 +25,6 @@
     vxs(vxs(x1,y1, x2,y2), (y1)-(y2), vxs(x3,y3, x4,y4), (y3)-(y4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)) })
 
 struct XY {float x,y;};
-struct XYZ {float x,y,z;};
 /* Sectors: Floor and ceiling height; list of edge vertices and neighbors */
 //Sector is a room, where i can set floor and ceiling height
 //Sector can be 2 types. Wall and portal. We can see throw portal
@@ -70,8 +66,7 @@ struct World{
 };
 
 
-
-
+//region COMPONENTS
 struct PositionC {
   PositionC(float x = 0.0f, float y = 0.0f, float z = 0.0f) : x(x), y(y), z(z) {}
   float x, y, z;
@@ -91,7 +86,6 @@ struct HandleCollisionC {
       HandleCollisionC(float dx = 0.0f, float dy = 0.0f, float dz = 0.0f) : dx(dx), dy(dy), dz(dz) {}
       float dx, dy, dz;
 };
-
 
 //HeadMargin
 struct HeadMarginC{
@@ -142,14 +136,16 @@ struct SectorC{
 };
 
 //region systems
-
-
 struct MovementSystem : public entityx::System<MovementSystem> {
   void update(entityx::EntityManager &es, entityx::EventManager &events, entityx::TimeDelta dt) override {
-    es.each<PositionC, VelocityC, MovementSpeedC>([dt](entityx::Entity entity, PositionC &position, VelocityC &vel, MovementSpeedC &speed) {
-        float dx =  vel.x * speed.v * dt;
-        float dy =  vel.y * speed.v * dt;
+    es.each<PositionC, VelocityC,AngleC, MovementSpeedC>([dt](entityx::Entity entity, PositionC &position, VelocityC &vel,AngleC &angle, MovementSpeedC &speed) {
+        float vx = vel.x * angle.anglecos - vel.y * angle.anglesin;
+        float vy = vel.x * angle.anglesin + vel.y * angle.anglecos;
+        float dx =  vx * speed.v * dt;
+        float dy =  vy * speed.v * dt;
         float dz =  vel.z * speed.v * dt;
+
+
         if (entity.has_component<HandleCollisionC>()){
             entityx::ComponentHandle<HandleCollisionC> collision = entity.component<HandleCollisionC>();
             collision->dx = dx;
@@ -243,7 +239,7 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
     EyeHeightC &eye, SectorC &sector,HeadMarginC &head,KneeHeightC &knee) {
         position.z += col.dz;
         const Sector &sect = world.sectors[sector.v];
-        const std::vector<int> vert = sect.vertex;
+        const std::vector<int> &vert = sect.vertex;
         if(col.dx != 0 || col.dy !=0){
              for(unsigned s = 0; s < vert.size()-1; ++s){
                     XY v =  world.vertices[vert[s+0]];
@@ -281,13 +277,12 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
     });
   };
 };
-
 //endregion
-
 
 
 
 static void WorldUpdate(float dt){
     world.ecs.update(dt);
 }
+
   

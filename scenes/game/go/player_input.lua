@@ -37,13 +37,11 @@ function Script:init(go)
 	end)
 
 	self.input_receiver:add_mouse(function(self, action_id,action)
-		--[[local move=lock_mouse.update_cursor()
+		local move=lock_mouse.update_cursor()
 		if(move)then
 			action.screen_dx, action.screen_dy = move[1], move[2]
 		end
-		World.player.angle =World.player.angle + action.screen_dx * 0.03 *MOUSE_SCALE;
-		local yaw  = COMMON.LUME.clamp(action.screen_dy*0.05*MOUSE_SCALE, -5, 5);
-		World.player.yaw = yaw - World.player.velocity.z*0.5;--]]
+		World.player:increase_angle(action.screen_dx * 0.03 *MOUSE_SCALE)
 	end)
 
 end
