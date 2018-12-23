@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4541a19e-81ad-4482-8b04-19673d9ae92f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/include/ecs.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/ecs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/include/ecs_bind.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/ecs_bind.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/debug/debug_game_gui.gui" beforeDir="false" afterPath="$PROJECT_DIR$/gui/debug/debug_game_gui.gui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script" beforeDir="false" afterPath="$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -123,7 +123,7 @@
           <entry key="cc" value="7" />
           <entry key="collection" value="2" />
           <entry key="cpp" value="316" />
-          <entry key="gui_script" value="1" />
+          <entry key="gui_script" value="2" />
           <entry key="h" value="378" />
           <entry key="json" value="28" />
           <entry key="lua" value="256" />
@@ -138,7 +138,7 @@
           <entry key="C/C++" value="701" />
           <entry key="JSON" value="28" />
           <entry key="PLAIN_TEXT" value="30" />
-          <entry key="lua" value="281" />
+          <entry key="lua" value="282" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -146,6 +146,7 @@
           <entry key="cc" value="2" />
           <entry key="cpp" value="14035" />
           <entry key="dummy" value="5" />
+          <entry key="gui_script" value="120" />
           <entry key="h" value="4662" />
           <entry key="json" value="1115" />
           <entry key="lua" value="4548" />
@@ -159,7 +160,7 @@
           <entry key="C/C++" value="18699" />
           <entry key="JSON" value="1115" />
           <entry key="PLAIN_TEXT" value="496" />
-          <entry key="lua" value="4862" />
+          <entry key="lua" value="4982" />
         </counts>
       </usages-collector>
     </session>
@@ -170,10 +171,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/native/include/ecs.h">
+        <entry file="file://$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="590">
-              <caret line="295" column="35" lean-forward="true" selection-start-line="295" selection-start-column="35" selection-end-line="295" selection-end-column="35" />
+            <state relative-caret-position="336">
+              <caret line="21" column="67" lean-forward="true" selection-start-line="21" selection-start-column="67" selection-end-line="21" selection-end-column="67" />
             </state>
           </provider>
         </entry>
@@ -248,7 +249,6 @@
         <option value="$PROJECT_DIR$/libs/subscription_storage.lua" />
         <option value="$PROJECT_DIR$/libs/multiple_subscription.lua" />
         <option value="$PROJECT_DIR$/libs/context_subscription.lua" />
-        <option value="$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script" />
         <option value="$PROJECT_DIR$/libs/scripts/script.lua" />
         <option value="$PROJECT_DIR$/libs/scripts/gui_follow_go_go_script.lua" />
         <option value="$PROJECT_DIR$/libs/scripts/gui_follow_go.script" />
@@ -284,6 +284,7 @@
         <option value="$PROJECT_DIR$/world/player.lua" />
         <option value="$PROJECT_DIR$/native/include/ecs_bind.h" />
         <option value="$PROJECT_DIR$/native/include/ecs.h" />
+        <option value="$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script" />
       </list>
     </option>
   </component>
@@ -300,8 +301,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="507" />
-    <option name="y" value="18" />
+    <option name="x" value="667" />
+    <option name="y" value="7" />
     <option name="width" value="1475" />
     <option name="height" value="1036" />
   </component>
@@ -616,7 +617,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1545570012665" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1545570982630" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Trip to ElPaco Side Scroller" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -675,12 +676,12 @@
       <workItem from="1544815889010" duration="68603000" />
       <workItem from="1545119549616" duration="9842000" />
       <workItem from="1545366886759" duration="26642000" />
-      <workItem from="1545556223366" duration="8908000" />
+      <workItem from="1545556223366" duration="9878000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="221571000" />
+    <option name="totallyTimeSpent" value="222541000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="507" y="18" width="1475" height="1036" extended-state="0" />
@@ -783,13 +784,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gui/debug/debug_gui.script">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="18" column="3" lean-forward="true" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="3" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scenes/game/untitled.script" />
     <entry file="file://$PROJECT_DIR$/libs/scripts/gui_follow_go.script">
@@ -1070,8 +1064,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/native/include/ecs.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="590">
-          <caret line="295" column="35" lean-forward="true" selection-start-line="295" selection-start-column="35" selection-end-line="295" selection-end-column="35" />
+        <state relative-caret-position="430">
+          <caret line="285" column="29" lean-forward="true" selection-start-line="285" selection-start-column="29" selection-end-line="286" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="21" column="67" lean-forward="true" selection-start-line="21" selection-start-column="67" selection-end-line="21" selection-end-column="67" />
         </state>
       </provider>
     </entry>

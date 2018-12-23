@@ -1,10 +1,12 @@
 local COMMON = require "libs.common"
 local ObservableMixin = require "libs.observable_mixin"
+local WORLD = require "world.world"
 function init(self)
 	self.lbl_cpu = gui.get_node("lbl_cpu")
 	self.lbl_memory = gui.get_node("lbl_memory")
 	self.lbl_subscriptions = gui.get_node("lbl_subscriptions")
 	self.lbl_entities= gui.get_node("lbl_entities")
+	self.lbl_pos = gui.get_node("lbl_pos")
 	gui.set_render_order(15)
 end
 
@@ -18,4 +20,9 @@ function update(self, dt)
 	gui.set_text(self.lbl_memory, "Mem:" .. string.format("%.2f Mb", profiler.get_memory_usage()/1024/1024))
 	gui.set_text(self.lbl_subscriptions, "Subscriptions:" .. ObservableMixin.static.get_total_subscriptions())
 	gui.set_text(self.lbl_entities, "Entities:" .. Entity.get_size())
+	local x,y,z =  0,0,0
+	if WORLD.player then
+		x,y,z = WORLD.player:get_position()
+	end
+	gui.set_text(self.lbl_pos, string.format("Pos:(%.1f;%.1f,%.1f)", x,y,z))
 end
