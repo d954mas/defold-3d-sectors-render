@@ -87,6 +87,11 @@ struct HandleCollisionC {
       float dx, dy, dz;
 };
 
+struct HandleGravityC {
+      HandleGravityC(bool falling = true) : falling(falling){}
+      bool falling;
+};
+
 //HeadMargin
 struct HeadMarginC{
   HeadMarginC(float v=0) : v(v) {}
@@ -235,7 +240,7 @@ struct MovementSystem : public entityx::System<MovementSystem> {
     
 struct CollisionSystem : public entityx::System<CollisionSystem> {
   void update(entityx::EntityManager &es, entityx::EventManager &events, entityx::TimeDelta dt) override {
-    es.each<PositionC,HandleCollisionC, EyeHeightC, SectorC,HeadMarginC,KneeHeightC>([dt](entityx::Entity entity, PositionC &position, HandleCollisionC &col,
+    es.each<PositionC,VelocityC,HandleCollisionC, EyeHeightC, SectorC,HeadMarginC,KneeHeightC>([dt](entityx::Entity entity, PositionC &position, VelocityC &vel, HandleCollisionC &col,
     EyeHeightC &eye, SectorC &sector,HeadMarginC &head,KneeHeightC &knee) {
         position.z += col.dz;
         const Sector &sect = world.sectors[sector.v];
@@ -273,7 +278,26 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
               position.y += col.dy;
               col.dx = 0;col.dy = 0;
         }
-       col.dz = 0;
+
+
+        if(entity.has_component<HandleGravityC>()){
+           entityx::ComponentHandle<HandleGravityC> grav = entity.component<HandleGravityC>();
+           grav->falling = true;
+           if(grav->falling){
+                vel.z -= 0.05f*60 * dt;
+                float nextz = position.z + vel.z;
+                if(vel.z < 0 && nextz  < world.sectors[sector.v].floor + eye.v){
+                    position.z = world.sectors[sector.v].floor + eye.v;
+                    vel.z = 0;
+                    grav->falling = false;
+                }else if(vel.z > 0 && nextz > world.sectors[sector.v].ceil){
+                    vel.z = 0;
+                    grav->falling = true;
+                }if(grav->falling){
+                    position.z += vel.z;
+                }
+           }
+        }
     });
   };
 };

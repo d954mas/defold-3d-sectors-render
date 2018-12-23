@@ -19,6 +19,7 @@ static int Entities_new_unit (lua_State *L){
     e.assign<VelocityC>(0,0,0);
     e.assign<MovementSpeedC>();
     e.assign<HandleCollisionC>();
+    e.assign<HandleGravityC>();
     e.assign<SectorC>(0);
     e.assign<AngleC>(0);
     e.assign<YawC>(0);
