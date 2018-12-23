@@ -2,37 +2,72 @@ local COMMON = require "libs.common"
 local Script = COMMON.class("PlayerInputScript")
 local World = require("world.world")
 local MOUSE_SCALE = 0.3
+
+
+function Script:update_velocity()
+	self.velocity.x, self.velocity.y = 0,0
+	if self.up then
+		self.velocity.x = self.velocity.x + 1
+	end
+	if self.down then
+		self.velocity.x = self.velocity.x - 1
+	end
+	if self.left then
+		self.velocity.y= self.velocity.y - 1
+	end
+	if self.right then
+		self.velocity.y = self.velocity.y + 1
+	end
+	if vmath.length(self.velocity)~= 0 then
+		self.velocity = vmath.normalize(self.velocity)
+		World.player:set_velocity(self.velocity.x,self.velocity.y,nil)
+	else
+		World.player:set_velocity(0,0,nil)
+	end
+
+end
+
 function Script:init(go)
+	self.velocity = vmath.vector3()
 	self.input_receiver = COMMON.INPUT()
 	self.go_self = go
+	self.right, self.left, self.up, self.down = nil, nil, nil, nil
 	self.input_receiver:add(COMMON.HASHES.INPUT_UP, function(self, action_id,action)
 		if action.pressed then
-			World.player:set_velocity(1,nil,nil)
+			self.up = true
+			self:update_velocity()
 		elseif action.released then
-			World.player:set_velocity(0,nil,nil)
+			self.up = nil
+			self:update_velocity()
 		end
 	end)
 	self.input_receiver:add(COMMON.HASHES.INPUT_DOWN, function(self, action_id,action)
 		if action.pressed then
-			World.player:set_velocity(-1,nil,nil)
+			self.down = true
+			self:update_velocity()
 		elseif action.released then
-			World.player:set_velocity(0,nil,nil)
+			self.down = nil
+			self:update_velocity()
 		end
 	end)
 
 	self.input_receiver:add(COMMON.HASHES.INPUT_LEFT, function(self, action_id,action)
 		if action.pressed then
-			World.player:set_velocity(nil,-1,nil)
+			self.left = true
+			self:update_velocity()
 		elseif action.released then
-			World.player:set_velocity(nil,0,nil)
+			self.left = nil
+			self:update_velocity()
 		end
 	end)
 
 	self.input_receiver:add(COMMON.HASHES.INPUT_RIGHT, function(self, action_id,action)
 		if action.pressed then
-			World.player:set_velocity(nil,1,nil)
+			self.right = true
+			self:update_velocity()
 		elseif action.released then
-			World.player:set_velocity(nil,0,nil)
+			self.right = nil
+			self:update_velocity()
 		end
 	end)
 
