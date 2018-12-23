@@ -44,15 +44,6 @@ static int MapCheckLua(lua_State* L){
 
 //endregion
 
-//region Player
-static int PlayerInitLua(lua_State* L){
-    int sector = (int)luaL_checknumber(L, 1);
-    float x = luaL_checknumber(L, 2), y = luaL_checknumber(L, 3);
-    PlayerInit(sector,x,y);
-    return 0;
-}
-//endregion
-
 
 //region World
 static int WorldUpdateLua(lua_State* L){
@@ -62,12 +53,6 @@ static int WorldUpdateLua(lua_State* L){
 }
 
 //endregion
-
-static char* decodeBuffer(dmBuffer::HBuffer *hBuffer, uint32_t *datasize){
-	char* data = 0;
-	dmBuffer::GetBytes(*hBuffer, (void**)&data, datasize);
-	return data;
-}
 
 static int RenderSetBufferLua(lua_State* L){
  	int width = (int) luaL_checknumber(L, 1);
@@ -82,47 +67,12 @@ static int DrawScreenLua(lua_State* L){
  	DrawScreen(e);
  	return 0;
 }
-static int MovePlayerLua(lua_State* L){
-	float x = luaL_checknumber(L, 1);
- 	float y = luaL_checknumber(L, 2);
- 	MovePlayer(x,y);
- 	return 0;
-}
-
-static int SetAngleLua(lua_State* L){
- 	float angle = luaL_checknumber(L, 1);
-    SetAngle(angle);
-    return 0;
-}
-
-static int SetYawLua(lua_State* L){
- 	float yaw = luaL_checknumber(L, 1);
- 	SetYaw(yaw);
- 	return 0;
-}
-
-static int GetPlayerPosLua(lua_State* L){
- 	float x=0;
- 	float y = 0;
- 	float z= 0;
- 	GetPlayerPos(&x,&y,&z);
- 	lua_pushnumber (L, x);
- 	lua_pushnumber (L, y);
- 	lua_pushnumber (L, z);
- 	return 3;
-}
 
 // Functions exposed to Lua
 static const luaL_reg Module_methods[] ={
     //render
 	{"render_set_buffer", RenderSetBufferLua},
 	{"draw_screen", DrawScreenLua},
-
-	//
-	{"move_player", MovePlayerLua},
-	{"set_player_angle", SetAngleLua},
-    {"set_player_yaw", SetYawLua},
-	{"get_player_pos", GetPlayerPosLua},
 
 	//map functions
 	{"map_clear", MapClearLua},
@@ -132,8 +82,6 @@ static const luaL_reg Module_methods[] ={
 	{"map_sector_vertex_add", MapSectorVertexAddLua},
 	{"map_check", MapCheckLua},
 
-	//player
-	{"player_init", PlayerInitLua},
 
 	//world
 	{"world_update",WorldUpdateLua},

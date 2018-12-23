@@ -23,25 +23,19 @@
 // PointSide: Determine which side of a line the point is on. Return value: <0, =0 or >0.
 #define PointSide(px,py, x0,y0, x1,y1) vxs((x1)-(x0), (y1)-(y0), (px)-(x0), (py)-(y0))
 // Intersect: Calculate the point of intersection between two lines.
-#define Intersect(x1,y1, x2,y2, x3,y3, x4,y4) ((struct xy) { \
+#define Intersect(x1,y1, x2,y2, x3,y3, x4,y4) ((XY) { \
     vxs(vxs(x1,y1, x2,y2), (x1)-(x2), vxs(x3,y3, x4,y4), (x3)-(x4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)), \
     vxs(vxs(x1,y1, x2,y2), (y1)-(y2), vxs(x3,y3, x4,y4), (y3)-(y4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)) })
 
-struct xy {float x,y;};
-struct xyz {float x,y,z;};
+struct XY {float x,y;};
+struct XYZ {float x,y,z;};
 /* Sectors: Floor and ceiling height; list of edge vertices and neighbors */
 //Sector is a room, where i can set floor and ceiling height
 //Sector can be 2 types. Wall and portal. We can see throw portal
-struct Sector
-{
+struct Sector{
     float floor, ceil;
     std::vector<int> vertex; //vertex have x,y coords
     std::vector<int> neighbors; //Each edge may have a corresponding neighboring sector
-};
-struct player{
-    struct xyz where, velocity;
-    float angle, anglesin, anglecos, yaw;//looking towards(sin() and cos() thereof) yaw is rotation of player?
-    int sector; //current sector
 };
 
 struct World;
@@ -66,13 +60,11 @@ public:
 struct World{
     EcsWorld ecs;
     std::vector<Sector> sectors;
-    std::vector<xy> vertices;
-    player player;
+    std::vector<XY> vertices;
 
     void reset(){
         sectors.clear();
         vertices.clear();
-        player = (struct player) { {0,0,0}, {0,0,0}, 0,0,0,0, 0 };
         ecs.reset();
     }
 };
@@ -248,15 +240,15 @@ struct MovementSystem : public entityx::System<MovementSystem> {
 struct CollisionSystem : public entityx::System<CollisionSystem> {
   void update(entityx::EntityManager &es, entityx::EventManager &events, entityx::TimeDelta dt) override {
     es.each<PositionC,HandleCollisionC, EyeHeightC, SectorC,HeadMarginC,KneeHeightC>([dt](entityx::Entity entity, PositionC &position, HandleCollisionC &col,
-    EyeHeightC eye, SectorC sector,HeadMarginC head,KneeHeightC knee) {
+    EyeHeightC &eye, SectorC &sector,HeadMarginC &head,KneeHeightC &knee) {
         position.z += col.dz;
         const Sector &sect = world.sectors[sector.v];
         const std::vector<int> vert = sect.vertex;
         if(col.dx != 0 || col.dy !=0){
              for(unsigned s = 0; s < vert.size()-1; ++s){
-                    xy v =  world.vertices[vert[s+0]];
-                    xy v2 =  world.vertices[vert[s+1]];
-                    if(IntersectBox(position.x,position.y, position.x+col.dx,position.y+col.dy, v.x, v.y, v2.x, v2.y)
+                    XY v =  world.vertices[vert[s+0]];
+                    XY v2 =  world.vertices[vert[s+1]];
+                    if(IntersectBox(position.x, position.y, position.x+col.dx,position.y+col.dy, v.x, v.y, v2.x, v2.y)
                         && PointSide(position.x+col.dx, position.y+col.dy, v.x, v.y, v2.x, v2.y) < 0){
                         //Check where the hole is.
                         float hole_low  = sect.neighbors[s] < 0 ?  9e9 : max(sect.floor, world.sectors[sect.neighbors[s]].floor);
@@ -273,21 +265,19 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
                     }
              }
               for(unsigned s = 0; s < vert.size()-1; ++s){
-                     xy v =  world.vertices[vert[s+0]];
-                     xy v2 =  world.vertices[vert[s+1]];
-                     if(IntersectBox(position.x,position.y, position.x+col.dx,position.y+col.dy, v.x, v.y, v2.x, v2.y)
+                     XY v =  world.vertices[vert[s+0]];
+                     XY v2 =  world.vertices[vert[s+1]];
+                     if(sect.neighbors[s] >= 0 && IntersectBox(position.x,position.y, position.x+col.dx,position.y+col.dy, v.x, v.y, v2.x, v2.y)
                                             && PointSide(position.x+col.dx, position.y+col.dy, v.x, v.y, v2.x, v2.y) < 0){
-
                          sector.v = sect.neighbors[s];
-                          printf("set sector:%u", sector.v);
                          break;
                      }
               }
               position.x += col.dx;
               position.y += col.dy;
+              col.dx = 0;col.dy = 0;
         }
-
-        col.dx = 0;col.dy = 0; col.dz = 0;\
+       col.dz = 0;
     });
   };
 };

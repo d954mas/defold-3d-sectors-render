@@ -108,9 +108,9 @@ static int Entity_get_sector(lua_State *L){
 }
 static int Entity_set_sector(lua_State *L){
     entityx::Entity e = checkEntity(L, 1);
-    entityx::ComponentHandle<MovementSpeedC> v = e.component<MovementSpeedC>();
-    float v1 = luaL_checknumber(L, 2);
-    v->v = v1;
+    entityx::ComponentHandle<SectorC> v = e.component<SectorC>();
+    int v1 = (int)luaL_checknumber(L, 2);
+ //   v->v = v1;
     return 0;
 }
 

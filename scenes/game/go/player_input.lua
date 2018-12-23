@@ -7,43 +7,43 @@ function Script:init(go)
 	self.go_self = go
 	self.input_receiver:add(COMMON.HASHES.INPUT_UP, function(self, action_id,action)
 		if action.pressed then
-			World.player_new:set_velocity(1,nil,nil)
+			World.player:set_velocity(1,nil,nil)
 		elseif action.released then
-			World.player_new:set_velocity(0,nil,nil)
+			World.player:set_velocity(0,nil,nil)
 		end
 	end)
 	self.input_receiver:add(COMMON.HASHES.INPUT_DOWN, function(self, action_id,action)
 		if action.pressed then
-			World.player_new:set_velocity(-1,nil,nil)
+			World.player:set_velocity(-1,nil,nil)
 		elseif action.released then
-			World.player_new:set_velocity(0,nil,nil)
+			World.player:set_velocity(0,nil,nil)
 		end
 	end)
 
 	self.input_receiver:add(COMMON.HASHES.INPUT_LEFT, function(self, action_id,action)
 		if action.pressed then
-			World.player_new:set_velocity(nil,-1,nil)
+			World.player:set_velocity(nil,-1,nil)
 		elseif action.released then
-			World.player_new:set_velocity(nil,0,nil)
+			World.player:set_velocity(nil,0,nil)
 		end
 	end)
 
 	self.input_receiver:add(COMMON.HASHES.INPUT_RIGHT, function(self, action_id,action)
 		if action.pressed then
-			World.player_new:set_velocity(nil,1,nil)
+			World.player:set_velocity(nil,1,nil)
 		elseif action.released then
-			World.player_new:set_velocity(nil,0,nil)
+			World.player:set_velocity(nil,0,nil)
 		end
 	end)
 
 	self.input_receiver:add_mouse(function(self, action_id,action)
-		local move=lock_mouse.update_cursor()
+		--[[local move=lock_mouse.update_cursor()
 		if(move)then
 			action.screen_dx, action.screen_dy = move[1], move[2]
 		end
 		World.player.angle =World.player.angle + action.screen_dx * 0.03 *MOUSE_SCALE;
 		local yaw  = COMMON.LUME.clamp(action.screen_dy*0.05*MOUSE_SCALE, -5, 5);
-		World.player.yaw = yaw - World.player.velocity.z*0.5;
+		World.player.yaw = yaw - World.player.velocity.z*0.5;--]]
 	end)
 
 end

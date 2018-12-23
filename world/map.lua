@@ -46,8 +46,6 @@ function M.load(map_name)
 	end
 
 	local player = map.player
-	native.player_init(player.sector, player.position.x, player.position.y)
-	native.set_player_angle(0)
 	native.map_check()
 	print("map loading done")
 	--fixed_arrays(map.vertices)

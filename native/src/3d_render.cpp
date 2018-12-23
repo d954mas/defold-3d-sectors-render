@@ -14,30 +14,22 @@
 #define DLIB_LOG_DOMAIN "MapRender"
 #include <dmsdk/dlib/log.h>
 
-
-
-
-
-
 World world;
 EcsWorld ecs;
-//
-int ground = 0, falling = 1, moving = 1;
 
 
 //region MAP
 void MapClear(){
-    ground = 0, falling = 1, moving = 1;
     world.reset();
 }
 
 void MapVertexAdd(float x, float y){
-    world.vertices.push_back((struct xy){x,y});
+    world.vertices.push_back((XY){x,y});
 }
 
 void MapVertexChange(int idx,float x, float y){
     if (idx <world.vertices.size()){
-        struct xy v = world.vertices[idx];
+        XY v = world.vertices[idx];
         v.x = x; v.y = y;
     }else{
         dmLogError("no vertex with idx:%d", idx);
@@ -79,21 +71,6 @@ void MapCheck(){
     }
 }
 
-//endregion MAP
-
-//region PLAYER
-
-void PlayerInit(int sector, float x, float y){
-    world.player.where = (xyz){x,y,0};
-    world.player.where.z = world.sectors[sector].floor + EyeHeight;
-    world.player.sector = sector;
-    MovePlayer(x,y);
-}
-
-//endregion
-
-
-
 //draw functions
 /* vline: Draw a vertical line on screen, with a different color pixel in top & bottom */
 static inline void vline(int x, int y1,int y2, uint32_t top,uint32_t middle,uint32_t bottom){
@@ -118,93 +95,78 @@ void RenderSetBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer){
 
 
 void MovePlayer(float x, float y){
-    float eyeheight =  EyeHeight;
-    const Sector &sect = world.sectors[world.player.sector];
-    const std::vector<int>  vert = sect.vertex;
-    float px = world.player.where.x, py = world.player.where.y;
-    float dx = x - world.player.where.x, dy =y - world.player.where.y;
-
-    //vertical
-     /* Vertical collision detection */
-    ground = !falling;
-    if(falling){
-        world.player.velocity.z -= 0.05f; /* Add gravity */
-        float nextz = world.player.where.z + world.player.velocity.z;
-        if(world.player.velocity.z < 0 && nextz  < world.sectors[world.player.sector].floor + eyeheight) // When going down
-        {
-            /* Fix to ground */
-            world.player.where.z    = world.sectors[world.player.sector].floor + eyeheight;
-            world.player.velocity.z = 0;
-            falling = 0;
-            ground  = 1;
-        }
-        else if(world.player.velocity.z > 0 && nextz > world.sectors[world.player.sector].ceil) // When going up
-        {
-            /* Prevent jumping above ceiling */
-            world.player.velocity.z = 0;
-            falling = 1;
-        }
-        if(falling)
-        {
-            world.player.where.z += world.player.velocity.z;
-            moving = 1;
-        }
-    }
-
-    //horizontal
-
-
-    for(unsigned s = 0; s < vert.size()-1; ++s){
-        xy v =  world.vertices[vert[s+0]];
-        xy v2 =  world.vertices[vert[s+1]];
-        if(IntersectBox(px,py, px+dx,py+dy, v.x, v.y, v2.x, v2.y)
-            && PointSide(px+dx, py+dy, v.x, v.y, v2.x, v2.y) < 0){
-            /* Check where the hole is. */
-            float hole_low  = sect.neighbors[s] < 0 ?  9e9 : max(sect.floor, world.sectors[sect.neighbors[s]].floor);
-            float hole_high = sect.neighbors[s] < 0 ? -9e9 : min(sect.ceil,  world.sectors[sect.neighbors[s]].ceil );
-            /* Check whether we're bumping into a wall. */
-            if(hole_high < world.player.where.z+HeadMargin
-                || hole_low  > world.player.where.z-eyeheight+KneeHeight){
-                /* Bumps into a wall! Slide along the wall. */
-                /* This formula is from Wikipedia article "vector projection". */
-                float xd = v2.x - v.x, yd = v2.y - v.y;
-                dx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
-                dy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
-            }
-        }
-    }
-    falling = 1;
-    for(unsigned s = 0; s < vert.size()-1; ++s){
-        xy v1 =  world.vertices[vert[s+0]];
-        xy v2 =  world.vertices[vert[s+1]];
-        if(sect.neighbors[s] >= 0
-        && IntersectBox(px,py, px+dx,py+dy, v1.x, v1.y, v2.x, v2.y)
-        && PointSide(px+dx, py+dy, v1.x,v1.y, v2.x, v2.y) < 0)
-        {
-            world.player.sector = sect.neighbors[s];
-            break;
-        }
-    }
-
-    world.player.where.x = px + dx;
-    world.player.where.y = py + dy;
+//   /* float eyeheight =  EyeHeight;
+//    const Sector &sect = world.sectors[world.player.sector];
+//    const std::vector<int>  vert = sect.vertex;
+//    float px = world.player.where.x, py = world.player.where.y;
+//    float dx = x - world.player.where.x, dy =y - world.player.where.y;
+//
+//    //vertical
+//     /* Vertical collision detection */
+//    ground = !falling;
+//    if(falling){
+//        world.player.velocity.z -= 0.05f; /* Add gravity */
+//        float nextz = world.player.where.z + world.player.velocity.z;
+//        if(world.player.velocity.z < 0 && nextz  < world.sectors[world.player.sector].floor + eyeheight) // When going down
+//        {
+//            /* Fix to ground */
+//            world.player.where.z    = world.sectors[world.player.sector].floor + eyeheight;
+//            world.player.velocity.z = 0;
+//            falling = 0;
+//            ground  = 1;
+//        }
+//        else if(world.player.velocity.z > 0 && nextz > world.sectors[world.player.sector].ceil) // When going up
+//        {
+//            /* Prevent jumping above ceiling */
+//            world.player.velocity.z = 0;
+//            falling = 1;
+//        }
+//        if(falling)
+//        {
+//            world.player.where.z += world.player.velocity.z;
+//            moving = 1;
+//        }
+//    }
+//
+//    //horizontal
+//
+//
+//    for(unsigned s = 0; s < vert.size()-1; ++s){
+//        xy v =  world.vertices[vert[s+0]];
+//        xy v2 =  world.vertices[vert[s+1]];
+//        if(IntersectBox(px,py, px+dx,py+dy, v.x, v.y, v2.x, v2.y)
+//            && PointSide(px+dx, py+dy, v.x, v.y, v2.x, v2.y) < 0){
+//            /* Check where the hole is. */
+//            float hole_low  = sect.neighbors[s] < 0 ?  9e9 : max(sect.floor, world.sectors[sect.neighbors[s]].floor);
+//            float hole_high = sect.neighbors[s] < 0 ? -9e9 : min(sect.ceil,  world.sectors[sect.neighbors[s]].ceil );
+//            /* Check whether we're bumping into a wall. */
+//            if(hole_high < world.player.where.z+HeadMargin
+//                || hole_low  > world.player.where.z-eyeheight+KneeHeight){
+//                /* Bumps into a wall! Slide along the wall. */
+//                /* This formula is from Wikipedia article "vector projection". */
+//                float xd = v2.x - v.x, yd = v2.y - v.y;
+//                dx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
+//                dy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
+//            }
+//        }
+//    }
+//    falling = 1;
+//    for(unsigned s = 0; s < vert.size()-1; ++s){
+//        xy v1 =  world.vertices[vert[s+0]];
+//        xy v2 =  world.vertices[vert[s+1]];
+//        if(sect.neighbors[s] >= 0
+//        && IntersectBox(px,py, px+dx,py+dy, v1.x, v1.y, v2.x, v2.y)
+//        && PointSide(px+dx, py+dy, v1.x,v1.y, v2.x, v2.y) < 0)
+//        {
+//            world.player.sector = sect.neighbors[s];
+//            break;
+//        }
+//    }
+//
+//    world.player.where.x = px + dx;
+//    world.player.where.y = py + dy;
 }
 
-void SetAngle(float angle){
-    world.player.angle = angle;
-    world.player.anglesin = sinf(world.player.angle);
-    world.player.anglecos = cosf(world.player.angle);
-}
-
-void SetYaw(float yaw){
-    world.player.yaw = yaw;
-}
-
-void GetPlayerPos(float *x, float *y, float *z){
-    *x = world.player.where.x;
-    *y = world.player.where.y;
-    *z =world. player.where.z;
-}  
 
 void DrawScreen(entityx::Entity e){
     entityx::ComponentHandle<PositionC> posC = e.component<PositionC>();
@@ -238,7 +200,7 @@ void DrawScreen(entityx::Entity e){
         for(unsigned s =0; s< sect.vertex.size()-1;s++){
             //acquire the x,y coordinates of the two endpoints(vertices) of thius edge of the sector
             //transform the vertices into the player view
-            xy v1 = world.vertices[sect.vertex[s]], v2 = world.vertices[sect.vertex[s+1]];
+            XY v1 = world.vertices[sect.vertex[s]], v2 = world.vertices[sect.vertex[s+1]];
             float vx1 = v1.x - posC->x, vy1 = v1.y- posC->y;
             float vx2 = v2.x - posC->x, vy2 = v2.y- posC->y;
             //rotate them around player
@@ -251,8 +213,8 @@ void DrawScreen(entityx::Entity e){
             if(tz1 <= 0 || tz2<=0){
                 float nearz = 1.0e-4, farz = 5, nearside = 1.0e-5, farside = 20;
                 //find an intersection between the wall and approximate edges if player's view
-                struct xy i1 = Intersect(tx1,tz1,tx2,tz2, - nearside, nearz, -farside, farz);
-                struct xy i2 = Intersect(tx1,tz1,tx2,tz2, nearside, nearz, farside, farz);
+                XY i1 = Intersect(tx1,tz1,tx2,tz2, - nearside, nearz, -farside, farz);
+                XY i2 = Intersect(tx1,tz1,tx2,tz2, nearside, nearz, farside, farz);
                 if(tz1 < nearz){
                     if(i1.y > 0){tx1 = i1.x;tz1 = i1.y;}
                     else{tx1 = i2.x;tz1 = i2.y;}
