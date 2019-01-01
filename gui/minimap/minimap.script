@@ -17,7 +17,7 @@ end
 
 function update(self, dt)
     local header = {width = MAP_WIDTH, height =MAP_HEIGHT, type = resource.TEXTURE_TYPE_2D, format = resource.TEXTURE_FORMAT_RGB, num_mip_maps = 0}
-    resource.set_texture(self.resource_path, header, BUFFER)
+	--resource.set_texture(self.resource_path, header, BUFFER)
 end
 
 function on_message(self, message_id, message, sender)
