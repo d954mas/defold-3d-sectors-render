@@ -2,8 +2,8 @@ local COMMON = require "libs.common"
 local MAP = require("world.map")
 local M = {}
 
-M.WIDTH = 608
-M.HEIGHT = 480
+M.WIDTH = 960/2
+M.HEIGHT = 540/2
 M.BUFFER = buffer.create(M.WIDTH * M.HEIGHT, { {name=hash("rgb"), type=buffer.VALUE_TYPE_UINT8, count=3} } )
 
 
