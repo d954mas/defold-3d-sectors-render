@@ -1,6 +1,6 @@
+
 function init(self)
-	-- Add initialization code here
-	-- Remove this function if not needed
+
 end
 
 function final(self)

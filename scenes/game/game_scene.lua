@@ -23,7 +23,6 @@ end
 
 function Scene:on_show(input)
 
-    
 end
 
 function Scene:on_hide()
