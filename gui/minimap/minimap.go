@@ -29,12 +29,15 @@ components {
   }
 }
 embedded_components {
-  id: "sprite"
-  type: "sprite"
-  data: "tile_set: \"/assets/images/game/game.atlas\"\n"
-  "default_animation: \"empty\"\n"
-  "material: \"/builtins/materials/sprite.material\"\n"
-  "blend_mode: BLEND_MODE_ALPHA\n"
+  id: "model"
+  type: "model"
+  data: "mesh: \"/assets/models/quad.dae\"\n"
+  "material: \"/assets/materials/model_sprite/model_sprite_nearest.material\"\n"
+  "textures: \"/assets/images/game/minimap_texture.png\"\n"
+  "skeleton: \"\"\n"
+  "animations: \"\"\n"
+  "default_animation: \"\"\n"
+  "name: \"unnamed\"\n"
   ""
   position {
     x: 0.0

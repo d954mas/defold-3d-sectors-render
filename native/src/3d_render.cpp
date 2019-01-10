@@ -16,6 +16,7 @@
 
 World world;
 EcsWorld ecs;
+Buffer pixelBuffer;
 
 
 //region MAP
@@ -86,86 +87,13 @@ static inline void vline(int x, int y1,int y2, uint32_t top,uint32_t middle,uint
 }
 
 void RenderClearBuffer(){
-    clearBuffer(pixelBuffer);
+    ClearBuffer(pixelBuffer);
 }
 
 void RenderSetBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer){
-	pixelBuffer = createBuffer(width, height, luaBuffer);
+	pixelBuffer = CreateBuffer(width, height, luaBuffer);
 }
 
-
-void MovePlayer(float x, float y){
-//   /* float eyeheight =  EyeHeight;
-//    const Sector &sect = world.sectors[world.player.sector];
-//    const std::vector<int>  vert = sect.vertex;
-//    float px = world.player.where.x, py = world.player.where.y;
-//    float dx = x - world.player.where.x, dy =y - world.player.where.y;
-//
-//    //vertical
-//     /* Vertical collision detection */
-//    ground = !falling;
-//    if(falling){
-//        world.player.velocity.z -= 0.05f; /* Add gravity */
-//        float nextz = world.player.where.z + world.player.velocity.z;
-//        if(world.player.velocity.z < 0 && nextz  < world.sectors[world.player.sector].floor + eyeheight) // When going down
-//        {
-//            /* Fix to ground */
-//            world.player.where.z    = world.sectors[world.player.sector].floor + eyeheight;
-//            world.player.velocity.z = 0;
-//            falling = 0;
-//            ground  = 1;
-//        }
-//        else if(world.player.velocity.z > 0 && nextz > world.sectors[world.player.sector].ceil) // When going up
-//        {
-//            /* Prevent jumping above ceiling */
-//            world.player.velocity.z = 0;
-//            falling = 1;
-//        }
-//        if(falling)
-//        {
-//            world.player.where.z += world.player.velocity.z;
-//            moving = 1;
-//        }
-//    }
-//
-//    //horizontal
-//
-//
-//    for(unsigned s = 0; s < vert.size()-1; ++s){
-//        xy v =  world.vertices[vert[s+0]];
-//        xy v2 =  world.vertices[vert[s+1]];
-//        if(IntersectBox(px,py, px+dx,py+dy, v.x, v.y, v2.x, v2.y)
-//            && PointSide(px+dx, py+dy, v.x, v.y, v2.x, v2.y) < 0){
-//            /* Check where the hole is. */
-//            float hole_low  = sect.neighbors[s] < 0 ?  9e9 : max(sect.floor, world.sectors[sect.neighbors[s]].floor);
-//            float hole_high = sect.neighbors[s] < 0 ? -9e9 : min(sect.ceil,  world.sectors[sect.neighbors[s]].ceil );
-//            /* Check whether we're bumping into a wall. */
-//            if(hole_high < world.player.where.z+HeadMargin
-//                || hole_low  > world.player.where.z-eyeheight+KneeHeight){
-//                /* Bumps into a wall! Slide along the wall. */
-//                /* This formula is from Wikipedia article "vector projection". */
-//                float xd = v2.x - v.x, yd = v2.y - v.y;
-//                dx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
-//                dy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
-//            }
-//        }
-//    }
-//    falling = 1;
-//    for(unsigned s = 0; s < vert.size()-1; ++s){
-//        xy v1 =  world.vertices[vert[s+0]];
-//        xy v2 =  world.vertices[vert[s+1]];
-//        if(sect.neighbors[s] >= 0
-//        && IntersectBox(px,py, px+dx,py+dy, v1.x, v1.y, v2.x, v2.y)
-//        && PointSide(px+dx, py+dy, v1.x,v1.y, v2.x, v2.y) < 0)
-//        {
-//            world.player.sector = sect.neighbors[s];
-//            break;
-//        }
-//    }
-//
-//    world.player.where.x = px + dx;
-//    world.player.where.y = py + dy;
-}
 
 
 void DrawScreen(entityx::Entity e){

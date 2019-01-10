@@ -1,23 +1,23 @@
 local MAP_HEIGHT = 200
 local MAP_WIDTH = 200
-local BUFFER = buffer.create(MAP_WIDTH * MAP_HEIGHT, { {name=hash("rgbq"), type=buffer.VALUE_TYPE_UINT8, count=3} } )
+local BUFFER =  buffer.create(MAP_WIDTH * MAP_HEIGHT, { {name=hash("rgb_map"), type=buffer.VALUE_TYPE_UINT8, count=3} } )
 local SPRITE_SIZE = 200
 
 function init(self)
-	self.resource_path = go.get("#sprite", "texture0")
-	go.set_scale(vmath.vector3(SPRITE_SIZE,SPRITE_SIZE,1),"#sprite")
+	self.resource_path = go.get("#model", "texture0")
+	go.set_scale(vmath.vector3(SPRITE_SIZE*50,SPRITE_SIZE*50,1),"#model")
 	go.set_position(vmath.vector3(960-10-SPRITE_SIZE/2,540-10-SPRITE_SIZE/2,1))
+	native.minimap_set_buffer(MAP_WIDTH, MAP_HEIGHT, BUFFER)
 end
 
 
 function final(self)
-	-- Add finalization code here
-	-- Remove this function if not needed
 end
 
 function update(self, dt)
+	native.minimap_update()
     local header = {width = MAP_WIDTH, height =MAP_HEIGHT, type = resource.TEXTURE_TYPE_2D, format = resource.TEXTURE_FORMAT_RGB, num_mip_maps = 0}
-	--resource.set_texture(self.resource_path, header, BUFFER)
+    resource.set_texture(self.resource_path, header, BUFFER)
 end
 
 function on_message(self, message_id, message, sender)

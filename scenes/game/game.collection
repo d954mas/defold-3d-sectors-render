@@ -83,7 +83,7 @@ embedded_instances {
   "  type: \"model\"\n"
   "  data: \"mesh: \\\"/assets/models/quad.dae\\\"\\n"
   "material: \\\"/assets/materials/3drender/3drender.material\\\"\\n"
-  "textures: \\\"/assets/images/white.png\\\"\\n"
+  "textures: \\\"/assets/images/game/game_texture.png\\\"\\n"
   "skeleton: \\\"\\\"\\n"
   "animations: \\\"\\\"\\n"
   "default_animation: \\\"\\\"\\n"

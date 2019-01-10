@@ -2,9 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4541a19e-81ad-4482-8b04-19673d9ae92f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/native/include/minimap.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/native/src/buffer.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/native/src/minimap.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/minimap/minimap.go" beforeDir="false" afterPath="$PROJECT_DIR$/gui/minimap/minimap.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gui/minimap/minimap.script" beforeDir="false" afterPath="$PROJECT_DIR$/gui/minimap/minimap.script" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native_render/helper.lua" beforeDir="false" afterPath="$PROJECT_DIR$/native_render/helper.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/include/buffer.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/buffer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/src/3d_render.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/3d_render.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/src/binding.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/binding.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/game/game.collection" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/game/game.collection" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/world/world.lua" beforeDir="false" afterPath="$PROJECT_DIR$/world/world.lua" afterDir="false" />
+    </list>
+    <list id="3bf5dbc8-d584-4740-b6eb-ad8f44aefb1c" name="Revert: hide minimap" comment="">
+      <change beforePath="$PROJECT_DIR$/gui/minimap/minimap.script" beforeDir="false" afterPath="$PROJECT_DIR$/gui/minimap/minimap.script" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -114,53 +125,53 @@
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.6" value="1" />
-          <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.open.time.7" value="2" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="cc" value="7" />
           <entry key="collection" value="2" />
-          <entry key="cpp" value="320" />
+          <entry key="cpp" value="417" />
           <entry key="gui_script" value="2" />
-          <entry key="h" value="387" />
+          <entry key="h" value="453" />
           <entry key="json" value="28" />
-          <entry key="lua" value="265" />
+          <entry key="lua" value="285" />
           <entry key="manifest" value="1" />
           <entry key="render_script" value="3" />
-          <entry key="script" value="21" />
+          <entry key="script" value="47" />
           <entry key="txt" value="27" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="C/C++" value="714" />
+          <entry key="C/C++" value="877" />
           <entry key="JSON" value="28" />
           <entry key="PLAIN_TEXT" value="30" />
-          <entry key="lua" value="291" />
+          <entry key="lua" value="337" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="cc" value="2" />
-          <entry key="cpp" value="14109" />
+          <entry key="cpp" value="14942" />
           <entry key="dummy" value="5" />
           <entry key="gui_script" value="120" />
-          <entry key="h" value="4765" />
+          <entry key="h" value="5119" />
           <entry key="json" value="1115" />
-          <entry key="lua" value="5168" />
+          <entry key="lua" value="5196" />
           <entry key="render_script" value="77" />
-          <entry key="script" value="237" />
+          <entry key="script" value="355" />
           <entry key="txt" value="491" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="C/C++" value="18876" />
+          <entry key="C/C++" value="20063" />
           <entry key="JSON" value="1115" />
           <entry key="PLAIN_TEXT" value="496" />
-          <entry key="lua" value="5602" />
+          <entry key="lua" value="5748" />
         </counts>
       </usages-collector>
     </session>
@@ -190,80 +201,12 @@
     <favorites_list name="Game Off 2018" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scenes/game/go/player_input.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1445">
-              <caret line="85" column="8" selection-start-line="85" selection-start-column="8" selection-end-line="85" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gui/minimap/minimap.gui_script">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" selection-start-line="4" selection-end-line="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gui/minimap/minimap.script">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="26" selection-start-line="26" selection-end-line="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/render/my.render_script">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="66" column="35" selection-start-line="66" selection-start-column="35" selection-end-line="66" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gui/minimap/minimap.gui">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/native_render/helper.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/native_render/update_texture.script">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="53" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="53" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scenes/game/game_scene.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" column="29" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/world/world.lua">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" selection-start-line="18" selection-end-line="18" />
+            <state>
+              <caret column="22" selection-start-column="22" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -280,25 +223,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>()</find>
-      <find>::valid()</find>
-      <find>checkEntity</find>
-      <find>pushEntity</find>
-      <find>reser()</find>
-      <find>MapC</find>
-      <find>component()</find>
-      <find>init</find>
-      <find>player</find>
-      <find>Entity_set_velocity</find>
-      <find>set_velocity</find>
-      <find>Move</find>
-      <find>Sector</find>
-      <find>World</find>
-      <find>check</find>
-      <find>MovePl</find>
-      <find>Entity_set_sector</find>
-      <find>sector</find>
-      <find>SectorC</find>
       <find>sectorC</find>
       <find>sector.v</find>
       <find>decodeBuffer</find>
@@ -310,6 +234,25 @@
       <find>z</find>
       <find>posC</find>
       <find>posC-&gt;z</find>
+      <find>set</find>
+      <find>RenderSetBufferLua</find>
+      <find>pixelBuffer</find>
+      <find>RenderSetBuffer</find>
+      <find>pix</find>
+      <find>pixel</find>
+      <find>createBuffer</find>
+      <find>ClearBuffer</find>
+      <find>ClearB</find>
+      <find>MinimapClearBuffer</find>
+      <find>CreateBuffer</find>
+      <find>MinimapSetBuffer</find>
+      <find>DrawPixel</find>
+      <find>DrawPi</find>
+      <find>vline</find>
+      <find>r1</find>
+      <find>DrawRe</find>
+      <find>DrawRect</find>
+      <find>draw</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -323,9 +266,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/libs/log.lua" />
-        <option value="$PROJECT_DIR$/scenes/game/scripts/background_scroll_script.script" />
-        <option value="$PROJECT_DIR$/gui/follow_go_script.lua" />
         <option value="$PROJECT_DIR$/scenes/game/gui/main/follow_go.gui_script" />
         <option value="$PROJECT_DIR$/scenes/game/gui/main/progress.gui_script" />
         <option value="$PROJECT_DIR$/world/hero.lua" />
@@ -358,13 +298,9 @@
         <option value="$PROJECT_DIR$/world/unit_mixin.lua" />
         <option value="$PROJECT_DIR$/native/src/entityx/Entity.cc" />
         <option value="$PROJECT_DIR$/world/player_new.lua" />
-        <option value="$PROJECT_DIR$/native/src/binding.cpp" />
-        <option value="$PROJECT_DIR$/native/include/buffer.h" />
         <option value="$PROJECT_DIR$/native/src/ecs_bind.cpp" />
         <option value="$PROJECT_DIR$/native/include/3d_render.h" />
         <option value="$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script" />
-        <option value="$PROJECT_DIR$/world/world.lua" />
-        <option value="$PROJECT_DIR$/native/src/3d_render.cpp" />
         <option value="$PROJECT_DIR$/libs/hashes.lua" />
         <option value="$PROJECT_DIR$/world/player.lua" />
         <option value="$PROJECT_DIR$/native/include/ecs_bind.h" />
@@ -372,8 +308,15 @@
         <option value="$PROJECT_DIR$/scenes/game/go/player_input.lua" />
         <option value="$PROJECT_DIR$/gui/minimap/minimap.gui_script" />
         <option value="$PROJECT_DIR$/render/my.render_script" />
-        <option value="$PROJECT_DIR$/gui/minimap/minimap.script" />
+        <option value="$PROJECT_DIR$/native/src/3d_render.cpp" />
+        <option value="$PROJECT_DIR$/native/src/binding.cpp" />
+        <option value="$PROJECT_DIR$/native/include/minimap.h" />
+        <option value="$PROJECT_DIR$/native/src/buffer.cpp" />
+        <option value="$PROJECT_DIR$/world/world.lua" />
         <option value="$PROJECT_DIR$/native_render/helper.lua" />
+        <option value="$PROJECT_DIR$/native/include/buffer.h" />
+        <option value="$PROJECT_DIR$/native/src/minimap.cpp" />
+        <option value="$PROJECT_DIR$/gui/minimap/minimap.script" />
       </list>
     </option>
   </component>
@@ -382,6 +325,18 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/gui/minimap/minimap.script">
+      <ranges>
+        <range start1="2" end1="3" start2="2" end2="3" changelist="4541a19e-81ad-4482-8b04-19673d9ae92f" />
+        <range start1="6" end1="8" start2="6" end2="8" changelist="4541a19e-81ad-4482-8b04-19673d9ae92f" />
+        <range start1="9" end1="9" start2="9" end2="10" changelist="4541a19e-81ad-4482-8b04-19673d9ae92f" />
+        <range start1="13" end1="15" start2="14" end2="14" changelist="4541a19e-81ad-4482-8b04-19673d9ae92f" />
+        <range start1="18" end1="18" start2="17" end2="18" changelist="4541a19e-81ad-4482-8b04-19673d9ae92f" />
+        <range start1="19" end1="20" start2="19" end2="20" changelist="3bf5dbc8-d584-4740-b6eb-ad8f44aefb1c" />
+      </ranges>
+    </file>
   </component>
   <component name="MavenProjectNavigator">
     <treeState>
@@ -678,8 +633,30 @@
         <subPane>
           <expand>
             <path>
-              <item name="ExCreditsJam2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ExCreditsJam2018" type="462c0819:PsiDirectoryNode" />
+              <item name="ExCretitsJam2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ExCretitsJam2018" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ExCretitsJam2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ExCretitsJam2018" type="462c0819:PsiDirectoryNode" />
+              <item name="native" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ExCretitsJam2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ExCretitsJam2018" type="462c0819:PsiDirectoryNode" />
+              <item name="native" type="462c0819:PsiDirectoryNode" />
+              <item name="include" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ExCretitsJam2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ExCretitsJam2018" type="462c0819:PsiDirectoryNode" />
+              <item name="native" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ExCretitsJam2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ExCretitsJam2018" type="462c0819:PsiDirectoryNode" />
+              <item name="native_render" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -689,7 +666,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1545595855330" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547155765075" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../defold_api.zip!/" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -699,16 +676,16 @@
     <property name="settings.editor.selected.configurable" value="editing.templates" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\user\DefoldProjects\ExCretitsJam2018\world" />
-      <recent name="C:\Users\user\DefoldProjects\ExCretitsJam2018\native\include" />
-      <recent name="C:\Users\user\DefoldProjects\ExCretitsJam2018" />
-      <recent name="C:\Users\user\DefoldProjects\ExCretitsJam2018\native" />
-      <recent name="C:\Users\user\DefoldProjects\ExCretitsJam2018\native\src" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\user\DefoldProjects\ExCretitsJam2018\assets\levels" />
       <recent name="C:\Users\user\DefoldProjects\Game Off 2018\libs\scripts" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\user\DefoldProjects\ExCretitsJam2018\native\src" />
+      <recent name="C:\Users\user\DefoldProjects\ExCretitsJam2018\native\include" />
+      <recent name="C:\Users\user\DefoldProjects\ExCretitsJam2018\world" />
+      <recent name="C:\Users\user\DefoldProjects\ExCretitsJam2018" />
+      <recent name="C:\Users\user\DefoldProjects\ExCretitsJam2018\native" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -726,6 +703,7 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="4541a19e-81ad-4482-8b04-19673d9ae92f" name="Default Changelist" comment="" />
+      <changelist id="3bf5dbc8-d584-4740-b6eb-ad8f44aefb1c" name="Revert: hide minimap" comment="" />
       <created>1540974856633</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -752,24 +730,24 @@
       <workItem from="1546336289554" duration="55000" />
       <workItem from="1546336398323" duration="979000" />
       <workItem from="1546346867417" duration="3834000" />
+      <workItem from="1547147806306" duration="7954000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="232315000" />
+    <option name="totallyTimeSpent" value="240269000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-7" y="-7" width="1934" height="1054" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49845678" visible="true" weight="0.17410715" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49845678" visible="true" weight="0.17571884" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="Learn" order="4" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" sideWeight="0.5015432" side_tool="true" weight="0.18573551" />
-      <window_info anchor="bottom" id="Messages" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -778,10 +756,11 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="LuaCheck" order="7" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="8" sideWeight="0.4955357" visible="true" weight="0.32569557" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49520767" visible="true" weight="0.3249476" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="10" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50446427" side_tool="true" visible="true" weight="0.32569557" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50479233" side_tool="true" visible="true" weight="0.3249476" />
+      <window_info anchor="bottom" id="Messages" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -825,21 +804,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/scenes/game/untitled.script" />
-    <entry file="file://$PROJECT_DIR$/libs/scripts/gui_follow_go.script">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/libs/scripts/gui_follow_go_go_script.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="36" selection-start-column="36" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/libs/scripts/gui_follow_go_gui_script.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="48">
@@ -973,45 +937,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/native/src/binding.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="77" column="27" selection-start-line="77" selection-start-column="27" selection-end-line="77" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/include/3d_render.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/include/buffer.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/src/ecs_bind.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="10" column="39" lean-forward="true" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="21" column="67" lean-forward="true" selection-start-line="21" selection-start-column="67" selection-end-line="21" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4016">
-          <caret line="268" column="34" lean-forward="true" selection-start-line="268" selection-start-column="34" selection-end-line="268" selection-end-column="34" />
         </state>
       </provider>
     </entry>
@@ -1029,51 +958,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/world/world.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/include/ecs_bind.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2048">
-          <caret line="25" column="27" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/include/ecs.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="428">
-          <caret line="292" column="80" selection-start-line="292" selection-start-column="80" selection-end-line="292" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scenes/game/go/player_input.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1445">
+        <state relative-caret-position="1360">
           <caret line="85" column="8" selection-start-line="85" selection-start-column="8" selection-end-line="85" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scenes/game/game_scene.lua">
+    <entry file="file://$PROJECT_DIR$/gui/minimap/minimap.gui_script">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="29" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native_render/update_texture.script">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="53" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="53" />
+        <state relative-caret-position="64">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/render/my.render_script">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
+        <state relative-caret-position="1056">
           <caret line="66" column="35" selection-start-line="66" selection-start-column="35" selection-end-line="66" selection-end-column="35" />
         </state>
       </provider>
@@ -1081,24 +982,108 @@
     <entry file="file://$PROJECT_DIR$/gui/minimap/minimap.gui">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/gui/minimap/minimap.gui_script">
+    <entry file="file://$PROJECT_DIR$/native/include/ecs.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        <state relative-caret-position="1446">
+          <caret line="292" column="80" selection-start-line="292" selection-start-column="80" selection-end-line="292" selection-end-column="80" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gui/minimap/minimap.script">
+    <entry file="file://$PROJECT_DIR$/native/include/ecs_bind.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
+        <state relative-caret-position="208">
+          <caret line="37" column="46" lean-forward="true" selection-start-line="37" selection-start-column="46" selection-end-line="37" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/include/3d_render.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="7" column="38" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/ecs_bind.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="10" column="39" lean-forward="true" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scenes/game/game_scene.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="32" column="23" lean-forward="true" selection-start-line="32" selection-start-column="23" selection-end-line="32" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/binding.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="48" column="16" selection-start-line="48" selection-start-column="16" selection-end-line="48" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="201" column="39" selection-start-line="201" selection-start-column="29" selection-end-line="201" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/world/world.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="6" column="26" lean-forward="true" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/buffer.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="12" column="18" lean-forward="true" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/include/buffer.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="3" column="15" lean-forward="true" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/include/minimap.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="1" column="22" lean-forward="true" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/native_render/helper.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
+        <state relative-caret-position="224">
+          <caret line="14" column="20" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native_render/update_texture.script">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="1" column="19" lean-forward="true" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/minimap.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="13" column="58" selection-start-line="13" selection-start-column="58" selection-end-line="13" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gui/minimap/minimap.script">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="22" selection-start-column="22" selection-end-column="22" />
         </state>
       </provider>
     </entry>

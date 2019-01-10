@@ -7,6 +7,7 @@
 #include <math.h>
 #include "3d_render.h"
 #include "ecs_bind.h"
+#include "minimap.h"
 #include <dmsdk/sdk.h>
 
 //region Map
@@ -43,6 +44,22 @@ static int MapCheckLua(lua_State* L){
 }
 
 //endregion
+
+//region World
+static int MinimapUpdateLua(lua_State* L){
+    MinimapUpdate();
+    return 0;
+}
+
+static int MinimapSetBufferLua(lua_State* L){
+ 	int width = (int) luaL_checknumber(L, 1);
+	int height = (int) luaL_checknumber(L, 2);
+ 	dmScript::LuaHBuffer* buffer = dmScript::CheckBuffer(L, 3);
+ 	MinimapSetBuffer(width, height, buffer);
+ 	return 0;
+}
+
+
 
 
 //region World
@@ -82,7 +99,9 @@ static const luaL_reg Module_methods[] ={
 	{"map_sector_vertex_add", MapSectorVertexAddLua},
 	{"map_check", MapCheckLua},
 
-
+    //minimap functions
+    {"minimap_update", MinimapUpdateLua},
+    {"minimap_set_buffer", MinimapSetBufferLua},
 	//world
 	{"world_update",WorldUpdateLua},
 	{0, 0},
