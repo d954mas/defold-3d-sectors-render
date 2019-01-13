@@ -20,7 +20,6 @@ end
 
 function M:update(dt, no_save)
 	native.world_update(dt)
-	native.minimap_update()
 	self:draw()
 end
 

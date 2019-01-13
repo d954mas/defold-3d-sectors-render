@@ -14,7 +14,7 @@ static void pushEntity (lua_State *L, entityx::Entity e){
 
 //region ENTITIES
 static int Entities_new_unit (lua_State *L){
-    entityx::Entity e = world.ecs.entities.create();
+    entityx::Entity e = ECS.entities.create();
     e.assign<PositionC>(0,0,0);
     e.assign<VelocityC>(0,0,0);
     e.assign<MovementSpeedC>();
@@ -30,7 +30,7 @@ static int Entities_new_unit (lua_State *L){
  	return 1;
 }
 static int Entities_get_size (lua_State *L){
-	lua_pushnumber(L, world.ecs.entities.size());
+	lua_pushnumber(L, ECS.entities.size());
 	return 1;
 }
 

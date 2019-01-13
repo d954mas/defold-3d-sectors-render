@@ -16,3 +16,7 @@ void EcsWorld::update(entityx::TimeDelta dt) {
     systems.update<MovementSystem>(dt);
     systems.update<CollisionSystem>(dt);
 }
+
+void EcsWorld:: reset(){
+    entities.reset();
+}

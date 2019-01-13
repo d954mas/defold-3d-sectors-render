@@ -14,23 +14,21 @@
 #define DLIB_LOG_DOMAIN "MapRender"
 #include <dmsdk/dlib/log.h>
 
-World world;
-EcsWorld ecs;
 Buffer pixelBuffer;
 
 
 //region MAP
 void MapClear(){
-    world.reset();
+    WORLD.reset();
 }
 
 void MapVertexAdd(float x, float y){
-    world.vertices.push_back((XY){x,y});
+    WORLD.vertices.push_back((XY){x,y});
 }
 
 void MapVertexChange(int idx,float x, float y){
-    if (idx <world.vertices.size()){
-        XY v = world.vertices[idx];
+    if (idx <WORLD.vertices.size()){
+        XY v = WORLD.vertices[idx];
         v.x = x; v.y = y;
     }else{
         dmLogError("no vertex with idx:%d", idx);
@@ -40,13 +38,13 @@ void MapVertexChange(int idx,float x, float y){
 void MapSectorCreate(float floor, float ceil){
     struct Sector s;
     s.floor = floor; s.ceil = ceil;
-    world.sectors.push_back(s);
+    WORLD.sectors.push_back(s);
 }
 //add to last sector in list
 void MapSectorVertexAdd(int vertex,int neighbor){
-    if (world.sectors.size() != 0){
-        Sector &s = world.sectors[world.sectors.size()-1];
-        if (vertex >= 0 && vertex <world.vertices.size()){ s.vertex.push_back(vertex);}
+    if (WORLD.sectors.size() != 0){
+        Sector &s = WORLD.sectors[WORLD.sectors.size()-1];
+        if (vertex >= 0 && vertex <WORLD.vertices.size()){ s.vertex.push_back(vertex);}
         else{ dmLogError("no vertex with idx:%d", vertex);return;}
         //todo check neighbors sector;
         s.neighbors.push_back(neighbor);
@@ -56,16 +54,15 @@ void MapSectorVertexAdd(int vertex,int neighbor){
 };
 
 void MapCheck(){
-    world.ecs.setWorld(&world);
-    for(int i=0;i<world.sectors.size();i++){
-        Sector &s = world.sectors[i];
+    for(int i=0;i<WORLD.sectors.size();i++){
+        Sector &s = WORLD.sectors[i];
         if(s.neighbors.size()<3){
             dmLogError("bad sector:%d", i);
             return;
         }
         for(int j=0;j<s.neighbors.size();j++){
             int n = s.neighbors[j];
-            if (n!= -1 && n >= world.sectors.size()){
+            if (n!= -1 && n >= WORLD.sectors.size()){
                 dmLogError("no neighbor with idx:%d", n);
             }
         }
@@ -112,7 +109,7 @@ void DrawScreen(entityx::Entity e){
     struct item {int sectorno,sx1,sx2;} queue[MaxQueue ], *head = queue, *tail=queue;
     std::vector<int> ytop(W); // keep track if remaining windom(min,max) in each column
     std::vector<int> ybottom(W, H-1);
-    std::vector<int> renderedsectors(world.sectors.size());
+    std::vector<int> renderedsectors(WORLD.sectors.size());
     //start rendering from player sector
     *head = (struct item) {sectorC->v,0, W-1};
     if (++head == queue + MaxQueue ) head = queue;
@@ -124,13 +121,13 @@ void DrawScreen(entityx::Entity e){
         if(renderedsectors[now.sectorno] & 0x21) continue; // Odd = still rendering, 0x20 = give up try 32 times
         ++renderedsectors[now.sectorno];
         //const for pointer and const for data
-        const Sector &sect = world.sectors[now.sectorno];
+        const Sector &sect = WORLD.sectors[now.sectorno];
         //render each wall of player sector that is facing towards player
 
         for(unsigned s =0; s< sect.vertex.size()-1;s++){
             //acquire the x,y coordinates of the two endpoints(vertices) of thius edge of the sector
             //transform the vertices into the player view
-            XY v1 = world.vertices[sect.vertex[s]], v2 = world.vertices[sect.vertex[s+1]];
+            XY v1 = WORLD.vertices[sect.vertex[s]], v2 = WORLD.vertices[sect.vertex[s+1]];
             float vx1 = v1.x - posC->x, vy1 = v1.y- posC->y;
             float vx2 = v2.x - posC->x, vy2 = v2.y- posC->y;
             //rotate them around player
@@ -171,8 +168,8 @@ void DrawScreen(entityx::Entity e){
 
             float nyceil = 0, nyfloor = 0;
             if (neighbor>=0){
-                nyceil =  world.sectors[neighbor].ceil - posC->z-eyeC->v;
-                nyfloor = world.sectors[neighbor].floor - posC->z-eyeC->v;
+                nyceil =  WORLD.sectors[neighbor].ceil - posC->z-eyeC->v;
+                nyfloor = WORLD.sectors[neighbor].floor - posC->z-eyeC->v;
             }
             #define Yaw(y,z) (y + z)//z*yawC->yaw)
             //project floor/ceiling height into screen coordinates(Y)

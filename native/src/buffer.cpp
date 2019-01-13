@@ -1,4 +1,3 @@
-#pragma once
 #include <dmsdk/sdk.h>
 #include <buffer.h>
 
@@ -9,7 +8,6 @@ Buffer CreateBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer){
 	dmBuffer::HBuffer hBuffer = luaBuffer->m_Buffer;
 	uint32_t size_ignored = 0;
 	dmBuffer::Result r = dmBuffer::GetBytes(hBuffer, (void**)&buffer.stream, &size_ignored);
-	printf("create buffer size:%u", size_ignored );
     return buffer;
 }
 
