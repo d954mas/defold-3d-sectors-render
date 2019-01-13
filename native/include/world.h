@@ -4,8 +4,8 @@
 #include <vector>
 
 /* Define various vision related constants */
-#define hfov (0.73f*H)  // Affects the horizontal field of vision
-#define vfov (.2f*H)    // Affects the vertical field of vision
+#define hfovm (W * WORLD.hfov * 0.73f*H/W)
+#define vfovm (H * WORLD.vfov * .2f)
 
 // Utility functions. Because C doesn't have templates,
 // we use the slightly less safe preprocessor macros to
@@ -45,9 +45,12 @@ public:
 extern EcsWorld ECS;
 
 struct World{
+    float hfov=1, vfov=1;
     std::vector<Sector> sectors;
     std::vector<XY> vertices;
     void reset();
+    void setHFov(float);
+    void setVFov(float);
 };
 extern World WORLD;
 

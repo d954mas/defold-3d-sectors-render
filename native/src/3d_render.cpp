@@ -98,8 +98,8 @@ void RenderDrawScreen(entityx::Entity e){
                 }
             }
             //Perspective transformation
-            float xscale1 = hfov / tz1, yscale1 = vfov/tz1; int x1 = W/2 - (int)(tx1 * xscale1);
-            float xscale2 = hfov / tz2, yscale2 = vfov/tz2; int x2 = W/2 - (int)(tx2 * xscale2);
+            float xscale1 = hfovm / tz1, yscale1 = vfovm/tz1; int x1 = W/2 - (int)(tx1 * xscale1);
+            float xscale2 = hfovm / tz2, yscale2 = vfovm/tz2; int x2 = W/2 - (int)(tx2 * xscale2);
             //only render if visible
             //if right vertices is left to screen. Or lefy is right. That mean that edge not visible
             //x1 >= x2 wtf
