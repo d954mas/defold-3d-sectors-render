@@ -1,6 +1,5 @@
 #include "minimap.h"
 #include "buffer.h"
-#define META "MINIMAP_META"
 #define TABLE_NAME "minimap"
 
 static Buffer minimapBuffer;

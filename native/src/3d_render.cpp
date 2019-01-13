@@ -14,60 +14,9 @@
 #define DLIB_LOG_DOMAIN "MapRender"
 #include <dmsdk/dlib/log.h>
 
+#define TABLE_NAME "render"
+
 Buffer pixelBuffer;
-
-
-//region MAP
-void MapClear(){
-    WORLD.reset();
-}
-
-void MapVertexAdd(float x, float y){
-    WORLD.vertices.push_back((XY){x,y});
-}
-
-void MapVertexChange(int idx,float x, float y){
-    if (idx <WORLD.vertices.size()){
-        XY v = WORLD.vertices[idx];
-        v.x = x; v.y = y;
-    }else{
-        dmLogError("no vertex with idx:%d", idx);
-    }
-}
-
-void MapSectorCreate(float floor, float ceil){
-    struct Sector s;
-    s.floor = floor; s.ceil = ceil;
-    WORLD.sectors.push_back(s);
-}
-//add to last sector in list
-void MapSectorVertexAdd(int vertex,int neighbor){
-    if (WORLD.sectors.size() != 0){
-        Sector &s = WORLD.sectors[WORLD.sectors.size()-1];
-        if (vertex >= 0 && vertex <WORLD.vertices.size()){ s.vertex.push_back(vertex);}
-        else{ dmLogError("no vertex with idx:%d", vertex);return;}
-        //todo check neighbors sector;
-        s.neighbors.push_back(neighbor);
-    }else{
-        dmLogError("can't add vertex.No sectors");
-    }
-};
-
-void MapCheck(){
-    for(int i=0;i<WORLD.sectors.size();i++){
-        Sector &s = WORLD.sectors[i];
-        if(s.neighbors.size()<3){
-            dmLogError("bad sector:%d", i);
-            return;
-        }
-        for(int j=0;j<s.neighbors.size();j++){
-            int n = s.neighbors[j];
-            if (n!= -1 && n >= WORLD.sectors.size()){
-                dmLogError("no neighbor with idx:%d", n);
-            }
-        }
-    }
-}
 
 //draw functions
 /* vline: Draw a vertical line on screen, with a different color pixel in top & bottom */
@@ -91,17 +40,14 @@ void RenderSetBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer){
 	pixelBuffer = CreateBuffer(width, height, luaBuffer);
 }
 
-
-
-void DrawScreen(entityx::Entity e){
+void RenderDrawScreen(entityx::Entity e){
     entityx::ComponentHandle<PositionC> posC = e.component<PositionC>();
     entityx::ComponentHandle<AngleC> angleC = e.component<AngleC>();
     entityx::ComponentHandle<AngleC> HeadC = e.component<AngleC>();
     entityx::ComponentHandle<YawC> yawC = e.component<YawC>();
     entityx::ComponentHandle<EyeHeightC> eyeC = e.component<EyeHeightC>();
     entityx::ComponentHandle<SectorC> sectorC = e.component<SectorC>();
-   // MovePlayer(world.player.where.x, world.player.where.y);
-    //clearBuffer1(&pixelBuffer);
+
     const int W = pixelBuffer.width;
     const int H =  pixelBuffer.height;
 
@@ -219,6 +165,40 @@ void DrawScreen(entityx::Entity e){
     ++renderedsectors[now.sectorno];
     }while(head!= tail);
 }
+
+
+//region BIND
+static int RenderSetBufferLua(lua_State* L){
+ 	int width = (int) luaL_checknumber(L, 1);
+	int height = (int) luaL_checknumber(L, 2);
+ 	dmScript::LuaHBuffer* buffer = dmScript::CheckBuffer(L, 3);
+ 	RenderSetBuffer(width, height, buffer);
+ 	return 0;
+}
+
+static int RenderDrawScreenLua(lua_State* L){
+	entityx::Entity e = checkEntity(L,1);
+ 	RenderDrawScreen(e);
+ 	return 0;
+}
+
+static const luaL_reg Meta_methods[] = {
+   	{"set_buffer", RenderSetBufferLua},
+   	{"draw_screen", RenderDrawScreenLua},
+    {0,0}
+};
+
+void RenderBind(lua_State *L){
+    int top = lua_gettop(L);
+    lua_pushstring(L, TABLE_NAME);
+    lua_newtable(L);
+    luaL_register(L, NULL, Meta_methods);
+    lua_settable(L, -3);
+    assert(top == lua_gettop(L));
+}
+
+
+//endregion
 
 
 

@@ -16,15 +16,13 @@ function M:initialize()
 	self:set_observable_events(self.EVENTS)
 end
 
-
-
 function M:update(dt, no_save)
-	native.world_update(dt)
+	native.world.update(dt)
 	self:draw()
 end
 
 function M:draw()
-	native.draw_screen(self.player.e)
+	native.render.draw_screen(self.player.e)
 end
 
 

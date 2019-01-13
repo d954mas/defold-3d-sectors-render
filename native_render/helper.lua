@@ -8,7 +8,7 @@ M.BUFFER = buffer.create(M.WIDTH * M.HEIGHT, { {name=hash("rgb"), type=buffer.VA
 
 
 function M.init()
-	native.render_set_buffer(M.WIDTH, M.HEIGHT, M.BUFFER)
+	native.render.set_buffer(M.WIDTH, M.HEIGHT, M.BUFFER)
 end
 
 

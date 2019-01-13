@@ -1,5 +1,6 @@
 #include <dmsdk/sdk.h>
 #include "ecs_bind.h"
+
 entityx::Entity checkEntity (lua_State *L, int index){
 	luaL_checktype(L, index, LUA_TUSERDATA);
 	entityx::Entity e = *((entityx::Entity*)  lua_touserdata(L, index));

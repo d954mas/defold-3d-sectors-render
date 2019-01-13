@@ -3,8 +3,6 @@
 #define ENTITY "Entity"
 #define ENTITY_VAR "EntityVar"
 
-entityx::Entity checkEntity (lua_State *L, int index);
-
 static void pushEntity (lua_State *L, entityx::Entity e){
 	entityx::Entity *l_e = (entityx::Entity *)lua_newuserdata(L, sizeof(entityx::Entity));
 	*l_e = e;

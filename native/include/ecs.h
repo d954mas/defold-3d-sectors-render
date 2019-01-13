@@ -164,4 +164,6 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
   };
 };
 //endregion
-  
+
+
+entityx::Entity checkEntity (lua_State*, int);

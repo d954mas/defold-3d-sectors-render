@@ -52,3 +52,5 @@ struct World{
 extern World WORLD;
 
 void WorldUpdate(float);
+
+void WorldBind(lua_State*);
