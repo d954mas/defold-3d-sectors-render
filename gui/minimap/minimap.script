@@ -1,21 +1,47 @@
+local COMMON = require("libs.common")
+local LUME = require("libs.lume")
+local WORLD = require("world.world")
+
 local MAP_HEIGHT = 200
 local MAP_WIDTH = 200
+
+local ZOOM_MAX = 1
+local ZOOM_MIN = 0.1
+local ZOOM_STEP = 0.1
+
+local MAP_ZONE_ZOOM = 0.5
+local MAP_ZONE_WIDTH = 200 * MAP_ZONE_ZOOM;
+local MAP_ZONE_HEIGHT = 200 * MAP_ZONE_ZOOM;
+
 local BUFFER =  buffer.create(MAP_WIDTH * MAP_HEIGHT, { {name=hash("rgb_map"), type=buffer.VALUE_TYPE_UINT8, count=3} } )
 local SPRITE_SIZE = 200
+
+local function set_zoom(zoom)
+	MAP_ZONE_ZOOM = LUME.clamp(assert(zoom),ZOOM_MIN,ZOOM_MAX)
+	native.minimap.set_map_size(MAP_ZONE_WIDTH*MAP_ZONE_ZOOM, MAP_ZONE_HEIGHT*MAP_ZONE_ZOOM)
+end
 
 function init(self)
 	self.resource_path = go.get("#model", "texture0")
 	go.set_scale(vmath.vector3(SPRITE_SIZE*50,SPRITE_SIZE*50,1),"#model")
 	go.set_position(vmath.vector3(960-10-SPRITE_SIZE/2,540-10-SPRITE_SIZE/2,1))
 	native.minimap.set_buffer(MAP_WIDTH, MAP_HEIGHT, BUFFER)
+	native.minimap.set_player_size(4)
+	set_zoom(MAP_ZONE_ZOOM)
+	COMMON.INPUT.acquire()
+	self.input = COMMON.INPUT()
+	self.input:add(COMMON.HASHES.INPUT_MAP_ZOOM_IN,function()set_zoom(MAP_ZONE_ZOOM-ZOOM_STEP)  end,true)
+	self.input:add(COMMON.HASHES.INPUT_MAP_ZOOM_OUT,function()set_zoom(MAP_ZONE_ZOOM+ZOOM_STEP) end,true)
+
 end
 
 
 function final(self)
+	COMMON.INPUT.release()
 end
 
 function update(self, dt)
-	native.minimap.update()
+	native.minimap.update(WORLD.player.e)
     local header = {width = MAP_WIDTH, height =MAP_HEIGHT, type = resource.TEXTURE_TYPE_2D, format = resource.TEXTURE_FORMAT_RGB, num_mip_maps = 0}
     resource.set_texture(self.resource_path, header, BUFFER)
 end
@@ -26,8 +52,8 @@ function on_message(self, message_id, message, sender)
 end
 
 function on_input(self, action_id, action)
-	-- Add input-handling code here
-	-- Remove this function if not needed
+	pprint(action_id)
+	self.input:on_input(self,action_id,action)
 end
 
 function on_reload(self)

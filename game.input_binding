@@ -46,6 +46,14 @@ key_trigger {
   input: KEY_SPACE
   action: "jump"
 }
+key_trigger {
+  input: KEY_PAGEUP
+  action: "map_zoom_in"
+}
+key_trigger {
+  input: KEY_PAGEDOWN
+  action: "map_zoom_out"
+}
 mouse_trigger {
   input: MOUSE_BUTTON_1
   action: "touch"

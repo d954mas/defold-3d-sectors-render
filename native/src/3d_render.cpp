@@ -78,6 +78,7 @@ void RenderDrawScreen(entityx::Entity e){
             float vx2 = v2.x - posC->x, vy2 = v2.y- posC->y;
             //rotate them around player
             float pcos = angleC->anglecos, psin = angleC->anglesin;
+            //x это y,  z это x
             float tx1 = vx1 * psin - vy1 * pcos, tz1 = vx1 * pcos +vy1 * psin;
             float tx2 = vx2 * psin - vy2 * pcos, tz2 = vx2 * pcos +vy2 * psin;
             //is the wall in front of player

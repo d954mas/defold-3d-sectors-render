@@ -17,6 +17,9 @@ M.INPUT_UP = hash("up")
 M.INPUT_ROT_LEFT = hash("rot_left")
 M.INPUT_ROT_RIGHT = hash("rot_right")
 
+M.INPUT_MAP_ZOOM_IN = hash("map_zoom_in")
+M.INPUT_MAP_ZOOM_OUT = hash("map_zoom_out")
+
 
 M.MSG_SYSTEM_TOGGLE_PROFILER = hash("toggle_profile")
 
