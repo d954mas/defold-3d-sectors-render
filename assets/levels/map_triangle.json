@@ -1,0 +1,12 @@
+{
+  "vertices":[
+    [0,0],[10,0],[5,20]
+  ],
+  "sectors":[
+    {"floor_h":0, "ceil_h":20, "vertices":[{"v":0, "n":-1},{"v":1, "n":-1},{"v":2, "n":-1}]}
+  ],
+  "player": {
+    "position": {"x":5,"y":5,"z":0},
+    "sector":0
+  }
+}

@@ -101,6 +101,35 @@ struct MovementSystem : public entityx::System<MovementSystem> {
   };
 };
 
+static inline void move2(float *sdx,float *sdy,PositionC &position, EyeHeightC &eye, SectorC &sector,HeadMarginC &head,KneeHeightC &knee){
+    float dx = *sdx;
+    float dy = *sdy;
+    const Sector &sect = WORLD.sectors[sector.v];
+    const std::vector<int> &vert = sect.vertex;
+    if(dx != 0 || dy !=0){
+         for(unsigned s = 0; s < vert.size()-1; ++s){
+            XY v =  WORLD.vertices[vert[s+0]];
+            XY v2 =  WORLD.vertices[vert[s+1]];
+                if(IntersectBox(position.x, position.y, position.x+dx,position.y+dy, v.x, v.y, v2.x, v2.y)
+                    && PointSide(position.x+dx, position.y+dy, v.x, v.y, v2.x, v2.y) < 0){
+                    //Check where the hole is.
+                    float hole_low  = sect.neighbors[s] < 0 ?  9e9 : max(sect.floor, WORLD.sectors[sect.neighbors[s]].floor);
+                    float hole_high = sect.neighbors[s] < 0 ? -9e9 : min(sect.ceil,  WORLD.sectors[sect.neighbors[s]].ceil );
+                    // Check whether we're bumping into a wall.
+                    if(hole_high < position.z+eye.v+head.v
+                        || hole_low  >position.z+knee.v){
+                        // Bumps into a wall! Slide along the wall.
+                        // This formula is from Wikipedia article "vector projection".
+                        float xd = v2.x - v.x, yd = v2.y - v.y;
+                        *sdx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
+                        *sdy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
+                    }
+                }
+         }
+    }
+
+}
+
 struct CollisionSystem : public entityx::System<CollisionSystem> {
   void update(entityx::EntityManager &es, entityx::EventManager &events, entityx::TimeDelta dt) override {
     es.each<PositionC,VelocityC,HandleCollisionC, EyeHeightC, SectorC,HeadMarginC,KneeHeightC>([dt](entityx::Entity entity, PositionC &position, VelocityC &vel, HandleCollisionC &col,
@@ -108,26 +137,10 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
         position.z += col.dz;
         const Sector &sect = WORLD.sectors[sector.v];
         const std::vector<int> &vert = sect.vertex;
-        if(col.dx != 0 || col.dy !=0){
-             for(unsigned s = 0; s < vert.size()-1; ++s){
-                XY v =  WORLD.vertices[vert[s+0]];
-                XY v2 =  WORLD.vertices[vert[s+1]];
-                    if(IntersectBox(position.x, position.y, position.x+col.dx,position.y+col.dy, v.x, v.y, v2.x, v2.y)
-                        && PointSide(position.x+col.dx, position.y+col.dy, v.x, v.y, v2.x, v2.y) < 0){
-                        //Check where the hole is.
-                        float hole_low  = sect.neighbors[s] < 0 ?  9e9 : max(sect.floor, WORLD.sectors[sect.neighbors[s]].floor);
-                        float hole_high = sect.neighbors[s] < 0 ? -9e9 : min(sect.ceil,  WORLD.sectors[sect.neighbors[s]].ceil );
-                        // Check whether we're bumping into a wall.
-                        if(hole_high < position.z+eye.v+head.v
-                            || hole_low  >position.z+knee.v){
-                            // Bumps into a wall! Slide along the wall.
-                            // This formula is from Wikipedia article "vector projection".
-                            float xd = v2.x - v.x, yd = v2.y - v.y;
-                            col.dx = xd * (col.dx*xd + yd*col.dy) / (xd*xd + yd*yd);
-                            col.dy = yd * (col.dx*xd + yd*col.dy) / (xd*xd + yd*yd);
-                        }
-                    }
-             }
+        float trash_x=0, trash_y = 0;
+        move2(&trash_x,&col.dy,position,eye,sector,head,knee);
+        move2(&col.dx,&trash_y,position,eye,sector,head,knee);
+         if(col.dx != 0 || col.dy !=0){
               for(unsigned s = 0; s < vert.size()-1; ++s){
                 XY v =  WORLD.vertices[vert[s+0]];
                 XY v2 =  WORLD.vertices[vert[s+1]];
