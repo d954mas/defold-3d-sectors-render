@@ -7,16 +7,16 @@ local MOUSE_SCALE = 0.3
 function Script:update_velocity()
 	self.velocity.x, self.velocity.y = 0,0
 	if self.up then
-		self.velocity.x = self.velocity.x + 1
+		self.velocity.y = self.velocity.y + 1
 	end
 	if self.down then
-		self.velocity.x = self.velocity.x - 1
+		self.velocity.y = self.velocity.y - 1
 	end
 	if self.left then
-		self.velocity.y= self.velocity.y - 1
+		self.velocity.x= self.velocity.x + 1
 	end
 	if self.right then
-		self.velocity.y = self.velocity.y + 1
+		self.velocity.x = self.velocity.x - 1
 	end
 	if vmath.length(self.velocity)~= 0 then
 		self.velocity = vmath.normalize(self.velocity)
@@ -82,7 +82,7 @@ function Script:init(go)
 		if(move)then
 			action.screen_dx, action.screen_dy = move[1], move[2]
 		end
-		World.player:increase_angle(action.screen_dx * 0.03 *MOUSE_SCALE)
+		World.player:increase_angle(-action.screen_dx * 0.03 *MOUSE_SCALE)
 	end)
 
 

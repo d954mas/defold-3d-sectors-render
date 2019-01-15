@@ -2,6 +2,7 @@
 #include <dmsdk/sdk.h>
 #include <entityx/entityx.h>
 #include <vector>
+#include "vec.h"
 
 /* Define various vision related constants */
 #define hfovm (W * WORLD.hfov * 0.73f*H/W)
@@ -21,11 +22,10 @@
 // PointSide: Determine which side of a line the point is on. Return value: <0, =0 or >0.
 #define PointSide(px,py, x0,y0, x1,y1) vxs((x1)-(x0), (y1)-(y0), (px)-(x0), (py)-(y0))
 // Intersect: Calculate the point of intersection between two lines.
-#define Intersect(x1,y1, x2,y2, x3,y3, x4,y4) ((XY) { \
+#define Intersect(x1,y1, x2,y2, x3,y3, x4,y4) vec2f( \
     vxs(vxs(x1,y1, x2,y2), (x1)-(x2), vxs(x3,y3, x4,y4), (x3)-(x4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)), \
-    vxs(vxs(x1,y1, x2,y2), (y1)-(y2), vxs(x3,y3, x4,y4), (y3)-(y4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)) })
+    vxs(vxs(x1,y1, x2,y2), (y1)-(y2), vxs(x3,y3, x4,y4), (y3)-(y4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)))
 
-struct XY {float x,y;};
 
 /* Sectors: Floor and ceiling height; list of edge vertices and neighbors */
 //Sector is a room, where i can set floor and ceiling height
@@ -47,7 +47,7 @@ extern EcsWorld ECS;
 struct World{
     float hfov=1, vfov=1;
     std::vector<Sector> sectors;
-    std::vector<XY> vertices;
+    std::vector<vec2f> vertices;
     void reset();
     void setHFov(float);
     void setVFov(float);

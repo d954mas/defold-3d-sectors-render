@@ -2,10 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4541a19e-81ad-4482-8b04-19673d9ae92f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/native/include/vec.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/debug/debug_game_gui.gui" beforeDir="false" afterPath="$PROJECT_DIR$/gui/debug/debug_game_gui.gui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script" beforeDir="false" afterPath="$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/native/include/ecs.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/ecs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/game/game_scene.lua" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/game/game_scene.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/world/world.lua" beforeDir="false" afterPath="$PROJECT_DIR$/world/world.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/include/ecs_bind.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/ecs_bind.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/include/world.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/world.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/src/3d_render.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/3d_render.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/src/map.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/map.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/src/minimap.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/minimap.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/game/go/player_input.lua" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/game/go/player_input.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/world/player.lua" beforeDir="false" afterPath="$PROJECT_DIR$/world/player.lua" afterDir="false" />
     </list>
     <list id="3bf5dbc8-d584-4740-b6eb-ad8f44aefb1c" name="Revert: hide minimap" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,10 +42,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/scenes/game/game_scene.lua">
+        <entry file="file://$PROJECT_DIR$/scenes/game/go/player_input.lua">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="402">
-              <caret line="67" column="19" selection-start-line="67" selection-start-column="19" selection-end-line="67" selection-end-column="19" />
+            <state relative-caret-position="288">
+              <caret line="18" column="43" selection-start-line="18" selection-start-column="43" selection-end-line="18" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -54,9 +62,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ClearBuffer</find>
-      <find>ClearB</find>
-      <find>MinimapClearBuffer</find>
       <find>CreateBuffer</find>
       <find>MinimapSetBuffer</find>
       <find>DrawPixel</find>
@@ -82,14 +87,18 @@
       <find>vfov</find>
       <find>RenderDrawScreen</find>
       <find>posC</find>
-      <find>1</find>
       <find>* that have a neighbori</find>
+      <find>xy</find>
+      <find>tx1</find>
+      <find>1</find>
+      <find>+=</find>
     </findStrings>
     <replaceStrings>
-      <replace />
       <replace>SubscriptionStorage</replace>
       <replace>ceil_h</replace>
       <replace>map.</replace>
+      <replace />
+      <replace>tv1.y</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -98,7 +107,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/libs/proxy_subscription.lua" />
         <option value="$PROJECT_DIR$/world/view/hero_cell_view.lua" />
         <option value="$PROJECT_DIR$/libs/subscription_storage.lua" />
         <option value="$PROJECT_DIR$/libs/multiple_subscription.lua" />
@@ -122,12 +130,10 @@
         <option value="$PROJECT_DIR$/native/src/entityx/Entity.cc" />
         <option value="$PROJECT_DIR$/world/player_new.lua" />
         <option value="$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script" />
-        <option value="$PROJECT_DIR$/scenes/game/go/player_input.lua" />
         <option value="$PROJECT_DIR$/gui/minimap/minimap.gui_script" />
         <option value="$PROJECT_DIR$/render/my.render_script" />
         <option value="$PROJECT_DIR$/native_render/helper.lua" />
         <option value="$PROJECT_DIR$/native_render/update_texture.script" />
-        <option value="$PROJECT_DIR$/world/player.lua" />
         <option value="$PROJECT_DIR$/native/include/minimap.h" />
         <option value="$PROJECT_DIR$/native/src/ecs.cpp" />
         <option value="$PROJECT_DIR$/native/include/ecs_bind.h" />
@@ -138,17 +144,20 @@
         <option value="$PROJECT_DIR$/native/include/3d_render.h" />
         <option value="$PROJECT_DIR$/native/src/binding.cpp" />
         <option value="$PROJECT_DIR$/native/src/world.cpp" />
-        <option value="$PROJECT_DIR$/native/include/world.h" />
         <option value="$PROJECT_DIR$/native/src/buffer.cpp" />
         <option value="$PROJECT_DIR$/assets/levels/map_clear.json" />
         <option value="$PROJECT_DIR$/libs/hashes.lua" />
         <option value="$PROJECT_DIR$/gui/minimap/minimap.script" />
-        <option value="$PROJECT_DIR$/native/src/3d_render.cpp" />
-        <option value="$PROJECT_DIR$/native/src/minimap.cpp" />
         <option value="$PROJECT_DIR$/world/world.lua" />
         <option value="$PROJECT_DIR$/native/include/buffer.h" />
         <option value="$PROJECT_DIR$/scenes/game/game_scene.lua" />
+        <option value="$PROJECT_DIR$/native/include/world.h" />
+        <option value="$PROJECT_DIR$/native/src/3d_render.cpp" />
+        <option value="$PROJECT_DIR$/native/src/minimap.cpp" />
+        <option value="$PROJECT_DIR$/world/player.lua" />
+        <option value="$PROJECT_DIR$/native/include/vec.h" />
         <option value="$PROJECT_DIR$/native/include/ecs.h" />
+        <option value="$PROJECT_DIR$/scenes/game/go/player_input.lua" />
       </list>
     </option>
   </component>
@@ -159,9 +168,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="283" />
+    <option name="x" value="11" />
+    <option name="y" value="34" />
     <option name="width" value="1281" />
-    <option name="height" value="864" />
+    <option name="height" value="852" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -458,12 +468,6 @@
             <path>
               <item name="ExCretitsJam2018" type="b2602c69:ProjectViewProjectNode" />
               <item name="ExCretitsJam2018" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-              <item name="levels" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ExCretitsJam2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ExCretitsJam2018" type="462c0819:PsiDirectoryNode" />
               <item name="native" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -500,7 +504,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547496942914" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547587602590" />
     <property name="last_opened_file_path" value="$USER_HOME$/development/Defold/defold_api.zip!/" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -568,7 +572,7 @@
       <workItem from="1547234469040" duration="61000" />
       <workItem from="1547236951814" duration="648000" />
       <workItem from="1547295751361" duration="921000" />
-      <workItem from="1547375760184" duration="29710000" />
+      <workItem from="1547375760184" duration="40003000" />
     </task>
     <task id="LOCAL-00001" summary="update defold api">
       <created>1547237374909</created>
@@ -581,12 +585,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="272473000" />
+    <option name="totallyTimeSpent" value="282766000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="283" y="0" width="1281" height="864" extended-state="0" />
+    <frame x="11" y="34" width="1281" height="852" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49845678" visible="true" weight="0.22122449" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49845678" visible="true" weight="0.22122449" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -601,10 +606,10 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="LuaCheck" order="7" weight="0.32984293" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="8" sideWeight="0.4930612" visible="true" weight="0.22222222" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4930612" visible="true" weight="0.22576362" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.25968587" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50693876" side_tool="true" visible="true" weight="0.22222222" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50693876" side_tool="true" visible="true" weight="0.22576362" />
       <window_info anchor="bottom" id="Messages" order="12" />
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -670,20 +675,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="Cpp">
           <url>file://$PROJECT_DIR$/native/include/ecs.h</url>
-          <line>28</line>
+          <line>25</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/libs/input_receiver.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/libs/scripts/scripts_container.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="181">
@@ -757,13 +755,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scenes/game/go/player_input.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1360">
-          <caret line="85" column="8" selection-start-line="85" selection-start-column="8" selection-end-line="85" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gui/minimap/minimap.gui_script">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="64">
@@ -825,13 +816,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/native/src/ecs.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/native/src/ecs_bind.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="32">
@@ -864,27 +848,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1600">
           <caret line="100" column="2" lean-forward="true" selection-start-line="100" selection-start-column="2" selection-end-line="100" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/include/world.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-48">
-          <caret line="12" selection-start-line="12" selection-end-line="14" selection-end-column="92" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/include/3d_render.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="9" column="22" lean-forward="true" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assets/levels/map_clear.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="36" column="23" selection-start-line="36" selection-start-column="23" selection-end-line="36" selection-end-column="23" />
         </state>
       </provider>
     </entry>
@@ -923,27 +886,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/world/player.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="25" column="33" selection-start-line="25" selection-start-column="33" selection-end-line="25" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/include/ecs_bind.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1760">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/src/minimap.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="25" column="29" lean-forward="true" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gui/minimap/minimap.script">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
@@ -951,39 +893,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="75" column="39" selection-start-line="75" selection-start-column="39" selection-end-line="75" selection-end-column="39" />
-          <folding>
-            <element signature="n#{&#10;    y1 = clamp(y1, 0, pixelBuffer.height-1)\hy2 = clamp(y2, 0, pixelBuffer.height-1)\h&#10;    if(y2 == y1){DrawPixel(pixelBuffer,x,y1,top)\h}&#10;    else if(y2 &gt; y1) {&#10;        DrawPixel(pixelBuffer,x,y1,top)\h&#10;        for(int y=y1+1\h y&lt;y2\h ++y){&#10;            DrawPixel(pixelBuffer,x,y,middle)\h&#10;        }&#10;        DrawPixel(pixelBuffer,x,y2,bottom)\h&#10;    }&#10;}#0;n#static inline void vline(int x, int y1,int y2, uint32_t top,uint32_t middle,uint32_t bottom){&#10;    y1 = clamp(y1, 0, pixelBuffer.height-1)\hy2 = clamp(y2, 0, pixelBuffer.height-1)\h&#10;    if(y2 == y1){DrawPixel(pixelBuffer,x,y1,top)\h}&#10;    else if(y2 &gt; y1) {&#10;        DrawPixel(pixelBuffer,x,y1,top)\h&#10;        for(int y=y1+1\h y&lt;y2\h ++y){&#10;            DrawPixel(pixelBuffer,x,y,middle)\h&#10;        }&#10;        DrawPixel(pixelBuffer,x,y2,bottom)\h&#10;    }&#10;}#0" />
-            <element signature="n#{&#10;    ClearBuffer(pixelBuffer)\h&#10;}#0;n#void RenderClearBuffer(){&#10;    ClearBuffer(pixelBuffer)\h&#10;}#0" />
-            <element signature="n#{&#10;&#9;pixelBuffer = CreateBuffer(width, height, luaBuffer)\h&#10;}#0;n#void RenderSetBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer){&#10;&#9;pixelBuffer = CreateBuffer(width, height, luaBuffer)\h&#10;}#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/native/include/buffer.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="274">
           <caret line="58" column="40" lean-forward="true" selection-start-line="58" selection-start-column="40" selection-end-line="58" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/include/ecs.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="106" column="18" selection-start-line="106" selection-start-column="18" selection-end-line="106" selection-end-column="18" />
-          <folding>
-            <element signature="n#{&#10;    MovementSpeedC(float v = 0.0f) : v(v) {}&#10;    float v\h&#10;}#0;n#struct MovementSpeedC{&#10;    MovementSpeedC(float v = 0.0f) : v(v) {}&#10;    float v\h&#10;}#0" />
-            <element signature="n#{&#10;      HandleCollisionC(float dx = 0.0f, float dy = 0.0f, float dz = 0.0f) : dx(dx), dy(dy), dz(dz) {}&#10;      float dx, dy, dz\h&#10;}#0;n#struct HandleCollisionC {&#10;      HandleCollisionC(float dx = 0.0f, float dy = 0.0f, float dz = 0.0f) : dx(dx), dy(dy), dz(dz) {}&#10;      float dx, dy, dz\h&#10;}#0" />
-            <element signature="n#{&#10;      HandleGravityC(bool falling = true) : falling(falling){}&#10;      bool falling\h&#10;}#0;n#struct HandleGravityC {&#10;      HandleGravityC(bool falling = true) : falling(falling){}&#10;      bool falling\h&#10;}#0" />
-            <element signature="n#{&#10;  HeadMarginC(float v=0) : v(v) {}&#10;  float v\h&#10;}#0;n#struct HeadMarginC{&#10;  HeadMarginC(float v=0) : v(v) {}&#10;  float v\h&#10;}#0" />
-            <element signature="n#{&#10;  EyeHeightC(float v=0) : v(v) {}&#10;  float v\h&#10;}#0;n#struct EyeHeightC{&#10;  EyeHeightC(float v=0) : v(v) {}&#10;  float v\h&#10;}#0" />
-            <element signature="n#{&#10;  KneeHeightC(float v=0) : v(v) {}&#10;  float v\h&#10;}#0;n#struct KneeHeightC{&#10;  KneeHeightC(float v=0) : v(v) {}&#10;  float v\h&#10;}#0" />
-            <element signature="n#{&#10;    YawC(float yaw1=0){&#10;        setYaw(yaw1)\h&#10;    }&#10;    void setYaw(float yaw1)&#10;    {&#10;        yaw = yaw1\h&#10;        yawsin = sin(yaw)\h&#10;        yawcos = cos(yaw)\h&#10;    }&#10;    float yaw, yawsin, yawcos\h&#10;}#0;n#struct YawC{&#10;    YawC(float yaw1=0){&#10;        setYaw(yaw1)\h&#10;    }&#10;    void setYaw(float yaw1)&#10;    {&#10;        yaw = yaw1\h&#10;        yawsin = sin(yaw)\h&#10;        yawcos = cos(yaw)\h&#10;    }&#10;    float yaw, yawsin, yawcos\h&#10;}#0" />
-            <element signature="n#{&#10;    SectorC(int v=0) : v(v) {}&#10;    int v\h&#10;}#0;n#struct SectorC{&#10;    SectorC(int v=0) : v(v) {}&#10;    int v\h&#10;}#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -996,8 +909,93 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scenes/game/game_scene.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="67" column="19" selection-start-line="67" selection-start-column="19" selection-end-line="67" selection-end-column="19" />
+        <state relative-caret-position="98">
+          <caret line="48" column="6" lean-forward="true" selection-start-line="47" selection-start-column="7" selection-end-line="48" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/levels/map_clear.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="36" column="23" selection-start-line="36" selection-start-column="23" selection-end-line="36" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/include/world.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="31" column="65" lean-forward="true" selection-start-line="31" selection-start-column="65" selection-end-line="31" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/minimap.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="30" column="118" selection-start-line="30" selection-start-column="118" selection-end-line="30" selection-end-column="118" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/include/3d_render.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="9" column="22" lean-forward="true" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/ecs.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/include/ecs_bind.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="206" column="15" selection-start-line="206" selection-start-column="6" selection-end-line="206" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/world/player.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="20" column="22" lean-forward="true" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/include/vec.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="53" column="20" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-25">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+          <folding>
+            <element signature="n#{&#10;    y1 = clamp(y1, 0, pixelBuffer.height-1)\hy2 = clamp(y2, 0, pixelBuffer.height-1)\h&#10;    if(y2 == y1){DrawPixel(pixelBuffer,x,y1,top)\h}&#10;    else if(y2 &gt; y1) {&#10;        DrawPixel(pixelBuffer,x,y1,top)\h&#10;        for(int y=y1+1\h y&lt;y2\h ++y){&#10;            DrawPixel(pixelBuffer,x,y,middle)\h&#10;        }&#10;        DrawPixel(pixelBuffer,x,y2,bottom)\h&#10;    }&#10;}#0;n#static inline void vline(int x, int y1,int y2, uint32_t top,uint32_t middle,uint32_t bottom){&#10;    y1 = clamp(y1, 0, pixelBuffer.height-1)\hy2 = clamp(y2, 0, pixelBuffer.height-1)\h&#10;    if(y2 == y1){DrawPixel(pixelBuffer,x,y1,top)\h}&#10;    else if(y2 &gt; y1) {&#10;        DrawPixel(pixelBuffer,x,y1,top)\h&#10;        for(int y=y1+1\h y&lt;y2\h ++y){&#10;            DrawPixel(pixelBuffer,x,y,middle)\h&#10;        }&#10;        DrawPixel(pixelBuffer,x,y2,bottom)\h&#10;    }&#10;}#0" />
+            <element signature="n#{&#10;    ClearBuffer(pixelBuffer)\h&#10;}#0;n#void RenderClearBuffer(){&#10;    ClearBuffer(pixelBuffer)\h&#10;}#0" />
+            <element signature="n#{&#10;&#9;pixelBuffer = CreateBuffer(width, height, luaBuffer)\h&#10;}#0;n#void RenderSetBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer){&#10;&#9;pixelBuffer = CreateBuffer(width, height, luaBuffer)\h&#10;}#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/include/ecs.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1456">
+          <caret line="91" column="7" selection-start-line="91" selection-start-column="7" selection-end-line="91" selection-end-column="7" />
+          <folding>
+            <element signature="n#{&#10;    float dx = *sdx\h&#10;    float dy = *sdy\h&#10;    const Sector &amp;sect = WORLD.sectors[sector.v]\h&#10;    const std::vector&lt;int&gt; &amp;vert = sect.vertex\h&#10;    if(dx != 0 || dy !=0){&#10;         for(unsigned s = 0\h s &lt; vert.size()-1\h ++s){&#10;            vec2f v =  WORLD.vertices[vert[s+0]]\h&#10;            vec2f v2 =  WORLD.vertices[vert[s+1]]\h&#10;                if(IntersectBox(position.pos.x, position.pos.y, position.pos.x+dx,position.pos.y+dy, v.x, v.y, v2.x, v2.y)&#10;                    &amp;&amp; PointSide(position.pos.x+dx, position.pos.y+dy, v.x, v.y, v2.x, v2.y) &lt; 0){&#10;                    //Check where the hole is.&#10;                    float hole_low  = sect.neighbors[s] &lt; 0 ?  9e9 : max(sect.floor, WORLD.sectors[sect.neighbors[s]].floor)\h&#10;                    float hole_high = sect.neighbors[s] &lt; 0 ? -9e9 : min(sect.ceil,  WORLD.sectors[sect.neighbors[s]].ceil )\h&#10;                    // Check whether we're bumping into a wall.&#10;                    if(hole_high &lt; position.z+eye.v+head.v&#10;                        || hole_low  &gt;position.z+knee.v){&#10;                        // Bumps into a wall! Slide along the wall.&#10;                        // This formula is from Wikipedia article &quot;vector projection&quot;.&#10;                        float xd = v2.x - v.x, yd = v2.y - v.y\h&#10;                        *sdx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd)\h&#10;                        *sdy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd)\h&#10;                    }&#10;                }&#10;         }&#10;    }&#10;&#10;}#0;n#static inline void move2(float *sdx,float *sdy,PositionC &amp;position, EyeHeightC &amp;eye, SectorC &amp;sector,HeadMarginC &amp;head,KneeHeightC &amp;knee){&#10;    float dx = *sdx\h&#10;    float dy = *sdy\h&#10;    const Sector &amp;sect = WORLD.sectors[sector.v]\h&#10;    const std::vector&lt;int&gt; &amp;vert = sect.vertex\h&#10;    if(dx != 0 || dy !=0){&#10;         for(unsigned s = 0\h s &lt; vert.size()-1\h ++s){&#10;            vec2f v =  WORLD.vertices[vert[s+0]]\h&#10;            vec2f v2 =  WORLD.vertices[vert[s+1]]\h&#10;                if(IntersectBox(position.pos.x, position.pos.y, position.pos.x+dx,position.pos.y+dy, v.x, v.y, v2.x, v2.y)&#10;                    &amp;&amp; PointSide(position.pos.x+dx, position.pos.y+dy, v.x, v.y, v2.x, v2.y) &lt; 0){&#10;                    //Check where the hole is.&#10;                    float hole_low  = sect.neighbors[s] &lt; 0 ?  9e9 : max(sect.floor, WORLD.sectors[sect.neighbors[s]].floor)\h&#10;                    float hole_high = sect.neighbors[s] &lt; 0 ? -9e9 : min(sect.ceil,  WORLD.sectors[sect.neighbors[s]].ceil )\h&#10;                    // Check whether we're bumping into a wall.&#10;                    if(hole_high &lt; position.z+eye.v+head.v&#10;                        || hole_low  &gt;position.z+knee.v){&#10;                        // Bumps into a wall! Slide along the wall.&#10;                        // This formula is from Wikipedia article &quot;vector projection&quot;.&#10;                        float xd = v2.x - v.x, yd = v2.y - v.y\h&#10;                        *sdx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd)\h&#10;                        *sdy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd)\h&#10;                    }&#10;                }&#10;         }&#10;    }&#10;&#10;}#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scenes/game/go/player_input.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="18" column="43" selection-start-line="18" selection-start-column="43" selection-end-line="18" selection-end-column="43" />
         </state>
       </provider>
     </entry>

@@ -4,13 +4,13 @@
 
 //region COMPONENTS
 struct PositionC {
-  PositionC(float x = 0.0f, float y = 0.0f, float z = 0.0f) : x(x), y(y), z(z) {}
-  float x, y, z;
+  PositionC(vec2f pos=vec2f(), float z = 0.0f) : pos(pos), z(z) {}
+  vec2f pos; float z;
 };
 
 struct VelocityC {
-  VelocityC(float x = 0.0f, float y = 0.0f, float z = 0.0f) : x(x), y(y), z(z) {}
-  float x, y, z;
+  VelocityC(vec2f pos=vec2f(), float z = 0.0f) : pos(pos), z(z) {}
+  vec2f pos; float z;
 };
 
 struct MovementSpeedC{
@@ -19,8 +19,8 @@ struct MovementSpeedC{
 };
 
 struct HandleCollisionC {
-      HandleCollisionC(float dx = 0.0f, float dy = 0.0f, float dz = 0.0f) : dx(dx), dy(dy), dz(dz) {}
-      float dx, dy, dz;
+    HandleCollisionC(vec2f dpos=vec2f(), float dz = 0.0f) : dpos(dpos), dz(dz) {}
+    vec2f dpos; float dz;
 };
 
 struct HandleGravityC {
@@ -80,21 +80,14 @@ struct SectorC{
 struct MovementSystem : public entityx::System<MovementSystem> {
   void update(entityx::EntityManager &es, entityx::EventManager &events, entityx::TimeDelta dt) override {
     es.each<PositionC, VelocityC,AngleC, MovementSpeedC>([dt](entityx::Entity entity, PositionC &position, VelocityC &vel,AngleC &angle, MovementSpeedC &speed) {
-        float vx = vel.x * angle.anglecos - vel.y * angle.anglesin;
-        float vy = vel.x * angle.anglesin + vel.y * angle.anglecos;
-        float dx =  vx * speed.v * dt;
-        float dy =  vy * speed.v * dt;
+        vec2f pos = vel.pos.rotate(-angle.angle) * speed.v * dt;
         float dz =  vel.z * speed.v * dt;
-
-
         if (entity.has_component<HandleCollisionC>()){
             entityx::ComponentHandle<HandleCollisionC> collision = entity.component<HandleCollisionC>();
-            collision->dx = dx;
-            collision->dy = dy;
+            collision->dpos = pos;
             collision->dz = dz;
         }else{
-            position.x += dx;
-            position.y += dy;
+            position.pos += pos;
             position.z += dz;
         }
     });
@@ -108,10 +101,10 @@ static inline void move2(float *sdx,float *sdy,PositionC &position, EyeHeightC &
     const std::vector<int> &vert = sect.vertex;
     if(dx != 0 || dy !=0){
          for(unsigned s = 0; s < vert.size()-1; ++s){
-            XY v =  WORLD.vertices[vert[s+0]];
-            XY v2 =  WORLD.vertices[vert[s+1]];
-                if(IntersectBox(position.x, position.y, position.x+dx,position.y+dy, v.x, v.y, v2.x, v2.y)
-                    && PointSide(position.x+dx, position.y+dy, v.x, v.y, v2.x, v2.y) < 0){
+            vec2f v =  WORLD.vertices[vert[s+0]];
+            vec2f v2 =  WORLD.vertices[vert[s+1]];
+                if(IntersectBox(position.pos.x, position.pos.y, position.pos.x+dx,position.pos.y+dy, v.x, v.y, v2.x, v2.y)
+                    && PointSide(position.pos.x+dx, position.pos.y+dy, v.x, v.y, v2.x, v2.y) < 0){
                     //Check where the hole is.
                     float hole_low  = sect.neighbors[s] < 0 ?  9e9 : max(sect.floor, WORLD.sectors[sect.neighbors[s]].floor);
                     float hole_high = sect.neighbors[s] < 0 ? -9e9 : min(sect.ceil,  WORLD.sectors[sect.neighbors[s]].ceil );
@@ -138,21 +131,20 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
         const Sector &sect = WORLD.sectors[sector.v];
         const std::vector<int> &vert = sect.vertex;
         float trash_x=0, trash_y = 0;
-        move2(&trash_x,&col.dy,position,eye,sector,head,knee);
-        move2(&col.dx,&trash_y,position,eye,sector,head,knee);
-         if(col.dx != 0 || col.dy !=0){
+        move2(&trash_x,&col.dpos.y,position,eye,sector,head,knee);
+        move2(&col.dpos.x,&trash_y,position,eye,sector,head,knee);
+         if(col.dpos.x != 0 || col.dpos.y !=0){
               for(unsigned s = 0; s < vert.size()-1; ++s){
-                XY v =  WORLD.vertices[vert[s+0]];
-                XY v2 =  WORLD.vertices[vert[s+1]];
-                     if(sect.neighbors[s] >= 0 && IntersectBox(position.x,position.y, position.x+col.dx,position.y+col.dy, v.x, v.y, v2.x, v2.y)
-                                            && PointSide(position.x+col.dx, position.y+col.dy, v.x, v.y, v2.x, v2.y) < 0){
+                vec2f v =  WORLD.vertices[vert[s+0]];
+                vec2f v2 =  WORLD.vertices[vert[s+1]];
+                     if(sect.neighbors[s] >= 0 && IntersectBox(position.pos.x,position.pos.y, position.pos.x+col.dpos.x,position.pos.y+col.dpos.y, v.x, v.y, v2.x, v2.y)
+                                            && PointSide(position.pos.x+col.dpos.x, position.pos.y+col.dpos.y, v.x, v.y, v2.x, v2.y) < 0){
                          sector.v = sect.neighbors[s];
                          break;
                      }
               }
-              position.x += col.dx;
-              position.y += col.dy;
-              col.dx = 0;col.dy = 0;
+              position.pos += col.dpos;
+              col.dpos.x = 0;col.dpos.y = 0;
         }
 
         if(entity.has_component<HandleGravityC>()){

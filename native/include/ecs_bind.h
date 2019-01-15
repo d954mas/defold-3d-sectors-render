@@ -13,8 +13,8 @@ static void pushEntity (lua_State *L, entityx::Entity e){
 //region ENTITIES
 static int Entities_new_unit (lua_State *L){
     entityx::Entity e = ECS.entities.create();
-    e.assign<PositionC>(0,0,0);
-    e.assign<VelocityC>(0,0,0);
+    e.assign<PositionC>(vec2f(),0);
+    e.assign<VelocityC>(vec2f(),0);
     e.assign<MovementSpeedC>();
     e.assign<HandleCollisionC>();
     e.assign<HandleGravityC>();
@@ -45,8 +45,8 @@ static const luaL_reg Entities_meta[] = {{0, 0}};
 static int Entity_get_position(lua_State *L){
     entityx::Entity e = checkEntity(L, 1);
     entityx::ComponentHandle<PositionC> pos = e.component<PositionC>();
-    lua_pushnumber(L, pos->x);
-    lua_pushnumber(L, pos->y);
+    lua_pushnumber(L, pos->pos.x);
+    lua_pushnumber(L, pos->pos.y);
     lua_pushnumber(L, pos->z);
     return 3;
 }
@@ -56,8 +56,8 @@ static int Entity_set_position(lua_State *L){
     float x = luaL_checknumber(L, 2);
     float y = luaL_checknumber(L, 3);
     float z = luaL_checknumber(L, 4);
-    pos->x = x;
-    pos->y = y;
+    pos->pos.x = x;
+    pos->pos.y = y;
     pos->z = z;
     return 0;
 }
@@ -65,8 +65,8 @@ static int Entity_set_position(lua_State *L){
 static int Entity_get_velocity(lua_State *L){
     entityx::Entity e = checkEntity(L, 1);
     entityx::ComponentHandle<VelocityC> vel = e.component<VelocityC>();
-    lua_pushnumber(L, vel->x);
-    lua_pushnumber(L, vel->y);
+    lua_pushnumber(L, vel->pos.x);
+    lua_pushnumber(L, vel->pos.y);
     lua_pushnumber(L, vel->z);
     return 3;
 }
@@ -74,10 +74,10 @@ static int Entity_set_velocity(lua_State *L){
     entityx::Entity e = checkEntity(L, 1);
     entityx::ComponentHandle<VelocityC> pos = e.component<VelocityC>();
     if(lua_isnoneornil(L,2)==0){
-        pos->x = luaL_checknumber(L, 2);
+        pos->pos.x = luaL_checknumber(L, 2);
     }
      if(lua_isnoneornil(L,3)==0){
-        pos->y = luaL_checknumber(L, 3);
+        pos->pos.y = luaL_checknumber(L, 3);
      }
      if(lua_isnoneornil(L,4)==0){
         pos->z = luaL_checknumber(L, 4);

@@ -7,6 +7,8 @@ function init(self)
 	self.lbl_subscriptions = gui.get_node("lbl_subscriptions")
 	self.lbl_entities= gui.get_node("lbl_entities")
 	self.lbl_pos = gui.get_node("lbl_pos")
+	self.lbl_angle = gui.get_node("lbl_angle")
+	self.lbl_vel = gui.get_node("lbl_vel")
 	gui.set_render_order(15)
 end
 
@@ -21,8 +23,15 @@ function update(self, dt)
 	gui.set_text(self.lbl_subscriptions, "Subscriptions:" .. ObservableMixin.static.get_total_subscriptions())
 	gui.set_text(self.lbl_entities, "Entities:" .. Entity.get_size())
 	local x,y,z =  0,0,0
+	local vx,vy,vz =  0,0,0
+	local angle = 0
 	if WORLD.player then
 		x,y,z = WORLD.player:get_position()
+		vx,vy,vz = WORLD.player:get_velocity()
+		angle = WORLD.player:get_angle()
 	end
 	gui.set_text(self.lbl_pos, string.format("Pos:(%.1f;%.1f,%.1f)", x,y,z))
+	gui.set_text(self.lbl_vel, string.format("Vel:(%.1f;%.1f,%.1f)", vx,vy,vz))
+	gui.set_text(self.lbl_angle, string.format("Angle:%.2f", angle))
+	
 end

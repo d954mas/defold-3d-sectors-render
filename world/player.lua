@@ -19,7 +19,7 @@ end
 
 --region getter
 function M:get_angle()
-
+	return self.e:get_angle()
 end
 
 function M:get_position()

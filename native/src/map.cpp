@@ -8,12 +8,12 @@ void MapClear(){
 }
 
 void MapVertexAdd(float x, float y){
-    WORLD.vertices.push_back((XY){x,y});
+    WORLD.vertices.push_back(vec2f(x,y));
 }
 
 void MapVertexChange(int idx,float x, float y){
     if (idx <WORLD.vertices.size()){
-        XY v = WORLD.vertices[idx];
+        vec2f v = WORLD.vertices[idx];
         v.x = x; v.y = y;
     }else{
         dmLogError("no vertex with idx:%d", idx);

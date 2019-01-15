@@ -22,19 +22,14 @@ void MinimapUpdate(entityx::Entity e){
 
     float bufferWScale = minimapBuffer.width/mapWidth, bufferHScale = minimapBuffer.height/mapHeight;
     for(Sector sect: WORLD.sectors){
+        vec2f scale = vec2f(bufferWScale,bufferHScale);
         for(unsigned s =0; s< sect.vertex.size()-1;s++){
             //acquire the x,y coordinates of the two endpoints(vertices) of thius edge of the sector
             //transform the vertices into the player view
-            XY v1 = WORLD.vertices[sect.vertex[s]], v2 = WORLD.vertices[sect.vertex[s+1]];
-            float vx1 = v1.x - posC->x, vy1 = v1.y- posC->y;
-            float vx2 = v2.x - posC->x, vy2 = v2.y- posC->y;
-            //rotate them around player
-            float pcos = angleC->anglecos, psin = angleC->anglesin;
-            //x=y, y = x =)
-            float tx1 = (vx1 * psin - vy1 * pcos)*bufferWScale, ty1 = (vx1 * pcos +vy1 * psin)*bufferHScale;
-            float tx2 = (vx2 * psin - vy2 * pcos)*bufferWScale, ty2 = (vx2 * pcos +vy2 * psin)*bufferHScale;
-            //for map zero is top left corner;
-            DrawLine(minimapBuffer,centerX+tx1,centerX+ty1,centerX+tx2,centerX+ty2,WALL_COLOR,true);
+            vec2f v1 = WORLD.vertices[sect.vertex[s]], v2 = WORLD.vertices[sect.vertex[s+1]];
+            vec2f tv1 = (v1 - posC->pos).rotate(angleC->anglecos,angleC->anglesin).scalexy(bufferWScale,bufferHScale);
+            vec2f tv2 = (v2 - posC->pos).rotate(angleC->anglecos,angleC->anglesin).scalexy(bufferWScale,bufferHScale);
+            DrawLine(minimapBuffer,centerX+tv1.x,centerY+tv1.y,centerX+tv2.x,centerY+tv2.y,WALL_COLOR,true);
         }
     }
 }

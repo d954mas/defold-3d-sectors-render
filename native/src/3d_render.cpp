@@ -73,34 +73,29 @@ void RenderDrawScreen(entityx::Entity e){
         for(unsigned s =0; s< sect.vertex.size()-1;s++){
             //acquire the x,y coordinates of the two endpoints(vertices) of thius edge of the sector
             //transform the vertices into the player view
-            XY v1 = WORLD.vertices[sect.vertex[s]], v2 = WORLD.vertices[sect.vertex[s+1]];
-            float vx1 = v1.x - posC->x, vy1 = v1.y- posC->y;
-            float vx2 = v2.x - posC->x, vy2 = v2.y- posC->y;
-            //rotate them around player
-            float pcos = angleC->anglecos, psin = angleC->anglesin;
-            //x это y,  z это x
-            float tx1 = vx1 * psin - vy1 * pcos, tz1 = vx1 * pcos +vy1 * psin;
-            float tx2 = vx2 * psin - vy2 * pcos, tz2 = vx2 * pcos +vy2 * psin;
+            vec2f v1 = WORLD.vertices[sect.vertex[s]], v2 = WORLD.vertices[sect.vertex[s+1]];
+            vec2f tv1 = (v1 - posC->pos).rotate(angleC->anglecos,angleC->anglesin);
+            vec2f tv2 = (v2 - posC->pos).rotate(angleC->anglecos,angleC->anglesin);
             //is the wall in front of player
-            if(tz1<=0 && tz2 <=0) continue;
+            if(tv1.y<=0 && tv2.y <=0) continue;
                //if it partialy behind the player, clip it against player's view frustrum
-            if(tz1 <= 0 || tz2<=0){
+            if(tv1.y <= 0 || tv2.y<=0){
                 float nearz = 1.0e-4, farz = 5, nearside = 1.0e-5, farside = 20;
                 //find an intersection between the wall and approximate edges if player's view
-                XY i1 = Intersect(tx1,tz1,tx2,tz2, - nearside, nearz, -farside, farz);
-                XY i2 = Intersect(tx1,tz1,tx2,tz2, nearside, nearz, farside, farz);
-                if(tz1 < nearz){
-                    if(i1.y > 0){tx1 = i1.x;tz1 = i1.y;}
-                    else{tx1 = i2.x;tz1 = i2.y;}
+                vec2f i1 = Intersect(tv1.x,tv1.y,tv2.x,tv2.y, - nearside, nearz, -farside, farz);
+                vec2f i2 = Intersect(tv1.x,tv1.y,tv2.x,tv2.y, nearside, nearz, farside, farz);
+                if(tv1.y < nearz){
+                    if(i1.y > 0){tv1=vec2f(i1);}
+                    else{tv1=vec2f(i2);}
                 }
-                if(tz2 < nearz){
-                    if(i1.y > 0){tx2 = i1.x;tz2 = i1.y;}
-                    else{tx2 = i2.x;tz2 = i2.y;}
+                if(tv2.y < nearz){
+                    if(i1.y > 0){tv2=vec2f(i1);}
+                    else{tv2=vec2f(i2);}
                 }
             }
             //Perspective transformation
-            float xscale1 = hfovm / tz1, yscale1 = vfovm/tz1; int x1 = W/2 - (int)(tx1 * xscale1);
-            float xscale2 = hfovm / tz2, yscale2 = vfovm/tz2; int x2 = W/2 - (int)(tx2 * xscale2);
+            float xscale1 = hfovm / tv1.y, yscale1 = vfovm/tv1.y; int x1 = W/2 - (int)(tv1.x * xscale1);
+            float xscale2 = hfovm / tv2.y, yscale2 = vfovm/tv2.y; int x2 = W/2 - (int)(tv2.x * xscale2);
             //only render if visible
             //if right vertices is left to screen. Or lefy is right. That mean that edge not visible
             //x1 >= x2 wtf
@@ -120,16 +115,16 @@ void RenderDrawScreen(entityx::Entity e){
             }
             #define Yaw(y,z) (y + z)//z*yawC->yaw)
             //project floor/ceiling height into screen coordinates(Y)
-              int y1a  = H/2 - (int)(Yaw(yceil, tz1) * yscale1),  y1b = H/2 - (int)(Yaw(yfloor, tz1) * yscale1);
-              int y2a  = H/2 - (int)(Yaw(yceil, tz2) * yscale2),  y2b = H/2 - (int)(Yaw(yfloor, tz2) * yscale2);
+              int y1a  = H/2 - (int)(Yaw(yceil, tv1.y) * yscale1),  y1b = H/2 - (int)(Yaw(yfloor, tv1.y) * yscale1);
+              int y2a  = H/2 - (int)(Yaw(yceil, tv2.y) * yscale2),  y2b = H/2 - (int)(Yaw(yfloor, tv2.y) * yscale2);
               /* The same for the neighboring sector */
-              int ny1a = H/2 - (int)(Yaw(nyceil, tz1) * yscale1), ny1b = H/2 - (int)(Yaw(nyfloor, tz1) * yscale1);
-              int ny2a = H/2 - (int)(Yaw(nyceil, tz2) * yscale2), ny2b = H/2 - (int)(Yaw(nyfloor, tz2) * yscale2);
+              int ny1a = H/2 - (int)(Yaw(nyceil, tv1.y) * yscale1), ny1b = H/2 - (int)(Yaw(nyfloor, tv1.y) * yscale1);
+              int ny2a = H/2 - (int)(Yaw(nyceil, tv2.y) * yscale2), ny2b = H/2 - (int)(Yaw(nyfloor, tv2.y) * yscale2);
             /*Render the wall */
             int beginx = max(x1, now.sx1), endx = min(x2, now.sx2);
             for(int x = beginx; x<=endx; ++x){
                 /* Calculate the Z coordinate for this point. (Only used for lighting.) */
-                int z = ((x - x1) * (tz2-tz1) / (x2-x1) + tz1) * 8;
+                int z = ((x - x1) * (tv2.y-tv1.y) / (x2-x1) + tv1.y) * 8;
                 /* Acquire the Y coordinates for our ceiling & floor for this X coordinate. Clamp them. */
                 int ya = (x - x1) * (y2a-y1a) / (x2-x1) + y1a, cya = clamp(ya, ytop[x],ybottom[x]); // top
                 int yb = (x - x1) * (y2b-y1b) / (x2-x1) + y1b, cyb = clamp(yb, ytop[x],ybottom[x]); // bottom
