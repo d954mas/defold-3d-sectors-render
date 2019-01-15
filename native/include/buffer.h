@@ -1,5 +1,6 @@
 #pragma once
 #include <dmsdk/sdk.h>
+#include <math.h>
 
 #define min(a,b)             (((a) < (b)) ? (a) : (b)) // min: Choose smaller of two scalars.
 #define max(a,b)             (((a) > (b)) ? (a) : (b)) // max: Choose greater of two scalars.
@@ -48,8 +49,8 @@ static inline void DrawRect(Buffer &b,int x, int y,int w, int h, uint32_t color)
 }
 
 static inline void DrawLine(Buffer &b,int x0, int y0,int x1, int y1, uint32_t color, bool inverted){
-        int dx =  abs (x1 - x0), sx = x0 < x1 ? 1 : -1;
-        int dy = -abs (y1 - y0), sy = y0 < y1 ? 1 : -1;
+        int dx =  fabs (x1 - x0), sx = x0 < x1 ? 1 : -1;
+        int dy = -fabs (y1 - y0), sy = y0 < y1 ? 1 : -1;
         int err = dx + dy, e2; /* error value e_xy */
         uint8_t red = (color & 0xFF000000) >> 24;
         uint8_t green = (color & 0x00FF0000) >> 16;

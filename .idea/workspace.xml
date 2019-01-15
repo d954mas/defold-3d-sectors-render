@@ -2,18 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4541a19e-81ad-4482-8b04-19673d9ae92f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/native/include/vec.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/debug/debug_game_gui.gui" beforeDir="false" afterPath="$PROJECT_DIR$/gui/debug/debug_game_gui.gui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script" beforeDir="false" afterPath="$PROJECT_DIR$/gui/debug/debug_game_gui.gui_script" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/include/ecs.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/ecs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/include/ecs_bind.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/ecs_bind.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/include/world.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/world.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/src/3d_render.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/3d_render.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/src/map.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/map.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/src/minimap.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/minimap.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/game/go/player_input.lua" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/game/go/player_input.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/world/player.lua" beforeDir="false" afterPath="$PROJECT_DIR$/world/player.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/ext.manifest" beforeDir="false" afterPath="$PROJECT_DIR$/native/ext.manifest" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/include/buffer.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/buffer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/include/vec.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/vec.h" afterDir="false" />
     </list>
     <list id="3bf5dbc8-d584-4740-b6eb-ad8f44aefb1c" name="Revert: hide minimap" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -149,7 +140,6 @@
         <option value="$PROJECT_DIR$/libs/hashes.lua" />
         <option value="$PROJECT_DIR$/gui/minimap/minimap.script" />
         <option value="$PROJECT_DIR$/world/world.lua" />
-        <option value="$PROJECT_DIR$/native/include/buffer.h" />
         <option value="$PROJECT_DIR$/scenes/game/game_scene.lua" />
         <option value="$PROJECT_DIR$/native/include/world.h" />
         <option value="$PROJECT_DIR$/native/src/3d_render.cpp" />
@@ -158,6 +148,7 @@
         <option value="$PROJECT_DIR$/native/include/vec.h" />
         <option value="$PROJECT_DIR$/native/include/ecs.h" />
         <option value="$PROJECT_DIR$/scenes/game/go/player_input.lua" />
+        <option value="$PROJECT_DIR$/native/include/buffer.h" />
       </list>
     </option>
   </component>
@@ -504,7 +495,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547587602590" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547588525129" />
     <property name="last_opened_file_path" value="$USER_HOME$/development/Defold/defold_api.zip!/" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -572,7 +563,7 @@
       <workItem from="1547234469040" duration="61000" />
       <workItem from="1547236951814" duration="648000" />
       <workItem from="1547295751361" duration="921000" />
-      <workItem from="1547375760184" duration="40003000" />
+      <workItem from="1547375760184" duration="40628000" />
     </task>
     <task id="LOCAL-00001" summary="update defold api">
       <created>1547237374909</created>
@@ -585,11 +576,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="282766000" />
+    <option name="totallyTimeSpent" value="283391000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="11" y="34" width="1281" height="852" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49845678" visible="true" weight="0.22122449" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />

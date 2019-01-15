@@ -19,7 +19,7 @@ platforms:
             use-clang: true
     js-web:
         context:
-            flags:      ["-std=c++11"]
+            flags:      ["-std=c++11", "-stdlib=libc++"]
     wasm-web:
         context:
-            flags:      ["-std=c++11"]
+            flags:      ["-std=c++11", "-stdlib=libc++"]
