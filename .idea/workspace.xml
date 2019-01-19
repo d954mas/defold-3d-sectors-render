@@ -35,8 +35,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/native/include/ecs.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="464">
-              <caret line="171" column="19" lean-forward="true" selection-start-line="171" selection-start-column="19" selection-end-line="171" selection-end-column="19" />
+            <state relative-caret-position="280">
+              <caret line="134" column="142" selection-start-line="134" selection-start-column="142" selection-end-line="134" selection-end-column="142" />
             </state>
           </provider>
         </entry>
@@ -159,10 +159,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="60" />
-    <option name="y" value="102" />
+    <option name="x" value="-54" />
+    <option name="y" value="88" />
     <option name="width" value="1281" />
-    <option name="height" value="852" />
+    <option name="height" value="851" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -495,7 +495,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547898912031" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547901544591" />
     <property name="last_opened_file_path" value="$USER_HOME$/development/Defold/defold_api.zip!/" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -563,7 +563,7 @@
       <workItem from="1547234469040" duration="61000" />
       <workItem from="1547236951814" duration="648000" />
       <workItem from="1547295751361" duration="921000" />
-      <workItem from="1547375760184" duration="46799000" />
+      <workItem from="1547375760184" duration="49565000" />
     </task>
     <task id="LOCAL-00001" summary="update defold api">
       <created>1547237374909</created>
@@ -572,14 +572,21 @@
       <option name="project" value="LOCAL" />
       <updated>1547237374909</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="update collision logic">
+      <created>1547898943884</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1547898943884</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="289562000" />
+    <option name="totallyTimeSpent" value="292328000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-158" y="96" width="1281" height="852" extended-state="0" />
+    <frame x="-54" y="88" width="1281" height="851" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49845678" visible="true" weight="0.22122449" />
@@ -597,10 +604,10 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="LuaCheck" order="7" weight="0.32984293" />
-      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4930612" visible="true" weight="0.22576362" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4930612" visible="true" weight="0.22606383" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.25968587" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50693876" side_tool="true" visible="true" weight="0.22576362" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50693876" side_tool="true" visible="true" weight="0.22606383" />
       <window_info anchor="bottom" id="Messages" order="12" />
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -659,7 +666,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update defold api" />
-    <option name="LAST_COMMIT_MESSAGE" value="update defold api" />
+    <MESSAGE value="update collision logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="update collision logic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -671,7 +679,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="Cpp">
           <url>file://$PROJECT_DIR$/native/include/ecs.h</url>
-          <line>112</line>
+          <line>114</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
@@ -957,13 +965,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/native/include/vec.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="53" column="20" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scenes/game/go/player_input.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
@@ -985,10 +986,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/native/include/vec.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="104" column="5" lean-forward="true" selection-start-line="104" selection-start-column="5" selection-end-line="104" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/native/include/ecs.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
-          <caret line="171" column="19" lean-forward="true" selection-start-line="171" selection-start-column="19" selection-end-line="171" selection-end-column="19" />
+        <state relative-caret-position="280">
+          <caret line="134" column="142" selection-start-line="134" selection-start-column="142" selection-end-line="134" selection-end-column="142" />
         </state>
       </provider>
     </entry>

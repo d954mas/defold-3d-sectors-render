@@ -106,12 +106,18 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
         const std::vector<int> &vert = sect.vertex;
         if(col.dpos.x != 0 || col.dpos.y !=0){
             vec2f dcol = vec2f(0,0);
+            printf("***************************************************\n");
+            printf("collide from s:%d\n",sector.v);
             for(unsigned s = 0; s < vert.size()-1; ++s){
-                vec2f v1 =  WORLD.vertices[vert[s+0]];
+                vec2f v1 =  WORLD.vertices[vert[s]];
                 vec2f v2 =  WORLD.vertices[vert[s+1]];
                 vec2f line = v2-v1;
                 vec2f playerEnd = position.pos + col.dpos;
-                vec2f normal = vec2f(line.y, -line.x).normalize();
+                vec2f normal =line.ortho().normalize();
+
+                int neighbor = sect.neighbors[s];
+                 printf("collide neighbor:%d(%d)\n",s,neighbor);
+                 printf("collide line:(%f;%f)(%f;%f)\n", v1.x, v1.y,v2.x, v2.y);
                 float d =vec2f::dot(normal, v1);// The closest distance to the line from the origin (0, 0), is in the direction of the normal
                 // Check the distance from the line to the player start position
                 float startDist = vec2f::dot(normal, position.pos) - d;
@@ -126,30 +132,31 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
                 float endDist = vec2f::dot(normal, playerEnd) - d;
 
                 // Check if playerEnd is behind the line COLLISION
-                if(endDist < 0.0f ){
-                    float hole_low  = sect.neighbors[s] < 0 ?  9e9 : max(sect.floor, WORLD.sectors[sect.neighbors[s]].floor);
-                    float hole_high = sect.neighbors[s] < 0 ? -9e9 : min(sect.ceil,  WORLD.sectors[sect.neighbors[s]].ceil );
+                if(endDist < 0.0f && IntersectBox(position.pos.x,position.pos.y, position.pos.x+col.dpos.x,position.pos.y+col.dpos.y, v1.x, v1.y, v2.x, v2.y)){
+                    float hole_low  = neighbor < 0 ?  9e9 : max(sect.floor, WORLD.sectors[sect.neighbors[s]].floor);
+                    float hole_high = neighbor < 0 ? -9e9 : min(sect.ceil,  WORLD.sectors[sect.neighbors[s]].ceil );
                     // Check whether we're bumping into a wall.
                     if(hole_high < position.z+eye.v+head.v|| hole_low  >position.z+knee.v){
                         // Calculate the new position by moving playerEnd out to the line in the direction of the normal,
                         // and a little bit further to counteract floating point inaccuracies
                         // eps should be something less than a visible pixel, so it's not noticeable
+                        printf("collision\n");
                         vec2f move = normal * (-endDist + EPS);
                         col.dpos = (playerEnd + move)-position.pos;
                     }
-                   // sector.v = sect.neighbors[s];
                 }
             }
-            position.pos += col.dpos;
              for(unsigned s = 0; s < vert.size()-1; ++s){
                             vec2f v =  WORLD.vertices[vert[s+0]];
                             vec2f v2 =  WORLD.vertices[vert[s+1]];
                                  if(sect.neighbors[s] >= 0 && IntersectBox(position.pos.x,position.pos.y, position.pos.x+col.dpos.x,position.pos.y+col.dpos.y, v.x, v.y, v2.x, v2.y)
                                                         && PointSide(position.pos.x+col.dpos.x, position.pos.y+col.dpos.y, v.x, v.y, v2.x, v2.y) < 0){
                                      sector.v = sect.neighbors[s];
+                                    // printf("change sector:%d\n",  sect.neighbors[s]);
                                      break;
                                  }
                           }
+         position.pos += col.dpos;
 
         }
         col.dpos.x = 0;col.dpos.y = 0;col.dz = 0;
@@ -169,7 +176,7 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
                     vel.z = 0;
                     grav->falling = true;
                 }if(grav->falling){
-                    position.z += vel.z;
+                //    position.z += vel.z;
                 }
            }
         }
