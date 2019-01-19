@@ -2,6 +2,8 @@
 #include <entityx/entityx.h>
 #include "world.h"
 
+#define EPS 0.01
+
 //region COMPONENTS
 struct PositionC {
   PositionC(vec2f pos=vec2f(), float z = 0.0f) : pos(pos), z(z) {}
@@ -94,34 +96,6 @@ struct MovementSystem : public entityx::System<MovementSystem> {
   };
 };
 
-static inline void move2(float *sdx,float *sdy,PositionC &position, EyeHeightC &eye, SectorC &sector,HeadMarginC &head,KneeHeightC &knee){
-    float dx = *sdx;
-    float dy = *sdy;
-    const Sector &sect = WORLD.sectors[sector.v];
-    const std::vector<int> &vert = sect.vertex;
-    if(dx != 0 || dy !=0){
-         for(unsigned s = 0; s < vert.size()-1; ++s){
-            vec2f v =  WORLD.vertices[vert[s+0]];
-            vec2f v2 =  WORLD.vertices[vert[s+1]];
-                if(IntersectBox(position.pos.x, position.pos.y, position.pos.x+dx,position.pos.y+dy, v.x, v.y, v2.x, v2.y)
-                    && PointSide(position.pos.x+dx, position.pos.y+dy, v.x, v.y, v2.x, v2.y) < 0){
-                    //Check where the hole is.
-                    float hole_low  = sect.neighbors[s] < 0 ?  9e9 : max(sect.floor, WORLD.sectors[sect.neighbors[s]].floor);
-                    float hole_high = sect.neighbors[s] < 0 ? -9e9 : min(sect.ceil,  WORLD.sectors[sect.neighbors[s]].ceil );
-                    // Check whether we're bumping into a wall.
-                    if(hole_high < position.z+eye.v+head.v
-                        || hole_low  >position.z+knee.v){
-                        // Bumps into a wall! Slide along the wall.
-                        // This formula is from Wikipedia article "vector projection".
-                        float xd = v2.x - v.x, yd = v2.y - v.y;
-                        *sdx = xd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
-                        *sdy = yd * (dx*xd + yd*dy) / (xd*xd + yd*yd);
-                    }
-                }
-         }
-    }
-
-}
 
 struct CollisionSystem : public entityx::System<CollisionSystem> {
   void update(entityx::EntityManager &es, entityx::EventManager &events, entityx::TimeDelta dt) override {
@@ -130,23 +104,57 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
         position.z += col.dz;
         const Sector &sect = WORLD.sectors[sector.v];
         const std::vector<int> &vert = sect.vertex;
-        float trash_x=0, trash_y = 0;
-        move2(&trash_x,&col.dpos.y,position,eye,sector,head,knee);
-        move2(&col.dpos.x,&trash_y,position,eye,sector,head,knee);
-         if(col.dpos.x != 0 || col.dpos.y !=0){
-              for(unsigned s = 0; s < vert.size()-1; ++s){
-                vec2f v =  WORLD.vertices[vert[s+0]];
+        if(col.dpos.x != 0 || col.dpos.y !=0){
+            vec2f dcol = vec2f(0,0);
+            for(unsigned s = 0; s < vert.size()-1; ++s){
+                vec2f v1 =  WORLD.vertices[vert[s+0]];
                 vec2f v2 =  WORLD.vertices[vert[s+1]];
-                     if(sect.neighbors[s] >= 0 && IntersectBox(position.pos.x,position.pos.y, position.pos.x+col.dpos.x,position.pos.y+col.dpos.y, v.x, v.y, v2.x, v2.y)
-                                            && PointSide(position.pos.x+col.dpos.x, position.pos.y+col.dpos.y, v.x, v.y, v2.x, v2.y) < 0){
-                         sector.v = sect.neighbors[s];
-                         break;
-                     }
-              }
-              position.pos += col.dpos;
-              col.dpos.x = 0;col.dpos.y = 0;
-        }
+                vec2f line = v2-v1;
+                vec2f playerEnd = position.pos + col.dpos;
+                vec2f normal = vec2f(line.y, -line.x).normalize();
+                float d =vec2f::dot(normal, v1);// The closest distance to the line from the origin (0, 0), is in the direction of the normal
+                // Check the distance from the line to the player start position
+                float startDist = vec2f::dot(normal, position.pos) - d;
+                // If the distance is negative, that means the player is 'behind' the line
+                // To correctly use the normal, if that is the case, invert the normal
+                if(startDist < 0.0f) {
+                    normal = vec2f(-normal.x,-normal.y);
+                    d = -d;
+                }
+                // Check the distance from the line to the player end position
+                // (using corrected normal if necessary, so playerStart is always in front of the line now)
+                float endDist = vec2f::dot(normal, playerEnd) - d;
 
+                // Check if playerEnd is behind the line COLLISION
+                if(endDist < 0.0f ){
+                    float hole_low  = sect.neighbors[s] < 0 ?  9e9 : max(sect.floor, WORLD.sectors[sect.neighbors[s]].floor);
+                    float hole_high = sect.neighbors[s] < 0 ? -9e9 : min(sect.ceil,  WORLD.sectors[sect.neighbors[s]].ceil );
+                    // Check whether we're bumping into a wall.
+                    if(hole_high < position.z+eye.v+head.v|| hole_low  >position.z+knee.v){
+                        // Calculate the new position by moving playerEnd out to the line in the direction of the normal,
+                        // and a little bit further to counteract floating point inaccuracies
+                        // eps should be something less than a visible pixel, so it's not noticeable
+                        vec2f move = normal * (-endDist + EPS);
+                        col.dpos = (playerEnd + move)-position.pos;
+                    }
+                   // sector.v = sect.neighbors[s];
+                }
+            }
+            position.pos += col.dpos;
+             for(unsigned s = 0; s < vert.size()-1; ++s){
+                            vec2f v =  WORLD.vertices[vert[s+0]];
+                            vec2f v2 =  WORLD.vertices[vert[s+1]];
+                                 if(sect.neighbors[s] >= 0 && IntersectBox(position.pos.x,position.pos.y, position.pos.x+col.dpos.x,position.pos.y+col.dpos.y, v.x, v.y, v2.x, v2.y)
+                                                        && PointSide(position.pos.x+col.dpos.x, position.pos.y+col.dpos.y, v.x, v.y, v2.x, v2.y) < 0){
+                                     sector.v = sect.neighbors[s];
+                                     break;
+                                 }
+                          }
+
+        }
+        col.dpos.x = 0;col.dpos.y = 0;col.dz = 0;
+
+        //check collisions z. update velocity z
         if(entity.has_component<HandleGravityC>()){
            entityx::ComponentHandle<HandleGravityC> grav = entity.component<HandleGravityC>();
            grav->falling = true;
