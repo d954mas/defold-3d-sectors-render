@@ -65,7 +65,7 @@ end
 
 function Scene:load(co)
     ProxyScene.load(self,co)
-    WORLD:load(nil,"map_triangle")
+    WORLD:load("map_triangle")
 end
 
 

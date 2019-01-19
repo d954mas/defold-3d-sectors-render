@@ -138,7 +138,7 @@ static int HandleSectorCollision(int sector,vec2f start,vec2f &end, float z, flo
                 // correction += comp;
                 end += move;
             }else{
-                float distance = (-endDist - EPS);
+                float distance = (-endDist - 0.00001);
                 vec2f move = normal * distance;
                 vec2f start =  end + move;
                 printf("sector changed\n");
@@ -161,7 +161,11 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
             vec2f newPos = position.pos + col.dpos;
             if (col.dpos.x != 0 || col.dpos.y != 0) {
                 sector.v = HandleSectorCollision(sector.v,position.pos,newPos,position.z,eye.v,head.v,knee.v);
+                if (!IsInside(WORLD.sectors[sector.v], newPos)){
+                    newPos = position.pos;
+                }
             }
+
 /*
                  printf("***************************************************\n");
                 // printf("pos:(%f;%f)\n", position.pos.x, position.pos.y);

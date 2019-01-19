@@ -57,3 +57,5 @@ extern World WORLD;
 void WorldUpdate(float);
 
 void WorldBind(lua_State*);
+
+bool IsInside(Sector&, vec2f&);
