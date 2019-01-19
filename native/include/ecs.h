@@ -97,8 +97,10 @@ struct MovementSystem : public entityx::System<MovementSystem> {
     };
 };
 
-static void HandleSectorCollision(const Sector &sect,vec2f start,vec2f &end, float z, float eye, float head, float knee){
-    if(start.x == end.x && start.y == end.y)return;
+//return current sector
+static int HandleSectorCollision(int sector,vec2f start,vec2f &end, float z, float eye, float head, float knee){
+    if(start.x == end.x && start.y == end.y)return sector;
+    const Sector &sect = WORLD.sectors[sector];
     const std::vector<int> &vert = sect.vertex;
     for (unsigned s = 0; s < vert.size() - 1; ++s) {
         vec2f v1 = WORLD.vertices[vert[s]];
@@ -124,20 +126,27 @@ static void HandleSectorCollision(const Sector &sect,vec2f start,vec2f &end, flo
             float hole_low = neighbor < 0 ? 9e9 : max(sect.floor, WORLD.sectors[neighbor].floor);
             float hole_high = neighbor < 0 ? -9e9 : min(sect.ceil, WORLD.sectors[neighbor].ceil);
             // Check whether we're bumping into a wall.
+            
             if (hole_high < z + eye + head || hole_low > z + knee) {
+                float distance = (-endDist + EPS);
+                vec2f move = normal * distance;
                 // Calculate the new position by moving playerEnd out to the line in the direction of the normal,
                 // and a little bit further to counteract floating point inaccuracies
                 // eps should be something less than a visible pixel, so it's not noticeable
                 //    printf("collide neighbor:%d(%d)\n", s, neighbor);
-                float distance = (-endDist + EPS);
-                vec2f move = normal * distance;
+
                 // correction += comp;
                 end += move;
-            }
-        }else{
-            //if sector changed handle it collisions
+            }else{
+                float distance = (-endDist - EPS);
+                vec2f move = normal * distance;
+                vec2f start =  end + move;
+                printf("sector changed\n");
+                sector = HandleSectorCollision(neighbor,start,end,z,eye,head,knee);
+             }
         }
     }
+    return sector;
 }
 
 struct CollisionSystem : public entityx::System<CollisionSystem> {
@@ -151,7 +160,7 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
              const std::vector<int> &vert = sect.vertex;
             vec2f newPos = position.pos + col.dpos;
             if (col.dpos.x != 0 || col.dpos.y != 0) {
-                HandleSectorCollision(sect,position.pos,newPos,position.z,eye.v,head.v,knee.v);
+                sector.v = HandleSectorCollision(sector.v,position.pos,newPos,position.z,eye.v,head.v,knee.v);
             }
 /*
                  printf("***************************************************\n");
@@ -206,14 +215,14 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
                         }
                     }
                 }*/
-                for (unsigned s = 0; s < vert.size() - 1; ++s) {
-                    vec2f v = WORLD.vertices[vert[s + 0]];
-                    vec2f v2 = WORLD.vertices[vert[s + 1]];
-                    if (sect.neighbors[s] >= 0 && IntersectBox(position.pos.x, position.pos.y, newPos.x, newPos.y, v.x, v.y, v2.x, v2.y) && PointSide(newPos.x, newPos.y, v.x, v.y, v2.x, v2.y) < 0) {
-                        sector.v = sect.neighbors[s];
-                        break;
-                    }
-                }
+                //for (unsigned s = 0; s < vert.size() - 1; ++s) {
+                   // vec2f v = WORLD.vertices[vert[s + 0]];
+                   // vec2f v2 = WORLD.vertices[vert[s + 1]];
+                   // if (sect.neighbors[s] >= 0 && IntersectBox(position.pos.x, position.pos.y, newPos.x, newPos.y, v.x, v.y, v2.x, v2.y) && PointSide(newPos.x, newPos.y, v.x, v.y, v2.x, v2.y) < 0) {
+                   //     sector.v = sect.neighbors[s];
+                    //    break;
+                   // }
+              //  }
                // position.pos = newPos;
            // }
             position.pos = newPos;
