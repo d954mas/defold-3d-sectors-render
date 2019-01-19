@@ -3,7 +3,18 @@
 #include <entityx/entityx.h>
 #include <vector>
 #include "vec.h"
+/*
+fix black sectors
+Ok, I kinda fixed it, but it feels more like a hack than a fix to me.
+ Anyway, here's what I did: -
+  I changed the Intersect function to return null if the line segments don't cross each other;
+   - As a side effect of the previous one, I had to make sure that the tx* and tz*
+        only changed if the i1 and i2 vertices were not null (in the clipping part);
+   - Last but not least, before we calculate the x1 and x2 values,
+   I added this boundary check: if (tz1 < 0.1) tz1= 0.1f; if (tz2 < 0.1) tz2 = 0.1f;
 
+   Everything seems to be working fine as of right now, but I didn't have the opportunity to do much checking yet.﻿
+/*
 /* Define various vision related constants */
 #define hfovm (W * WORLD.hfov * 0.73f*H/W)
 #define vfovm (H * WORLD.vfov * .2f)
@@ -59,3 +70,6 @@ void WorldUpdate(float);
 void WorldBind(lua_State*);
 
 bool IsInside(Sector&, vec2f&);
+
+bool Intersect2(vec2f,vec2f,vec2f,vec2f, vec2f&);
+bool Intersect4(vec2f,vec2f,vec2f,vec2f, vec2f&);

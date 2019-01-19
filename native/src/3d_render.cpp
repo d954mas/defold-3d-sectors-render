@@ -1,15 +1,14 @@
 //https://www.youtube.com/watch?v=HQYsFshbkYw
+#include "3d_render.h"
+#include <dmsdk/sdk.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
-#include <dmsdk/sdk.h>
-#include <math.h>
 #include <vector>
-#include "3d_render.h"
 #include "buffer.h"
-#include "entityx/entityx.h"
 #include "ecs.h"
+#include "entityx/entityx.h"
 
 #define DLIB_LOG_DOMAIN "MapRender"
 #include <dmsdk/dlib/log.h>
@@ -20,27 +19,31 @@ Buffer pixelBuffer;
 
 //draw functions
 /* vline: Draw a vertical line on screen, with a different color pixel in top & bottom */
-static inline void vline(int x, int y1,int y2, uint32_t top,uint32_t middle,uint32_t bottom){
-    y1 = clamp(y1, 0, pixelBuffer.height-1);y2 = clamp(y2, 0, pixelBuffer.height-1);
-    if(y2 == y1){DrawPixel(pixelBuffer,x,y1,top);}
-    else if(y2 > y1) {
-        DrawPixel(pixelBuffer,x,y1,top);
-        for(int y=y1+1; y<y2; ++y){
-            DrawPixel(pixelBuffer,x,y,middle);
+static inline void vline(int x, int y1, int y2, uint32_t top, uint32_t middle, uint32_t bottom) {
+    y1 = clamp(y1, 0, pixelBuffer.height - 1);
+    y2 = clamp(y2, 0, pixelBuffer.height - 1);
+    if (y2 == y1) {
+        DrawPixel(pixelBuffer, x, y1, top);
+    } else if (y2 > y1) {
+        DrawPixel(pixelBuffer, x, y1, top);
+        for (int y = y1 + 1; y < y2; ++y) {
+            DrawPixel(pixelBuffer, x, y, middle);
         }
-        DrawPixel(pixelBuffer,x,y2,bottom);
+        DrawPixel(pixelBuffer, x, y2, bottom);
     }
 }
 
-void RenderClearBuffer(){
+void RenderClearBuffer() {
     ClearBuffer(pixelBuffer);
 }
 
-void RenderSetBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer){
-	pixelBuffer = CreateBuffer(width, height, luaBuffer);
+void RenderSetBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer) {
+    pixelBuffer = CreateBuffer(width, height, luaBuffer);
 }
 
-void RenderDrawScreen(entityx::Entity e){
+void RenderDrawScreen(entityx::Entity e) {
+  //  printf("DRAW *************************\n");
+    RenderClearBuffer();
     entityx::ComponentHandle<PositionC> posC = e.component<PositionC>();
     entityx::ComponentHandle<AngleC> angleC = e.component<AngleC>();
     entityx::ComponentHandle<AngleC> HeadC = e.component<AngleC>();
@@ -49,142 +52,165 @@ void RenderDrawScreen(entityx::Entity e){
     entityx::ComponentHandle<SectorC> sectorC = e.component<SectorC>();
 
     const int W = pixelBuffer.width;
-    const int H =  pixelBuffer.height;
+    const int H = pixelBuffer.height;
 
-    enum {MaxQueue  =32};
-    struct item {int sectorno,sx1,sx2;} queue[MaxQueue ], *head = queue, *tail=queue;
-    std::vector<int> ytop(W); // keep track if remaining windom(min,max) in each column
-    std::vector<int> ybottom(W, H-1);
+    enum { MaxQueue = 32 };
+    struct item {
+        int sectorno, sx1, sx2;
+    } queue[MaxQueue], *head = queue, *tail = queue;
+    std::vector<int> ytop(W);  // keep track if remaining windom(min,max) in each column
+    std::vector<int> ybottom(W, H - 1);
     std::vector<int> renderedsectors(WORLD.sectors.size());
     //start rendering from player sector
-    *head = (struct item) {sectorC->v,0, W-1};
-    if (++head == queue + MaxQueue ) head = queue;
-    do{
+    *head = (struct item){sectorC->v, 0, W - 1};
+    if (++head == queue + MaxQueue) head = queue;
+    do {
         //pick a sector then slice from the queue to draw
         const struct item now = *tail;
-        if(++tail == queue + MaxQueue) tail = queue;
+        if (++tail == queue + MaxQueue) tail = queue;
+      //    printf("sector:%d\n",now.sectorno);
 
-        if(renderedsectors[now.sectorno] & 0x21) continue; // Odd = still rendering, 0x20 = give up try 32 times
+        if (renderedsectors[now.sectorno] & 0x21) continue;  // Odd = still rendering, 0x20 = give up try 32 times
         ++renderedsectors[now.sectorno];
         //const for pointer and const for data
-        const Sector &sect = WORLD.sectors[now.sectorno];
+        const Sector& sect = WORLD.sectors[now.sectorno];
         //render each wall of player sector that is facing towards player
 
-        for(unsigned s =0; s< sect.vertex.size()-1;s++){
+        for (unsigned s = 0; s < sect.vertex.size() - 1; s++) {
             //acquire the x,y coordinates of the two endpoints(vertices) of thius edge of the sector
             //transform the vertices into the player view
-            vec2f v1 = WORLD.vertices[sect.vertex[s]], v2 = WORLD.vertices[sect.vertex[s+1]];
-            vec2f tv1 = (v1 - posC->pos).rotate(angleC->anglecos,angleC->anglesin);
-            vec2f tv2 = (v2 - posC->pos).rotate(angleC->anglecos,angleC->anglesin);
+            vec2f v1 = WORLD.vertices[sect.vertex[s]], v2 = WORLD.vertices[sect.vertex[s + 1]];
+            vec2f tv1 = (v1 - posC->pos).rotate(angleC->anglecos, angleC->anglesin);
+            vec2f tv2 = (v2 - posC->pos).rotate(angleC->anglecos, angleC->anglesin);
+            // printf("check line:(%f,%f)(%f,%f)\n",v1.x,v1.y,v2.x,v2.y);
             //is the wall in front of player
-            if(tv1.y<=0 && tv2.y <=0) continue;
-               //if it partialy behind the player, clip it against player's view frustrum
-            if(tv1.y <= 0 || tv2.y<=0){
+            if (tv1.y <= 0 && tv2.y <= 0) continue;
+            // printf("infront\n");
+            // printf("tv1.y:%f tv2.y:%f\n",tv1.y,tv2.y);
+            //if it partialy behind the player, clip it against player's view frustrum
+            if (tv1.y < 0 || tv2.y < 0) {
+                //  printf("partialy\n");
                 float nearz = 1.0e-4, farz = 5, nearside = 1.0e-5, farside = 20;
                 //find an intersection between the wall and approximate edges if player's view
-                vec2f i1 = Intersect(tv1.x,tv1.y,tv2.x,tv2.y, - nearside, nearz, -farside, farz);
-                vec2f i2 = Intersect(tv1.x,tv1.y,tv2.x,tv2.y, nearside, nearz, farside, farz);
-                if(tv1.y < nearz){
-                    if(i1.y > 0){tv1=vec2f(i1);}
-                    else{tv1=vec2f(i2);}
-                }
-                if(tv2.y < nearz){
-                    if(i1.y > 0){tv2=vec2f(i1);}
-                    else{tv2=vec2f(i2);}
+                vec2f i1 = vec2f(0,0);
+                vec2f i2 = vec2f(0,0);
+                //  if (i1p != NULL && i2p != NULL) {
+                // Intersect2(tv1, tv2, vec2f(-nearside, nearz), vec2f(-farside, farz),i1);;
+                //  Intersect2(tv1, tv2, vec2f(nearside, nearz), vec2f(farside, farz),i2);;
+                if (Intersect2(tv1, tv2, vec2f(-nearside, nearz), vec2f(-farside, farz), i1) 
+                && Intersect2(tv1, tv2, vec2f(nearside, nearz), vec2f(farside, farz), i2)) {
+
+
+                    if (tv1.y < nearz) {
+                        if (i1.y > 0) {
+                            tv1 = vec2f(i1);
+                        } else {
+                            tv1 = vec2f(i2);
+                        }
+                    }
+                    if (tv2.y < nearz) {
+                        if (i1.y > 0) {
+                            tv2 = vec2f(i1);
+                        } else {
+                            tv2 = vec2f(i2);
+                        }
+                    }
                 }
             }
             //Perspective transformation
-            float xscale1 = hfovm / tv1.y, yscale1 = vfovm/tv1.y; int x1 = W/2 - (int)(tv1.x * xscale1);
-            float xscale2 = hfovm / tv2.y, yscale2 = vfovm/tv2.y; int x2 = W/2 - (int)(tv2.x * xscale2);
+            float xscale1 = hfovm / tv1.y, yscale1 = vfovm / tv1.y;
+            int x1 = W / 2 - (int)(tv1.x * xscale1);
+            float xscale2 = hfovm / tv2.y, yscale2 = vfovm / tv2.y;
+            int x2 = W / 2 - (int)(tv2.x * xscale2);
             //only render if visible
             //if right vertices is left to screen. Or lefy is right. That mean that edge not visible
             //x1 >= x2 wtf
-            if(x1 >= x2 || x2 < now.sx1 || x1 > now.sx2) continue;
+            // printf("sx1:%d sx2:%d\n",now.sx1,now.sx2);
+            // printf("x1:%d x2:%d\n",x1,x2);
+            if (x1 >= x2 || x2 < now.sx1 || x1 > now.sx2) continue;
+            // printf("visible\n");
             //acquire the floor and ceilings height, relative to player view;
-            float yceil = sect.ceil - posC->z-eyeC->v;
-            float yfloor = sect.floor - posC->z-eyeC->v;
-
+            float yceil = sect.ceil - posC->z - eyeC->v;
+            float yfloor = sect.floor - posC->z - eyeC->v;
 
             //check the edge type, neighor=-1 means wall, other boundary between two sectors.
             int neighbor = sect.neighbors[s];
 
             float nyceil = 0, nyfloor = 0;
-            if (neighbor>=0){
-                nyceil =  WORLD.sectors[neighbor].ceil - posC->z-eyeC->v;
-                nyfloor = WORLD.sectors[neighbor].floor - posC->z-eyeC->v;
+            if (neighbor >= 0) {
+                nyceil = WORLD.sectors[neighbor].ceil - posC->z - eyeC->v;
+                nyfloor = WORLD.sectors[neighbor].floor - posC->z - eyeC->v;
             }
-            #define Yaw(y,z) (y + z)//z*yawC->yaw)
-            //project floor/ceiling height into screen coordinates(Y)
-              int y1a  = H/2 - (int)(Yaw(yceil, tv1.y) * yscale1),  y1b = H/2 - (int)(Yaw(yfloor, tv1.y) * yscale1);
-              int y2a  = H/2 - (int)(Yaw(yceil, tv2.y) * yscale2),  y2b = H/2 - (int)(Yaw(yfloor, tv2.y) * yscale2);
-              /* The same for the neighboring sector */
-              int ny1a = H/2 - (int)(Yaw(nyceil, tv1.y) * yscale1), ny1b = H/2 - (int)(Yaw(nyfloor, tv1.y) * yscale1);
-              int ny2a = H/2 - (int)(Yaw(nyceil, tv2.y) * yscale2), ny2b = H/2 - (int)(Yaw(nyfloor, tv2.y) * yscale2);
+#define Yaw(y, z) (y + z)  //z*yawC->yaw) \
+                           //project floor/ceiling height into screen coordinates(Y)
+            int y1a = H / 2 - (int)(Yaw(yceil, tv1.y) * yscale1), y1b = H / 2 - (int)(Yaw(yfloor, tv1.y) * yscale1);
+            int y2a = H / 2 - (int)(Yaw(yceil, tv2.y) * yscale2), y2b = H / 2 - (int)(Yaw(yfloor, tv2.y) * yscale2);
+            /* The same for the neighboring sector */
+            int ny1a = H / 2 - (int)(Yaw(nyceil, tv1.y) * yscale1), ny1b = H / 2 - (int)(Yaw(nyfloor, tv1.y) * yscale1);
+            int ny2a = H / 2 - (int)(Yaw(nyceil, tv2.y) * yscale2), ny2b = H / 2 - (int)(Yaw(nyfloor, tv2.y) * yscale2);
             /*Render the wall */
             int beginx = max(x1, now.sx1), endx = min(x2, now.sx2);
-            for(int x = beginx; x<=endx; ++x){
+            for (int x = beginx; x <= endx; ++x) {
                 /* Calculate the Z coordinate for this point. (Only used for lighting.) */
-                int z = ((x - x1) * (tv2.y-tv1.y) / (x2-x1) + tv1.y) * 8;
+                int z = ((x - x1) * (tv2.y - tv1.y) / (x2 - x1) + tv1.y) * 8;
                 /* Acquire the Y coordinates for our ceiling & floor for this X coordinate. Clamp them. */
-                int ya = (x - x1) * (y2a-y1a) / (x2-x1) + y1a, cya = clamp(ya, ytop[x],ybottom[x]); // top
-                int yb = (x - x1) * (y2b-y1b) / (x2-x1) + y1b, cyb = clamp(yb, ytop[x],ybottom[x]); // bottom
+                int ya = (x - x1) * (y2a - y1a) / (x2 - x1) + y1a, cya = clamp(ya, ytop[x], ybottom[x]);  // top
+                int yb = (x - x1) * (y2b - y1b) / (x2 - x1) + y1b, cyb = clamp(yb, ytop[x], ybottom[x]);  // bottom
                 //render ceiling;everything above this sector's ceiling height
-                vline(x,ytop[x],cya-1,0x11111100, 0x22222200, 0x11111100);
+                vline(x, ytop[x], cya - 1, 0x11111100, 0x22222200, 0x11111100);
                 //render floor;everything below this sector's floor height
-                 vline(x,cyb+1,ybottom[x],0x0000FF00, 0x0000AA00, 0x0000FF00);
+                vline(x, cyb + 1, ybottom[x], 0x0000FF00, 0x0000AA00, 0x0000FF00);
 
-                 if(neighbor >=0){
+                if (neighbor >= 0) {
                     //same for their floor and ceiling
-                     int nya = (x-x1) * (ny2a-ny1a)/ (x2-x1) +ny1a, cnya = clamp(nya, ytop[x], ybottom[x]);//top
-                     int nyb = (x-x1) * (ny2b-ny1b)/ (x2-x1) +ny1b, cnyb = clamp(nyb, ytop[x], ybottom[x]);//bottom
-                     //if our ceiling in higher than their ceiling, render upper wall
-                    int r1 = 0x01010100 * (255-z), r2 = 0x04000700 * (31-z/8);
-                    vline(x,cya,cnya-1,0,x==x1 || x==x2 ? 0: r1,0); //between our and their ceiling
-                      ytop[x] = clamp(max(cya,cnya),ytop[x], H-1);
+                    int nya = (x - x1) * (ny2a - ny1a) / (x2 - x1) + ny1a, cnya = clamp(nya, ytop[x], ybottom[x]);  //top
+                    int nyb = (x - x1) * (ny2b - ny1b) / (x2 - x1) + ny1b, cnyb = clamp(nyb, ytop[x], ybottom[x]);  //bottom
+                                                                                                                    //if our ceiling in higher than their ceiling, render upper wall
+                    int r1 = 0x01010100 * (255 - z), r2 = 0x04000700 * (31 - z / 8);
+                    vline(x, cya, cnya - 1, 0, x == x1 || x == x2 ? 0 : r1, 0);  //between our and their ceiling
+                    ytop[x] = clamp(max(cya, cnya), ytop[x], H - 1);
 
-                      //if our floor is lower than their floor, render bottom wall
-                       vline(x,cnyb+1,cyb,0,x==x1 || x==x2 ? 0: r2,0); //between their and our floor
-                       ybottom[x] = clamp(min(cyb,cnyb),0,ybottom[x]);
+                    //if our floor is lower than their floor, render bottom wall
+                    vline(x, cnyb + 1, cyb, 0, x == x1 || x == x2 ? 0 : r2, 0);  //between their and our floor
+                    ybottom[x] = clamp(min(cyb, cnyb), 0, ybottom[x]);
 
-                 }else{
+                } else {
                     //draw wall
-                    unsigned r = 0x01010100 * (255-z);
-                    vline(x,cya,cyb,0,x==x1 || x==x2 ? 0 : r, 0);
-                 }
+                    unsigned r = 0x01010100 * (255 - z);
+                    vline(x, cya, cyb, 0, x == x1 || x == x2 ? 0 : r, 0);
+                }
             }
             //shedule the neighbors rendering with it window
-            if (neighbor >=0 && endx >= beginx && (head + MaxQueue + 1 - tail)%MaxQueue){
-                *head = (struct item){neighbor,beginx, endx};
-                if(++head == queue + MaxQueue) head = queue;
+            if (neighbor >= 0 && endx >= beginx && (head + MaxQueue + 1 - tail) % MaxQueue) {
+                *head = (struct item){neighbor, beginx, endx};
+                if (++head == queue + MaxQueue) head = queue;
             }
         }
-    ++renderedsectors[now.sectorno];
-    }while(head!= tail);
+        ++renderedsectors[now.sectorno];
+    } while (head != tail);
 }
-
 
 //region BIND
-static int RenderSetBufferLua(lua_State* L){
- 	int width = (int) luaL_checknumber(L, 1);
-	int height = (int) luaL_checknumber(L, 2);
- 	dmScript::LuaHBuffer* buffer = dmScript::CheckBuffer(L, 3);
- 	RenderSetBuffer(width, height, buffer);
- 	return 0;
+static int RenderSetBufferLua(lua_State* L) {
+    int width = (int)luaL_checknumber(L, 1);
+    int height = (int)luaL_checknumber(L, 2);
+    dmScript::LuaHBuffer* buffer = dmScript::CheckBuffer(L, 3);
+    RenderSetBuffer(width, height, buffer);
+    return 0;
 }
 
-static int RenderDrawScreenLua(lua_State* L){
-	entityx::Entity e = checkEntity(L,1);
- 	RenderDrawScreen(e);
- 	return 0;
+static int RenderDrawScreenLua(lua_State* L) {
+    entityx::Entity e = checkEntity(L, 1);
+    RenderDrawScreen(e);
+    return 0;
 }
 
 static const luaL_reg Meta_methods[] = {
-   	{"set_buffer", RenderSetBufferLua},
-   	{"draw_screen", RenderDrawScreenLua},
-    {0,0}
-};
+    {"set_buffer", RenderSetBufferLua},
+    {"draw_screen", RenderDrawScreenLua},
+    {0, 0}};
 
-void RenderBind(lua_State *L){
+void RenderBind(lua_State* L) {
     int top = lua_gettop(L);
     lua_pushstring(L, TABLE_NAME);
     lua_newtable(L);
@@ -193,9 +219,4 @@ void RenderBind(lua_State *L){
     assert(top == lua_gettop(L));
 }
 
-
 //endregion
-
-
-
-

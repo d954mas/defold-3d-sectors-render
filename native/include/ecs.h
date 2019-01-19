@@ -98,8 +98,8 @@ struct MovementSystem : public entityx::System<MovementSystem> {
 };
 
 //return current sector
-static int HandleSectorCollision(int sector,vec2f start,vec2f &end, float z, float eye, float head, float knee){
-    if(start.x == end.x && start.y == end.y)return sector;
+static int HandleSectorCollision(int sector, vec2f start, vec2f &end, float z, float eye, float head, float knee) {
+    if (start.x == end.x && start.y == end.y) return sector;
     const Sector &sect = WORLD.sectors[sector];
     const std::vector<int> &vert = sect.vertex;
     for (unsigned s = 0; s < vert.size() - 1; ++s) {
@@ -126,7 +126,7 @@ static int HandleSectorCollision(int sector,vec2f start,vec2f &end, float z, flo
             float hole_low = neighbor < 0 ? 9e9 : max(sect.floor, WORLD.sectors[neighbor].floor);
             float hole_high = neighbor < 0 ? -9e9 : min(sect.ceil, WORLD.sectors[neighbor].ceil);
             // Check whether we're bumping into a wall.
-            
+
             if (hole_high < z + eye + head || hole_low > z + knee) {
                 float distance = (-endDist + EPS);
                 vec2f move = normal * distance;
@@ -137,13 +137,13 @@ static int HandleSectorCollision(int sector,vec2f start,vec2f &end, float z, flo
 
                 // correction += comp;
                 end += move;
-            }else{
+            } else {
                 float distance = (-endDist - 0.00001);
                 vec2f move = normal * distance;
-                vec2f start =  end + move;
+                vec2f start = end + move;
                 printf("sector changed\n");
-                sector = HandleSectorCollision(neighbor,start,end,z,eye,head,knee);
-             }
+                sector = HandleSectorCollision(neighbor, start, end, z, eye, head, knee);
+            }
         }
     }
     return sector;
@@ -151,22 +151,22 @@ static int HandleSectorCollision(int sector,vec2f start,vec2f &end, float z, flo
 
 struct CollisionSystem : public entityx::System<CollisionSystem> {
     void update(entityx::EntityManager &es, entityx::EventManager &events, entityx::TimeDelta dt) override {
-        es.each<PositionC, VelocityC, HandleCollisionC, EyeHeightC, SectorC, HeadMarginC, KneeHeightC>([dt](entityx::Entity entity, PositionC &position, VelocityC &vel, HandleCollisionC &col,                                                                                           EyeHeightC &eye, SectorC &sector, HeadMarginC &head, KneeHeightC &knee) {
+        es.each<PositionC, VelocityC, HandleCollisionC, EyeHeightC, SectorC, HeadMarginC, KneeHeightC>([dt](entityx::Entity entity, PositionC &position, VelocityC &vel, HandleCollisionC &col, EyeHeightC &eye, SectorC &sector, HeadMarginC &head, KneeHeightC &knee) {
             position.z += col.dz;
             //find all sectors in user quad
 
             //need function handle collision for sector(sector,start,end)
             const Sector &sect = WORLD.sectors[sector.v];
-             const std::vector<int> &vert = sect.vertex;
+            const std::vector<int> &vert = sect.vertex;
             vec2f newPos = position.pos + col.dpos;
             if (col.dpos.x != 0 || col.dpos.y != 0) {
-                sector.v = HandleSectorCollision(sector.v,position.pos,newPos,position.z,eye.v,head.v,knee.v);
-                if (!IsInside(WORLD.sectors[sector.v], newPos)){
+                sector.v = HandleSectorCollision(sector.v, position.pos, newPos, position.z, eye.v, head.v, knee.v);
+                if (!IsInside(WORLD.sectors[sector.v], newPos)) {
                     newPos = position.pos;
                 }
             }
 
-/*
+            /*
                  printf("***************************************************\n");
                 // printf("pos:(%f;%f)\n", position.pos.x, position.pos.y);
                 // printf("collide from s:%d\n", sector.v);
@@ -219,16 +219,16 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
                         }
                     }
                 }*/
-                //for (unsigned s = 0; s < vert.size() - 1; ++s) {
-                   // vec2f v = WORLD.vertices[vert[s + 0]];
-                   // vec2f v2 = WORLD.vertices[vert[s + 1]];
-                   // if (sect.neighbors[s] >= 0 && IntersectBox(position.pos.x, position.pos.y, newPos.x, newPos.y, v.x, v.y, v2.x, v2.y) && PointSide(newPos.x, newPos.y, v.x, v.y, v2.x, v2.y) < 0) {
-                   //     sector.v = sect.neighbors[s];
-                    //    break;
-                   // }
-              //  }
-               // position.pos = newPos;
-           // }
+            //for (unsigned s = 0; s < vert.size() - 1; ++s) {
+            // vec2f v = WORLD.vertices[vert[s + 0]];
+            // vec2f v2 = WORLD.vertices[vert[s + 1]];
+            // if (sect.neighbors[s] >= 0 && IntersectBox(position.pos.x, position.pos.y, newPos.x, newPos.y, v.x, v.y, v2.x, v2.y) && PointSide(newPos.x, newPos.y, v.x, v.y, v2.x, v2.y) < 0) {
+            //     sector.v = sect.neighbors[s];
+            //    break;
+            // }
+            //  }
+            // position.pos = newPos;
+            // }
             position.pos = newPos;
             col.dpos.x = 0;
             col.dpos.y = 0;

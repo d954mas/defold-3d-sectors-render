@@ -4,9 +4,11 @@
     <list default="true" id="4541a19e-81ad-4482-8b04-19673d9ae92f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/native/include/ecs.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/ecs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/include/vec.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/vec.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/native/include/world.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/world.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/src/3d_render.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/3d_render.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/native/src/world.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/world.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scenes/game/game_scene.lua" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/game/game_scene.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/world/world.lua" beforeDir="false" afterPath="$PROJECT_DIR$/world/world.lua" afterDir="false" />
     </list>
     <list id="3bf5dbc8-d584-4740-b6eb-ad8f44aefb1c" name="Revert: hide minimap" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,10 +37,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/scenes/game/game_scene.lua">
+        <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="363">
-              <caret line="67" column="15" lean-forward="true" selection-start-line="67" selection-start-column="15" selection-end-line="67" selection-end-column="15" />
+            <state relative-caret-position="122">
+              <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
             </state>
           </provider>
         </entry>
@@ -55,8 +57,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>DrawRect</find>
-      <find>draw</find>
       <find>ded</find>
       <find>WorldUpdate</find>
       <find>void update(</find>
@@ -85,6 +85,8 @@
       <find>inters</find>
       <find>newPos</find>
       <find>endPos</find>
+      <find>sx1</find>
+      <find>Intersect</find>
     </findStrings>
     <replaceStrings>
       <replace>SubscriptionStorage</replace>
@@ -140,17 +142,17 @@
         <option value="$PROJECT_DIR$/assets/levels/map_clear.json" />
         <option value="$PROJECT_DIR$/libs/hashes.lua" />
         <option value="$PROJECT_DIR$/gui/minimap/minimap.script" />
-        <option value="$PROJECT_DIR$/native/src/3d_render.cpp" />
         <option value="$PROJECT_DIR$/native/src/minimap.cpp" />
         <option value="$PROJECT_DIR$/world/player.lua" />
         <option value="$PROJECT_DIR$/native/include/buffer.h" />
         <option value="$PROJECT_DIR$/scenes/game/go/player_input.lua" />
-        <option value="$PROJECT_DIR$/world/world.lua" />
         <option value="$PROJECT_DIR$/native/include/vec.h" />
-        <option value="$PROJECT_DIR$/native/include/world.h" />
         <option value="$PROJECT_DIR$/native/include/ecs.h" />
-        <option value="$PROJECT_DIR$/native/src/world.cpp" />
         <option value="$PROJECT_DIR$/scenes/game/game_scene.lua" />
+        <option value="$PROJECT_DIR$/native/include/world.h" />
+        <option value="$PROJECT_DIR$/native/src/world.cpp" />
+        <option value="$PROJECT_DIR$/world/world.lua" />
+        <option value="$PROJECT_DIR$/native/src/3d_render.cpp" />
       </list>
     </option>
   </component>
@@ -161,10 +163,9 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-13" />
-    <option name="y" value="52" />
+    <option name="x" value="46" />
     <option name="width" value="1281" />
-    <option name="height" value="862" />
+    <option name="height" value="861" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -502,7 +503,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547917946403" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547932761368" />
     <property name="last_opened_file_path" value="$USER_HOME$/development/Defold/defold_api.zip!/" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -570,7 +571,7 @@
       <workItem from="1547234469040" duration="61000" />
       <workItem from="1547236951814" duration="648000" />
       <workItem from="1547295751361" duration="921000" />
-      <workItem from="1547375760184" duration="64592000" />
+      <workItem from="1547375760184" duration="78627000" />
     </task>
     <task id="LOCAL-00001" summary="update defold api">
       <created>1547237374909</created>
@@ -597,13 +598,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="307355000" />
+    <option name="totallyTimeSpent" value="321390000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-13" y="52" width="1281" height="862" extended-state="0" />
+    <frame x="46" y="0" width="1281" height="861" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49845678" visible="true" weight="0.22122449" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49845678" visible="true" weight="0.2710204" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -618,10 +619,10 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="LuaCheck" order="7" weight="0.32984293" />
-      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4930612" visible="true" weight="0.2712975" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="8" sideWeight="0.4930612" visible="true" weight="0.27165353" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.25968587" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50693876" side_tool="true" visible="true" weight="0.2712975" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50693876" side_tool="true" visible="true" weight="0.27165353" />
       <window_info anchor="bottom" id="Messages" order="12" />
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -955,57 +956,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="34" selection-start-line="34" selection-end-line="34" />
-          <folding>
-            <element signature="n#{&#10;    y1 = clamp(y1, 0, pixelBuffer.height-1)\hy2 = clamp(y2, 0, pixelBuffer.height-1)\h&#10;    if(y2 == y1){DrawPixel(pixelBuffer,x,y1,top)\h}&#10;    else if(y2 &gt; y1) {&#10;        DrawPixel(pixelBuffer,x,y1,top)\h&#10;        for(int y=y1+1\h y&lt;y2\h ++y){&#10;            DrawPixel(pixelBuffer,x,y,middle)\h&#10;        }&#10;        DrawPixel(pixelBuffer,x,y2,bottom)\h&#10;    }&#10;}#0;n#static inline void vline(int x, int y1,int y2, uint32_t top,uint32_t middle,uint32_t bottom){&#10;    y1 = clamp(y1, 0, pixelBuffer.height-1)\hy2 = clamp(y2, 0, pixelBuffer.height-1)\h&#10;    if(y2 == y1){DrawPixel(pixelBuffer,x,y1,top)\h}&#10;    else if(y2 &gt; y1) {&#10;        DrawPixel(pixelBuffer,x,y1,top)\h&#10;        for(int y=y1+1\h y&lt;y2\h ++y){&#10;            DrawPixel(pixelBuffer,x,y,middle)\h&#10;        }&#10;        DrawPixel(pixelBuffer,x,y2,bottom)\h&#10;    }&#10;}#0" />
-            <element signature="n#{&#10;    ClearBuffer(pixelBuffer)\h&#10;}#0;n#void RenderClearBuffer(){&#10;    ClearBuffer(pixelBuffer)\h&#10;}#0" />
-            <element signature="n#{&#10;&#9;pixelBuffer = CreateBuffer(width, height, luaBuffer)\h&#10;}#0;n#void RenderSetBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer){&#10;&#9;pixelBuffer = CreateBuffer(width, height, luaBuffer)\h&#10;}#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/native/include/ecs.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="154" column="20" selection-start-line="154" selection-start-column="20" selection-end-line="155" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/include/vec.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="523">
-          <caret line="127" selection-start-line="127" selection-end-line="127" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/include/world.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="60" column="13" selection-start-line="60" selection-start-column="5" selection-end-line="60" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/native/src/world.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="91" column="23" selection-start-line="91" selection-start-column="23" selection-end-line="91" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/world/world.lua">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="39" column="14" lean-forward="true" selection-start-line="39" selection-start-column="14" selection-end-line="39" selection-end-column="14" />
+        <state relative-caret-position="605">
+          <caret line="155" column="43" lean-forward="true" selection-start-line="155" selection-start-column="43" selection-end-line="155" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scenes/game/game_scene.lua">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="363">
-          <caret line="67" column="15" lean-forward="true" selection-start-line="67" selection-start-column="15" selection-end-line="67" selection-end-column="15" />
+          <caret line="67" column="19" selection-start-line="67" selection-start-column="19" selection-end-line="67" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/include/vec.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1818">
+          <caret line="127" selection-start-line="127" selection-end-line="127" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/include/world.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/world.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="61" column="23" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="23" />
+          <folding>
+            <element signature="n#{&#10;    // equations-to-code conversion&#10;    float x1 = a1.x, x2 = a2.x, x3 = b1.x, x4 = b2.x\h&#10;    float y1 = a1.y, y2 = a2.y, y3 = b1.y, y4 = b2.y\h&#10;&#10;    float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)\h&#10;    // If d is zero, there is no intersection&#10;    if (d == 0) return false\h&#10;&#10;    // Get the x and y&#10;    float pre = (x1*y2 - y1*x2), post = (x3*y4 - y3*x4)\h&#10;    float x = ( pre * (x3 - x4) - (x1 - x2) * post ) / d\h&#10;    float y = ( pre * (y3 - y4) - (y1 - y2) * post ) / d\h&#10;&#10;    // Check if the x and y coordinates are within both lines&#10;    if ( x &lt; min(x1, x2) || x &gt; max(x1, x2) ||&#10;    x &lt; min(x3, x4) || x &gt; max(x3, x4) ) return false\h&#10;    if ( y &lt; min(y1, y2) || y &gt; max(y1, y2) ||&#10;    y &lt; min(y3, y4) || y &gt; max(y3, y4) ) return false\h&#10;    Intersect2(a1,a1,b1,b2,result)\h&#10;    return true\h&#10;}#0;n#bool Intersect4(vec2f a1,vec2f a2,vec2f b1,vec2f b2,vec2f&amp; result){&#10;    // equations-to-code conversion&#10;    float x1 = a1.x, x2 = a2.x, x3 = b1.x, x4 = b2.x\h&#10;    float y1 = a1.y, y2 = a2.y, y3 = b1.y, y4 = b2.y\h&#10;&#10;    float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)\h&#10;    // If d is zero, there is no intersection&#10;    if (d == 0) return false\h&#10;&#10;    // Get the x and y&#10;    float pre = (x1*y2 - y1*x2), post = (x3*y4 - y3*x4)\h&#10;    float x = ( pre * (x3 - x4) - (x1 - x2) * post ) / d\h&#10;    float y = ( pre * (y3 - y4) - (y1 - y2) * post ) / d\h&#10;&#10;    // Check if the x and y coordinates are within both lines&#10;    if ( x &lt; min(x1, x2) || x &gt; max(x1, x2) ||&#10;    x &lt; min(x3, x4) || x &gt; max(x3, x4) ) return false\h&#10;    if ( y &lt; min(y1, y2) || y &gt; max(y1, y2) ||&#10;    y &lt; min(y3, y4) || y &gt; max(y3, y4) ) return false\h&#10;    Intersect2(a1,a1,b1,b2,result)\h&#10;    return true\h&#10;}#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/world/world.lua">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="47" column="37" selection-start-line="47" selection-start-column="37" selection-end-line="47" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
         </state>
       </provider>
     </entry>
