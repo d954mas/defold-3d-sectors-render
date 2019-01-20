@@ -41,8 +41,16 @@ void RenderSetBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer) {
     pixelBuffer = CreateBuffer(width, height, luaBuffer);
 }
 
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
+static float lerp(float v0, float v1, float t) {
+		return (1 - t) * v0 + t * v1;
+}
+
 void RenderDrawScreen(entityx::Entity e) {
-  //  printf("DRAW *************************\n");
+    printf("DRAW *************************\n");
     RenderClearBuffer();
     entityx::ComponentHandle<PositionC> posC = e.component<PositionC>();
     entityx::ComponentHandle<AngleC> angleC = e.component<AngleC>();
@@ -84,44 +92,142 @@ void RenderDrawScreen(entityx::Entity e) {
             vec2f tv2 = (v2 - posC->pos).rotate(angleC->anglecos, angleC->anglesin);
             // printf("check line:(%f,%f)(%f,%f)\n",v1.x,v1.y,v2.x,v2.y);
             //is the wall in front of player
-            if (tv1.y <= 0 && tv2.y <= 0) continue;
+             float nearz = 1.0e-4, farz = 5, nearside = 1.0e-5, farside = 20;
+            if (tv1.y <= nearz && tv2.y <= nearz) continue;
             // printf("infront\n");
             // printf("tv1.y:%f tv2.y:%f\n",tv1.y,tv2.y);
             //if it partialy behind the player, clip it against player's view frustrum
-            if (tv1.y < 0 || tv2.y < 0) {
+            bool draw_part = false;
+            if (tv1.y <= nearz || tv2.y <= nearz) {
+                float r0x = tv1.y, r0y = tv1.x, r1x = tv2.y, r1y= tv2.x;
+
+
+               // float r0x = tv1.x, r0y = tv1.y, r1x = tv2.x, r1y= tv2.y;
+                // Distance between the vertices and the near z
+                float da = r0x  - nearz;
+                float db = r1x  - nearz;
+                bool left = false;
+                if (sgn(da) != sgn(db)) {
+                    float s = da / (db - da);
+
+                	if (r0x <= 0) {
+                        r0x = r1x - (1 + s) * (r1x - r0x);
+                        r0y = r1y - (1+ s) * (r1y - r0y);
+                        left = true;
+                    } else {
+                         r1x = r1x - (1+s) * (r1x - r0x);
+                         r1y = r1y - (1+s) * (r1y - r0y);
+                    }
+                } else {
+                    printf("ERROR:\n");
+                }
+              //  tv1.x = r0x;tv1.y = r0y;tv2.x = r1x;tv2.y = r1y;
+                vec2f tv1a = vec2f(tv1);
+                vec2f tv2a = vec2f(tv2);
+
+
+
+            // if (x1 > x2) {
+               //int i = x1; x1 = x2; x2 = i;
+           //  }
+
+      
+               // if(tv1.x < tv2.x){
+                  //  float i = tv1.x;tv1.x = tv2.x;tv2.x = i;
+               // }
+           // }
+               // continue;
+              /*  if (fabs(r1y - r0y) > fabs(r1x - r0x)) {
+                    u0 = (int) ((r0y - or0y) / (or1y - or0y) * segLength);
+                    u1 = (int) ((r1y - or0y) / (or1y - or0y) * segLength);
+                } else {
+                    u0 = (int) ((r0x - or0x) / (or1x - or0x) * segLength);
+                    u1 = (int) ((r1x - or0x) / (or1x - or0x) * segLength);
+                }*/
+
+
                 //  printf("partialy\n");
-                float nearz = 1.0e-4, farz = 5, nearside = 1.0e-5, farside = 20;
+
                 //find an intersection between the wall and approximate edges if player's view
                 vec2f i1 = vec2f(0,0);
                 vec2f i2 = vec2f(0,0);
                 //  if (i1p != NULL && i2p != NULL) {
                 // Intersect2(tv1, tv2, vec2f(-nearside, nearz), vec2f(-farside, farz),i1);;
                 //  Intersect2(tv1, tv2, vec2f(nearside, nearz), vec2f(farside, farz),i2);;
-                if (Intersect2(tv1, tv2, vec2f(-nearside, nearz), vec2f(-farside, farz), i1) 
-                && Intersect2(tv1, tv2, vec2f(nearside, nearz), vec2f(farside, farz), i2)) {
 
-
-                    if (tv1.y < nearz) {
+                if (Intersect2(tv1a, tv2a, vec2f(-nearside, nearz), vec2f(-farside, farz), i1)
+                && Intersect2(tv1a, tv2a, vec2f(nearside, nearz), vec2f(farside, farz), i2)) {
+                    if (tv1a.y < 0) {
                         if (i1.y > 0) {
-                            tv1 = vec2f(i1);
+                            tv1a = vec2f(i1);
                         } else {
-                            tv1 = vec2f(i2);
+                            tv1a = vec2f(i2);
                         }
                     }
-                    if (tv2.y < nearz) {
+                    if (tv2a.y < 0) {
                         if (i1.y > 0) {
-                            tv2 = vec2f(i1);
+                            tv2a = vec2f(i1);
                         } else {
-                            tv2 = vec2f(i2);
+                            tv2a = vec2f(i2);
                         }
                     }
-                }
-            }
+
+                    
+                }else{
+                    printf("no interseck\n");
+                }    
+
+                float xscale1 = hfovm / r0x, yscale1 = vfovm / r0x;
+                int x1 = W / 2 - (int)(r0y * xscale1);
+                float xscale2 = hfovm / r1x, yscale2 = vfovm / r1x;
+                int x2 = W / 2 - (int)(r1y * xscale2);
+                 if (!(x1 >= x2 || x2 < now.sx1 || x1 > now.sx2)){
+                     // printf("***************************\n");
+                     // printf("hfov:%f\n", hfovm);
+                     // printf("tv1:(%f;%f) tv2:(%f,%f)\n",tv1.x,tv1.y,tv2.x,tv2.y);
+                      xscale1 = hfovm / tv1.y, yscale1 = vfovm / tv1.y;
+                      x1 = W / 2 - (int)(tv1.x * xscale1);
+                      xscale2 = hfovm / tv2.y, yscale2 = vfovm / tv2.y;
+                      x2 = W / 2 - (int)(tv2.x * xscale2);
+                     // printf("x1:(%d) x2:(%d)\n",x1,x2);
+
+                      //new way
+                     //  printf("tv1:(%f;%f) tv2:(%f,%f)\n",r0y,r0x,r1y,r1x);
+                      xscale1 = hfovm / r0x, yscale1 = vfovm / r0x;
+                      x1 = W / 2 - (int)(r0y * xscale1);
+                      xscale2 = hfovm / r1x, yscale2 = vfovm / r1x;
+                      x2 = W / 2 - (int)(r1y * xscale2);
+                     //  printf("x1:(%d) x2:(%d)\n",x1,x2);
+
+                       int beginx = max(x1, now.sx1), endx = min(x2, now.sx2);
+                       if(left && beginx!=x1){
+
+
+                       }
+                       if(not left && endx!=x2){
+
+                       }
+
+                       //old
+                     //  printf("tv1:(%f;%f) tv2:(%f,%f)\n",tv1a.x,tv1a.y,tv2a.x,tv2a.y);
+                       xscale1 = hfovm / tv1a.y, yscale1 = vfovm / tv1a.y;
+                       x1 = W / 2 - (int)(tv1a.x * xscale1);
+                       xscale2 = hfovm / tv2a.y, yscale2 = vfovm / tv2a.y;
+                       x2 = W / 2 - (int)(tv2a.x * xscale2);
+                    //   printf("x1:(%d) x2:(%d)\n",x1,x2);
+                 };
+                   tv1.x = tv1a.x;tv1.y = tv1a.y;tv2.x = tv2a.x;tv2.y = tv2a.y;
+                    // tv1.x = r0y;tv1.y = r0x;tv2.x = r1y;tv2.y = r1x;
+                 }
+
+
             //Perspective transformation
             float xscale1 = hfovm / tv1.y, yscale1 = vfovm / tv1.y;
             int x1 = W / 2 - (int)(tv1.x * xscale1);
             float xscale2 = hfovm / tv2.y, yscale2 = vfovm / tv2.y;
             int x2 = W / 2 - (int)(tv2.x * xscale2);
+           //  printf("x1:(%d) x2:(%d)\n",x1,x2);
+
             //only render if visible
             //if right vertices is left to screen. Or lefy is right. That mean that edge not visible
             //x1 >= x2 wtf
@@ -151,11 +257,15 @@ void RenderDrawScreen(entityx::Entity e) {
             /*Render the wall */
             int beginx = max(x1, now.sx1), endx = min(x2, now.sx2);
             for (int x = beginx; x <= endx; ++x) {
+                float lerpFactor = (x - x) / (x1 - x);
                 /* Calculate the Z coordinate for this point. (Only used for lighting.) */
                 int z = ((x - x1) * (tv2.y - tv1.y) / (x2 - x1) + tv1.y) * 8;
                 /* Acquire the Y coordinates for our ceiling & floor for this X coordinate. Clamp them. */
                 int ya = (x - x1) * (y2a - y1a) / (x2 - x1) + y1a, cya = clamp(ya, ytop[x], ybottom[x]);  // top
                 int yb = (x - x1) * (y2b - y1b) / (x2 - x1) + y1b, cyb = clamp(yb, ytop[x], ybottom[x]);  // bottom
+
+
+
                 //render ceiling;everything above this sector's ceiling height
                 vline(x, ytop[x], cya - 1, 0x11111100, 0x22222200, 0x11111100);
                 //render floor;everything below this sector's floor height

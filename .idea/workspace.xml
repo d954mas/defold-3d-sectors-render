@@ -3,12 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4541a19e-81ad-4482-8b04-19673d9ae92f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/include/ecs.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/ecs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/include/world.h" beforeDir="false" afterPath="$PROJECT_DIR$/native/include/world.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/native/src/3d_render.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/3d_render.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/native/src/world.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/src/world.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scenes/game/game_scene.lua" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/game/game_scene.lua" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/world/world.lua" beforeDir="false" afterPath="$PROJECT_DIR$/world/world.lua" afterDir="false" />
     </list>
     <list id="3bf5dbc8-d584-4740-b6eb-ad8f44aefb1c" name="Revert: hide minimap" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,8 +34,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="122">
-              <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
+            <state relative-caret-position="489">
+              <caret line="171" column="23" selection-start-line="171" selection-start-column="23" selection-end-line="171" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -57,8 +52,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ded</find>
-      <find>WorldUpdate</find>
       <find>void update(</find>
       <find>world.h</find>
       <find>update</find>
@@ -67,8 +60,6 @@
       <find>Map</find>
       <find>META</find>
       <find>map_</find>
-      <find>hfov</find>
-      <find>hfovm</find>
       <find>vfovm</find>
       <find>vfov</find>
       <find>RenderDrawScreen</find>
@@ -86,7 +77,11 @@
       <find>newPos</find>
       <find>endPos</find>
       <find>sx1</find>
+      <find>tv1</find>
       <find>Intersect</find>
+      <find>hfovm</find>
+      <find>hfov</find>
+      <find />
     </findStrings>
     <replaceStrings>
       <replace>SubscriptionStorage</replace>
@@ -163,9 +158,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="46" />
+    <option name="x" value="71" />
+    <option name="y" value="36" />
     <option name="width" value="1281" />
-    <option name="height" value="861" />
+    <option name="height" value="860" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -503,10 +499,11 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547932761368" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547995238032" />
     <property name="last_opened_file_path" value="$USER_HOME$/development/Defold/defold_api.zip!/" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -571,7 +568,7 @@
       <workItem from="1547234469040" duration="61000" />
       <workItem from="1547236951814" duration="648000" />
       <workItem from="1547295751361" duration="921000" />
-      <workItem from="1547375760184" duration="78627000" />
+      <workItem from="1547375760184" duration="99626000" />
     </task>
     <task id="LOCAL-00001" summary="update defold api">
       <created>1547237374909</created>
@@ -598,10 +595,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="321390000" />
+    <option name="totallyTimeSpent" value="342389000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="46" y="0" width="1281" height="861" extended-state="0" />
+    <frame x="71" y="36" width="1281" height="860" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49845678" visible="true" weight="0.2710204" />
@@ -619,10 +616,10 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="LuaCheck" order="7" weight="0.32984293" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="8" sideWeight="0.4930612" visible="true" weight="0.27165353" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="8" sideWeight="0.4922449" visible="true" weight="0.2720105" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.25968587" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50693876" side_tool="true" visible="true" weight="0.27165353" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49959183" weight="0.25886992" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5077551" side_tool="true" visible="true" weight="0.2720105" />
       <window_info anchor="bottom" id="Messages" order="12" />
       <window_info anchor="bottom" id="Docker" order="13" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -691,6 +688,26 @@
           <url>file://$PROJECT_DIR$/native/include/ecs.h</url>
           <line>28</line>
           <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Cpp">
+          <url>file://$PROJECT_DIR$/native/include/vec.h</url>
+          <line>75</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Cpp">
+          <url>file://$PROJECT_DIR$/native/src/3d_render.cpp</url>
+          <line>96</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Cpp">
+          <url>file://$PROJECT_DIR$/native/src/3d_render.cpp</url>
+          <line>111</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Cpp">
+          <url>file://$PROJECT_DIR$/native/src/3d_render.cpp</url>
+          <line>168</line>
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -972,15 +989,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/native/include/vec.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1818">
-          <caret line="127" selection-start-line="127" selection-end-line="127" />
+        <state relative-caret-position="169">
+          <caret line="84" column="26" lean-forward="true" selection-start-line="84" selection-start-column="26" selection-end-line="84" selection-end-column="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/native/include/world.h">
+    <entry file="file://$PROJECT_DIR$/world/world.lua">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
+        <state relative-caret-position="361">
+          <caret line="47" column="37" selection-start-line="47" selection-start-column="37" selection-end-line="47" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -994,17 +1011,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/world/world.lua">
+    <entry file="file://$PROJECT_DIR$/native/include/world.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="47" column="37" selection-start-line="47" selection-start-column="37" selection-end-line="47" selection-end-column="37" />
+        <state relative-caret-position="-453">
+          <caret line="18" column="12" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/native/src/3d_render.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
+        <state relative-caret-position="489">
+          <caret line="171" column="23" selection-start-line="171" selection-start-column="23" selection-end-line="171" selection-end-column="23" />
         </state>
       </provider>
     </entry>
