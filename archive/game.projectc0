@@ -1,0 +1,179 @@
+[project]
+title = ExCreditsJam2018
+version = 0.1
+write_log = 0
+compress_archive = 1
+custom_resources = assets/levels
+
+[display]
+width = 960
+height = 540
+high_dpi = 1
+samples = 0
+fullscreen = 0
+update_frequency = 0
+vsync = 1
+display_profiles = /builtins/render/default.display_profilesc
+dynamic_orientation = 0
+
+[physics]
+type = 2D
+gravity_y = -10
+debug = 0
+debug_alpha = 0.9
+world_count = 8
+gravity_x = 0
+gravity_z = 0
+scale = 0.02
+debug_scale = 30
+max_collisions = 64
+max_contacts = 128
+contact_impulse_limit = 0
+ray_cast_limit_2d = 64
+ray_cast_limit_3d = 128
+trigger_overlap_capacity = 16
+
+[bootstrap]
+main_collection = /init.collectionc
+render = /render/my.renderc
+
+[graphics]
+default_texture_min_filter = linear
+default_texture_mag_filter = linear
+max_draw_calls = 1024
+max_characters = 8192
+max_debug_vertices = 10000
+texture_profiles = /default.texture_profiles
+
+[sound]
+gain = 1
+max_sound_data = 128
+max_sound_buffers = 32
+max_sound_sources = 16
+max_sound_instances = 256
+
+[resource]
+http_cache = 0
+max_resources = 1024
+
+[input]
+repeat_delay = 0.5
+repeat_interval = 0.2
+gamepads = /builtins/input/default.gamepadsc
+game_binding = /game.input_bindingc
+use_accelerometer = 0
+
+[sprite]
+max_count = 1024
+subpixels = 1
+
+[spine]
+max_count = 1024
+
+[model]
+max_count = 128
+
+[gui]
+max_count = 64
+max_particlefx_count = 64
+max_particle_count = 1024
+
+[collection]
+max_instances = 512
+
+[collection_proxy]
+max_count = 8
+
+[collectionfactory]
+max_count = 128
+
+[factory]
+max_count = 128
+
+[ios]
+pre_renderered_icons = 0
+bundle_identifier = com.d954mas.idleheroes
+infoplist = /builtins/manifests/ios/Info.plist
+app_icon_57x57 = /assets/mobile/app_icons/icon_57.png
+app_icon_72x72 = /assets/mobile/app_icons/icon_72.png
+app_icon_76x76 = /assets/mobile/app_icons/icon_76.png
+app_icon_114x114 = /assets/mobile/app_icons/icon_114.png
+app_icon_120x120 = /assets/mobile/app_icons/icon_120.png
+app_icon_144x144 = /assets/mobile/app_icons/icon_144.png
+app_icon_152x152 = /assets/mobile/app_icons/icon_152.png
+app_icon_167x167 = /assets/mobile/app_icons/icon_167.png
+app_icon_180x180 = /assets/mobile/app_icons/icon_180.png
+launch_image_320x480 = /assets/mobile/launch_images/ios_launch_320x480.png
+launch_image_640x960 = /assets/mobile/launch_images/ios_launch_640x960.png
+launch_image_640x1136 = /assets/mobile/launch_images/ios_launch_640x1136.png
+launch_image_750x1334 = /assets/mobile/launch_images/ios_launch_750x1334.png
+launch_image_1334x750 = /assets/mobile/launch_images/ios_launch_1334x750.png
+launch_image_768x1024 = /assets/mobile/launch_images/ios_launch_768x1024.png
+launch_image_1536x2048 = /assets/mobile/launch_images/ios_launch_1536x2048.png
+launch_image_1024x768 = /assets/mobile/launch_images/ios_launch_1024x768.png
+launch_image_1242x2208 = /assets/mobile/launch_images/ios_launch_1242x2208.png
+launch_image_2208x1242 = /assets/mobile/launch_images/ios_launch_2208x1242.png
+launch_image_2048x1536 = /assets/mobile/launch_images/ios_launch_2048x1536.png
+launch_image_2048x2732 = /assets/mobile/launch_images/ios_launch_2048x2732.png
+launch_image_2732x2048 = /assets/mobile/launch_images/ios_launch_2732x2048.png
+launch_image_1125x2436 = /assets/mobile/launch_images/ios_launch_1125x2436.png
+launch_image_2436x1125 = /assets/mobile/launch_images/ios_launch_2436x1125.png
+
+[android]
+version_code = 1
+package = com.d954mas.idleheroes
+manifest = /builtins/manifests/android/AndroidManifest.xml
+iap_provider = GooglePlay
+input_method = KeyEvent
+immersive_mode = 0
+debuggable = 0
+app_icon_36x36 = /assets/mobile/app_icons/icon_36.png
+app_icon_48x48 = /assets/mobile/app_icons/icon_48.png
+app_icon_72x72 = /assets/mobile/app_icons/icon_72.png
+app_icon_96x96 = /assets/mobile/app_icons/icon_96.png
+app_icon_144x144 = /assets/mobile/app_icons/icon_144.png
+app_icon_192x192 = /assets/mobile/app_icons/icon_192.png
+
+[osx]
+infoplist = /builtins/manifests/osx/Info.plist
+bundle_identifier = com.elpaco.ld42
+
+[windows]
+
+[html5]
+custom_heap_size = 0
+include_dev_tool = 0
+htmlfile = /builtins/manifests/web/engine_template.html
+archive_location_prefix = archive
+
+[particle_fx]
+max_count = 64
+max_particle_count = 1024
+
+[iap]
+auto_finish_transactions = 1
+
+[network]
+http_timeout = 0
+
+[library]
+include_dirs = 
+
+[script]
+shared_state = 1
+
+[tracking]
+
+[label]
+max_count = 64
+subpixels = 1
+
+[profiler]
+track_cpu = 1
+
+[liveupdate]
+settings = /liveupdate.settings
+
+[native_extension]
+app_manifest = /debug.appmanifest
+
