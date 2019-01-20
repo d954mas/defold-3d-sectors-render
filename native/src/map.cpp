@@ -22,6 +22,7 @@ void MapVertexChange(int idx,float x, float y){
 
 void MapSectorCreate(float floor, float ceil){
     struct Sector s;
+    s.id =  WORLD.sectors.size();
     s.floor = floor; s.ceil = ceil;
     WORLD.sectors.push_back(s);
 }

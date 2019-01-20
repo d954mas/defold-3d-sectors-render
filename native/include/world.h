@@ -2,6 +2,8 @@
 #include <dmsdk/sdk.h>
 #include <entityx/entityx.h>
 #include <vector>
+#include <unordered_set>
+#include <unordered_map>
 #include "vec.h"
 /*
 fix black sectors
@@ -38,14 +40,25 @@ Ok, I kinda fixed it, but it feels more like a hack than a fix to me.
     vxs(vxs(x1,y1, x2,y2), (y1)-(y2), vxs(x3,y3, x4,y4), (y3)-(y4)) / vxs((x1)-(x2), (y1)-(y2), (x3)-(x4), (y3)-(y4)))
 
 
+    
 /* Sectors: Floor and ceiling height; list of edge vertices and neighbors */
 //Sector is a room, where i can set floor and ceiling height
 //Sector can be 2 types. Wall and portal. We can see throw portal
 struct Sector{
+    int id;
     float floor, ceil;
     std::vector<int> vertex; //vertex have x,y coords
     std::vector<int> neighbors; //Each edge may have a corresponding neighboring sector
 };
+
+namespace std{
+    template <>
+    struct hash<Sector>{
+        size_t operator()(const Sector& sector) const{
+            return hash<int>()(sector.id);
+        }
+    };
+}
 
 class EcsWorld : public entityx::EntityX {
 public:
@@ -62,6 +75,7 @@ struct World{
     void reset();
     void setHFov(float);
     void setVFov(float);
+    std::unordered_map<int,std::unordered_set<int>> visibility;
 };
 extern World WORLD;
 
@@ -73,3 +87,4 @@ bool IsInside(Sector&, vec2f&);
 
 bool Intersect2(vec2f,vec2f,vec2f,vec2f, vec2f&);
 bool Intersect4(vec2f,vec2f,vec2f,vec2f, vec2f&);
+

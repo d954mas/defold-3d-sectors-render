@@ -50,6 +50,7 @@ static float lerp(float v0, float v1, float t) {
 }
 
 void RenderDrawScreen(entityx::Entity e) {
+    WORLD.visibility.clear();
     printf("DRAW *************************\n");
     RenderClearBuffer();
     entityx::ComponentHandle<PositionC> posC = e.component<PositionC>();
@@ -76,12 +77,15 @@ void RenderDrawScreen(entityx::Entity e) {
         //pick a sector then slice from the queue to draw
         const struct item now = *tail;
         if (++tail == queue + MaxQueue) tail = queue;
+
+
       //    printf("sector:%d\n",now.sectorno);
 
         if (renderedsectors[now.sectorno] & 0x21) continue;  // Odd = still rendering, 0x20 = give up try 32 times
         ++renderedsectors[now.sectorno];
         //const for pointer and const for data
         const Sector& sect = WORLD.sectors[now.sectorno];
+        std::unordered_set<int>& visible_walls = WORLD.visibility[sect.id];
         //render each wall of player sector that is facing towards player
 
         for (unsigned s = 0; s < sect.vertex.size() - 1; s++) {
@@ -234,6 +238,11 @@ void RenderDrawScreen(entityx::Entity e) {
             // printf("sx1:%d sx2:%d\n",now.sx1,now.sx2);
             // printf("x1:%d x2:%d\n",x1,x2);
             if (x1 >= x2 || x2 < now.sx1 || x1 > now.sx2) continue;
+
+            visible_walls.insert(s);
+            int size = visible_walls.size();
+           // printf("size:%d",size);
+            //printf("size:%d\n",size);
             // printf("visible\n");
             //acquire the floor and ceilings height, relative to player view;
             float yceil = sect.ceil - posC->z - eyeC->v;
@@ -315,9 +324,33 @@ static int RenderDrawScreenLua(lua_State* L) {
     return 0;
 }
 
+static int RenderGetVisible(lua_State* L) {
+    lua_newtable(L);
+    // populate the table with values which we want to return
+
+    for(auto const &pair : WORLD.visibility){
+    std::unordered_set<int> walls= pair.second;
+    int size = walls.size();
+        if(walls.size() > 0){
+            int i = 0;
+            lua_newtable(L);
+            for(auto wall : walls){
+                i++;
+                lua_pushnumber(L, wall);
+                lua_rawseti(L, -2, i);
+            }
+            lua_rawseti(L, -2, pair.first);
+               // lua_pushnumber(L, it.second);
+        }
+       // lua_setField(L, -2, field);
+    }
+    return 1;
+}
+
 static const luaL_reg Meta_methods[] = {
     {"set_buffer", RenderSetBufferLua},
     {"draw_screen", RenderDrawScreenLua},
+    {"get_visible", RenderGetVisible},
     {0, 0}};
 
 void RenderBind(lua_State* L) {

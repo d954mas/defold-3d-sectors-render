@@ -9,7 +9,7 @@ static int playerSizePixels=2, mapWidth, mapHeight;
 
 static uint32_t PLAYER_COLOR = 0xFF880000;
 static uint32_t WALL_COLOR = 0xFFFFFF00;
-static uint32_t PORTAL_COLOR = 0xFF000000; 
+static uint32_t VISIBLE_COLOR = 0x00AA0000;
 
 void MinimapUpdate(entityx::Entity e){
     entityx::ComponentHandle<PositionC> posC = e.component<PositionC>();
@@ -19,19 +19,30 @@ void MinimapUpdate(entityx::Entity e){
     int centerX= minimapBuffer.width/2, centerY = minimapBuffer.height/2;
     //draw player at center
     DrawRect(minimapBuffer, centerX-playerSizePixels/2, centerY-playerSizePixels/2, playerSizePixels,playerSizePixels,PLAYER_COLOR);
-
+    std::vector<std::pair<vec2f, vec2f>> visible;
     float bufferWScale = minimapBuffer.width/mapWidth, bufferHScale = minimapBuffer.height/mapHeight;
     for(Sector sect: WORLD.sectors){
         vec2f scale = vec2f(bufferWScale,bufferHScale);
+        std::unordered_set<int>& visible_walls = WORLD.visibility[sect.id];
         for(unsigned s =0; s< sect.vertex.size()-1;s++){
             //acquire the x,y coordinates of the two endpoints(vertices) of thius edge of the sector
             //transform the vertices into the player view
             vec2f v1 = WORLD.vertices[sect.vertex[s]], v2 = WORLD.vertices[sect.vertex[s+1]];
             vec2f tv1 = (v1 - posC->pos).rotate(angleC->anglecos,angleC->anglesin).scalexy(bufferWScale,bufferHScale);
             vec2f tv2 = (v2 - posC->pos).rotate(angleC->anglecos,angleC->anglesin).scalexy(bufferWScale,bufferHScale);
-            DrawLine(minimapBuffer,centerX+tv1.x,centerY+tv1.y,centerX+tv2.x,centerY+tv2.y,WALL_COLOR,true);
+
+            vec2f a = vec2f(centerX+tv1.x,centerY+tv1.y);
+            vec2f b = vec2f(centerX+tv2.x,centerY+tv2.y);
+            if(visible_walls.count(s)){
+                visible.push_back(std::make_pair(a,b));
+            }else{
+                 DrawLine(minimapBuffer,a.x,a.y,b.x,b.y, WALL_COLOR,true);
+            }
         }
     }
+     for(auto p : visible){
+         DrawLine(minimapBuffer,p.first.x,p.first.y,p.second.x,p.second.y, VISIBLE_COLOR,true);
+     }
 }
 
 void MinimapSetBuffer(int width, int height, dmScript::LuaHBuffer* luaBuffer){
